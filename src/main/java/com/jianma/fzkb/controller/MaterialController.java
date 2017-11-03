@@ -45,11 +45,14 @@ public class MaterialController {
 	@RequestMapping(value = "/createMaterial", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel createMaterial(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam String name, @RequestParam String icon, @RequestParam String description) {
+			@RequestParam String name, @RequestParam String thumb, @RequestParam String masterImage) {
 		
 		resultModel = new ResultModel();
 		Material material = new Material();
-		
+		material.setName(name);
+		material.setMasterImage(masterImage);
+		material.setThumb(thumb);
+		material.setCreateTime(new Date());
 		
 		int result = materialServiceImpl.createMaterial(material);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
@@ -64,12 +67,14 @@ public class MaterialController {
 	@RequestMapping(value = "/updateMaterial", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel updateMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int id,
-			@RequestParam String name, @RequestParam String icon, @RequestParam String description) {
+			@RequestParam String name, @RequestParam String thumb, @RequestParam String masterImage) {
 		
 		resultModel = new ResultModel();
 		Material material = new Material();
 		material.setCreateTime(new Date());
-		
+		material.setName(name);
+		material.setMasterImage(masterImage);
+		material.setThumb(thumb);
 		material.setId(id);
 		
 		int result = materialServiceImpl.updateMaterial(material);
@@ -84,7 +89,7 @@ public class MaterialController {
 	
 	@RequestMapping(value = "/deleteMaterial", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultModel deleteBrand(HttpServletRequest request, HttpServletResponse response, @RequestParam int id) {
+	public ResultModel deleteMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int id) {
 		
 		resultModel = new ResultModel();
 		int result = materialServiceImpl.deleteMaterial(id);
@@ -118,9 +123,9 @@ public class MaterialController {
 		return listResultModel;
 	}
 	
-	@RequestMapping(value = "/getAllBrand", method = RequestMethod.POST)
+	@RequestMapping(value = "/getRandomMaterial", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultModel getAllBrand(HttpServletRequest request, HttpServletResponse response, @RequestParam int count) {
+	public ResultModel getRandomMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int count) {
 		
 		resultModel = new ResultModel();
 		try {

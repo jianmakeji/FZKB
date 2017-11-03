@@ -28,7 +28,7 @@ public class UserRealm extends AuthorizingRealm{
 	@Autowired
 	@Qualifier(value = "userServiceImpl")
 	private UserService userServiceImpl;
-	
+		
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		String username = (String)principals.getPrimaryPrincipal();

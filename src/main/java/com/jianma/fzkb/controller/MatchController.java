@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -44,13 +46,18 @@ public class MatchController {
 	@RequestMapping(value = "/createMatch", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel createMatch(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam String name, @RequestParam String icon, @RequestParam String description) {
+			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
 		
 		resultModel = new ResultModel();
 		Match match = new Match();
 		match.setCreateTime(new Date());
 		match.setName(name);
-		
+		match.setUnderwear(underwear);
+		match.setGreatcoat(greatcoat);
+		match.setTrousers(trousers);
+		Subject subject = SecurityUtils.getSubject();
+		int userId = (int)subject.getSession().getAttribute("userId");
+		match.setUserId(userId);
 		
 		int result = matchServiceImpl.createMatch(match);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
@@ -65,13 +72,16 @@ public class MatchController {
 	@RequestMapping(value = "/updateMatch", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel updateMatch(HttpServletRequest request, HttpServletResponse response, @RequestParam int id,
-			@RequestParam String name, @RequestParam String icon, @RequestParam String description) {
+			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
 		
 		resultModel = new ResultModel();
 		Match match = new Match();
 		match.setCreateTime(new Date());
 		match.setName(name);
 		match.setId(id);
+		match.setUnderwear(underwear);
+		match.setGreatcoat(greatcoat);
+		match.setTrousers(trousers);
 		
 		int result = matchServiceImpl.updateMatch(match);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
