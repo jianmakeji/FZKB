@@ -22,6 +22,7 @@ public class Match implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
+	private Integer userId;
 	private String name;
 	private String underwear;
 	private String greatcoat;
@@ -95,6 +96,15 @@ public class Match implements java.io.Serializable {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	@Column(name = "userId", nullable = false)
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 }
