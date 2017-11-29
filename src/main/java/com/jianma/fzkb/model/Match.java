@@ -17,12 +17,8 @@ import javax.persistence.TemporalType;
 @Table(name = "match", catalog = "sdx_fzkb")
 public class Match implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private Integer userId;
+	private int userId;
 	private String name;
 	private String underwear;
 	private String greatcoat;
@@ -32,7 +28,8 @@ public class Match implements java.io.Serializable {
 	public Match() {
 	}
 
-	public Match(String name, String underwear, String greatcoat, String trousers, Date createTime) {
+	public Match(int userId, String name, String underwear, String greatcoat, String trousers, Date createTime) {
+		this.userId = userId;
 		this.name = name;
 		this.underwear = underwear;
 		this.greatcoat = greatcoat;
@@ -50,6 +47,15 @@ public class Match implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@Column(name = "userId", nullable = false)
+	public int getUserId() {
+		return this.userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	@Column(name = "name", nullable = false, length = 30)
@@ -96,15 +102,6 @@ public class Match implements java.io.Serializable {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
-	}
-
-	@Column(name = "userId", nullable = false)
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
 	}
 
 }

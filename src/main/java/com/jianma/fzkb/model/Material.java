@@ -17,23 +17,28 @@ import javax.persistence.TemporalType;
 @Table(name = "material", catalog = "sdx_fzkb")
 public class Material implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String name;
 	private String thumb;
 	private String masterImage;
+	private String categoryName;
+	private String style1;
+	private String style2;
+	private String style3;
 	private Date createTime;
 
 	public Material() {
 	}
 
-	public Material(String name, String thumb, String masterImage, Date createTime) {
+	public Material(String name, String thumb, String masterImage, String categoryName, String style1, String style2,
+			String style3, Date createTime) {
 		this.name = name;
 		this.thumb = thumb;
 		this.masterImage = masterImage;
+		this.categoryName = categoryName;
+		this.style1 = style1;
+		this.style2 = style2;
+		this.style3 = style3;
 		this.createTime = createTime;
 	}
 
@@ -74,6 +79,42 @@ public class Material implements java.io.Serializable {
 
 	public void setMasterImage(String masterImage) {
 		this.masterImage = masterImage;
+	}
+
+	@Column(name = "categoryName", nullable = false, length = 10)
+	public String getCategoryName() {
+		return this.categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	@Column(name = "style1", nullable = false, length = 10)
+	public String getStyle1() {
+		return this.style1;
+	}
+
+	public void setStyle1(String style1) {
+		this.style1 = style1;
+	}
+
+	@Column(name = "style2", nullable = false, length = 10)
+	public String getStyle2() {
+		return this.style2;
+	}
+
+	public void setStyle2(String style2) {
+		this.style2 = style2;
+	}
+
+	@Column(name = "style3", nullable = false, length = 10)
+	public String getStyle3() {
+		return this.style3;
+	}
+
+	public void setStyle3(String style3) {
+		this.style3 = style3;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

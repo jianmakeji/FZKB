@@ -21,10 +21,6 @@ import javax.persistence.TemporalType;
 @Table(name = "role", catalog = "sdx_fzkb")
 public class Role implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String rolename;
 	private Date createtime;

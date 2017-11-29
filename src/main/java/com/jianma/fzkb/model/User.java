@@ -22,10 +22,6 @@ import javax.persistence.Transient;
 @Table(name = "user", catalog = "sdx_fzkb")
 public class User implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String email;
 	private String password;

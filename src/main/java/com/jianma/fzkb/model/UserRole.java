@@ -17,10 +17,6 @@ import javax.persistence.Table;
 @Table(name = "user_role", catalog = "sdx_fzkb")
 public class UserRole implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private Role role;
 	private User user;

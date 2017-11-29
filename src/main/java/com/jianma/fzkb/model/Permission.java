@@ -21,10 +21,6 @@ import javax.persistence.TemporalType;
 @Table(name = "permission", catalog = "sdx_fzkb")
 public class Permission implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String permissionName;
 	private Date createtime;
