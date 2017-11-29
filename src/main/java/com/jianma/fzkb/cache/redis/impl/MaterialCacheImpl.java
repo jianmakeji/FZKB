@@ -28,6 +28,7 @@ public class MaterialCacheImpl implements MaterialCache {
 	@Resource(name = "redisTemplate")
 	private ListOperations<String, String> listOps;
 	
+	
 	@Override
 	public void addMaterial(Material material) {
 		
