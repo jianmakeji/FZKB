@@ -152,10 +152,10 @@
 	-->
 	
 	<beans:bean id="hashKeySerializer"
-		class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+		class="org.springframework.data.redis.serializer.StringRedisSerializer" />
 
 	<beans:bean name="hashValueSerializer"
-		class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"></beans:bean>
+		class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"></beans:bean>
 
 	<beans:bean id="redisTemplate"
 		class="org.springframework.data.redis.core.RedisTemplate"
