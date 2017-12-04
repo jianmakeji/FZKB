@@ -1,14 +1,17 @@
 package com.jianma.fzkb.cache.redis;
 
+import java.util.Map;
+
 import com.jianma.fzkb.model.Match;
+import com.jianma.fzkb.model.Material;
 
 public interface MatchCache {
 
-	public void addMatch(Match match);
+	public void addMatch(Match match, Map<String,Material> map);
 	
-	public void deleteMatch(int id);
+	public void deleteMatch(int id, Map<String,Material> map);
 	
-	public void updateMatch(Match match);
+	public void updateMatch(Match match, Map<String,Material> map);
 	
 	/**
 	 * userId=0 查找全部的，userId!=0 按照userId查找

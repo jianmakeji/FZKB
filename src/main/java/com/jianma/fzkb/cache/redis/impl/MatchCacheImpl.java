@@ -1,17 +1,29 @@
 package com.jianma.fzkb.cache.redis.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.hash.BeanUtilsHashMapper;
+import org.springframework.data.redis.hash.DecoratingStringHashMapper;
+import org.springframework.data.redis.hash.HashMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import com.jianma.fzkb.cache.redis.MatchCache;
 import com.jianma.fzkb.model.Match;
+import com.jianma.fzkb.model.Material;
+import com.jianma.fzkb.util.RedisVariableUtil;
 
 @Repository
 @Component
@@ -22,25 +34,95 @@ public class MatchCacheImpl implements MatchCache {
 	@Qualifier(value = "redisTemplate")
 	private RedisTemplate<String, String> redisTemplate;
 
-	@Resource(name = "redisTemplate")
-	HashOperations<String, String, String> hashOperations;
+	private final HashMapper<Match, String, String> mapper =
+   	     new DecoratingStringHashMapper<Match>(new BeanUtilsHashMapper<Match>(Match.class));
+   
+   public void writeHash(HashOperations<String, String, String> hashOperations,String key, Match match) {
+     Map<String, String> mappedHash = mapper.toHash(match);
+     hashOperations.putAll(key, mappedHash);
+   }
 
-	@Resource(name = "redisTemplate")
-	private ListOperations<String, String> listOps;
-	
+   public Match loadHash(HashOperations<String, String, String> hashOperations,String key) {
+     Map<String, String> loadedHash = hashOperations.entries(key);
+     return (Match) mapper.fromHash(loadedHash);
+   }
+   
 	@Override
-	public void addMatch(Match match) {
+	public void addMatch(Match match,Map<String,Material> map) {
+		redisTemplate.execute(new SessionCallback<List<Object>>() {
+			  public List<Object> execute(RedisOperations operations) throws DataAccessException {
+			    operations.multi();
+			    ListOperations<String, String> listOps = operations.opsForList();
+		        HashOperations<String, String, String> hashOperations = operations.opsForHash();
+		        writeHash(hashOperations,RedisVariableUtil.MATCH_DATA_HASH+":"+match.getId().toString(), match);
+				listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, match.getId().toString());
+				listOps.leftPush(RedisVariableUtil.MATCH_ID_LIST, match.getId().toString());
+				
+				SetOperations<String,String> setOps = operations.opsForSet();
+				setOps.add(RedisVariableUtil.m_categoryMap.get(map.get("category")), match.getId().toString());
+				setOps.add("ms1:"+map.get("style1"), match.getId().toString());
+				setOps.add("ms2:"+map.get("style2"), match.getId().toString());
+				setOps.add("ms3:"+map.get("style3"), match.getId().toString());
+			    return operations.exec();
+			  }
+		});
+	}
+
+	@Override
+	public void deleteMatch(int id,Map<String,Material> map) {
+		redisTemplate.execute(new SessionCallback<List<Object>>() {
+			  public List<Object> execute(RedisOperations operations) throws DataAccessException {
+			    operations.multi();
+			    HashOperations<String, String, String> hashOperations = operations.opsForHash();
+			    Match match = loadHash(hashOperations,RedisVariableUtil.MATERIAL_DATA_HASH+":"+id);
+				if (match != null){
+					ListOperations<String, String> listOps = operations.opsForList();
+					listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, match.getId().toString());
+					SetOperations<String,String> setOps = operations.opsForSet();
+					setOps.remove(RedisVariableUtil.m_categoryMap.get(map.get("category")), match.getId().toString());
+					setOps.remove("ms1:"+map.get("style1"), match.getId().toString());
+					setOps.remove("ms2:"+map.get("style2"), match.getId().toString());
+					setOps.remove("ms3:"+map.get("style3"), match.getId().toString());
+					redisTemplate.delete(RedisVariableUtil.MATERIAL_DATA_HASH+":"+match.getId().toString());
+				}
+			    return operations.exec();
+			  }
+		});
+		
 		
 	}
 
 	@Override
-	public void deleteMatch(int id) {
-		
-	}
-
-	@Override
-	public void updateMatch(Match match) {
-		
+	public void updateMatch(Match match,Map<String,Material> map) {
+		redisTemplate.execute(new SessionCallback<List<Object>>() {
+			  public List<Object> execute(RedisOperations operations) throws DataAccessException {
+			    operations.multi();
+			    HashOperations<String, String, String> hashOperations = operations.opsForHash();
+			    SetOperations<String,String> setOps = operations.opsForSet();
+			    Match matchObj = loadHash(hashOperations,RedisVariableUtil.MATERIAL_DATA_HASH+":"+match.getId());
+				if (matchObj != null){
+					ListOperations<String, String> listOps = operations.opsForList();
+					listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, matchObj.getId().toString());
+					setOps.remove(RedisVariableUtil.m_categoryMap.get(map.get("category")), matchObj.getId().toString());
+					setOps.remove("ms1:"+map.get("style1"), matchObj.getId().toString());
+					setOps.remove("ms2:"+map.get("style2"), matchObj.getId().toString());
+					setOps.remove("ms3:"+map.get("style3"), matchObj.getId().toString());
+					redisTemplate.delete(RedisVariableUtil.MATERIAL_DATA_HASH+":"+matchObj.getId().toString());
+				}
+				
+				writeHash(hashOperations,RedisVariableUtil.MATCH_DATA_HASH+":"+match.getId().toString(), match);
+				ListOperations<String, String> listOps = operations.opsForList();
+				listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, match.getId().toString());
+				listOps.leftPush(RedisVariableUtil.MATCH_ID_LIST, match.getId().toString());
+				
+				setOps.add(RedisVariableUtil.m_categoryMap.get(map.get("category")), match.getId().toString());
+				setOps.add("ms1:"+map.get("style1"), match.getId().toString());
+				setOps.add("ms2:"+map.get("style2"), match.getId().toString());
+				setOps.add("ms3:"+map.get("style3"), match.getId().toString());
+				
+			    return operations.exec();
+			  }
+		});
 	}
 
 	@Override

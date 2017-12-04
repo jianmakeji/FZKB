@@ -72,4 +72,13 @@ public class RedisVariableUtil {
 		categoryMap.put("植物", "plant");
 		categoryMap.put("风景", "landscape");
 	}
+	
+	public static final HashMap<String,String> m_categoryMap = new HashMap<String,String>();
+	static {
+		categoryMap.put("艺术品", "m_artwork");
+		categoryMap.put("建筑", "m_architecture");
+		categoryMap.put("动物", "m_animal");
+		categoryMap.put("植物", "m_plant");
+		categoryMap.put("风景", "m_landscape");
+	}
 }
