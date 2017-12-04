@@ -1,6 +1,7 @@
 package com.jianma.fzkb.service.impl;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,26 +10,42 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jianma.fzkb.cache.redis.MatchCache;
+import com.jianma.fzkb.cache.redis.MaterialCache;
 import com.jianma.fzkb.dao.MatchDao;
 import com.jianma.fzkb.model.Match;
 import com.jianma.fzkb.model.MatchTableModel;
+import com.jianma.fzkb.model.Material;
 import com.jianma.fzkb.service.MatchService;
 import com.jianma.fzkb.util.ResponseCodeUtil;
 
 @Repository
 @Transactional
 @Component
-@Qualifier(value = "brandServiceImpl")
+@Qualifier(value = "matchServiceImpl")
 public class MatchServiceImpl implements MatchService {
 
 	@Autowired
 	@Qualifier("matchDaoImpl")
 	private MatchDao matchDaoImpl;
 	
+	@Autowired
+	@Qualifier("matchDaoImpl")
+	private MatchCache matchCacheImpl;
+	
+	@Autowired
+	@Qualifier("materialCacheImpl")
+	private MaterialCache materialCacheImpl;
+	
 	@Override
 	public int createMatch(Match match) {
 		try{
 			matchDaoImpl.createMatch(match);
+			Map<String,Material> map = new HashMap<String,Material>();
+			map.put("underwear", materialCacheImpl.getMaterialById(match.getUwId()));
+			map.put("greatcoat", materialCacheImpl.getMaterialById(match.getGcId()));
+			map.put("trouser", materialCacheImpl.getMaterialById(match.getTrId()));
+			matchCacheImpl.addMatch(match, map);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		}
 		catch(Exception e){
@@ -39,7 +56,12 @@ public class MatchServiceImpl implements MatchService {
 	@Override
 	public int updateMatch(Match match) {
 		try{
-			matchDaoImpl.updateMaterial(match);
+			matchDaoImpl.updateMatch(match);
+			Map<String,Material> map = new HashMap<String,Material>();
+			map.put("underwear", materialCacheImpl.getMaterialById(match.getUwId()));
+			map.put("greatcoat", materialCacheImpl.getMaterialById(match.getGcId()));
+			map.put("trouser", materialCacheImpl.getMaterialById(match.getTrId()));
+			matchCacheImpl.updateMatch(match, map);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		}
 		catch(Exception e){
@@ -50,8 +72,19 @@ public class MatchServiceImpl implements MatchService {
 	@Override
 	public int deleteMatch(int id) {
 		try{
-			matchDaoImpl.deleteMaterial(id);
-			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
+			Optional<Match> match = matchDaoImpl.getDataByMatchId(id);
+			if (match.isPresent()){
+				matchDaoImpl.deleteMatch(id);
+				Map<String,Material> map = new HashMap<String,Material>();
+				map.put("underwear", materialCacheImpl.getMaterialById(match.get().getUwId()));
+				map.put("greatcoat", materialCacheImpl.getMaterialById(match.get().getGcId()));
+				map.put("trouser", materialCacheImpl.getMaterialById(match.get().getTrId()));
+				matchCacheImpl.deleteMatch(id, map);
+				return ResponseCodeUtil.DB_OPERATION_SUCCESS;
+			}
+			else{
+				return ResponseCodeUtil.DB_OPERATION_FAILURE;
+			}
 		}
 		catch(Exception e){
 			return ResponseCodeUtil.DB_OPERATION_FAILURE;

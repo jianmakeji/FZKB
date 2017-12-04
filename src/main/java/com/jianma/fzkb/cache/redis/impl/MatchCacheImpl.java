@@ -3,8 +3,6 @@ package com.jianma.fzkb.cache.redis.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -59,10 +57,14 @@ public class MatchCacheImpl implements MatchCache {
 				listOps.leftPush(RedisVariableUtil.MATCH_ID_LIST, match.getId().toString());
 				
 				SetOperations<String,String> setOps = operations.opsForSet();
-				setOps.add(RedisVariableUtil.m_categoryMap.get(map.get("category")), match.getId().toString());
-				setOps.add("ms1:"+map.get("style1"), match.getId().toString());
-				setOps.add("ms2:"+map.get("style2"), match.getId().toString());
-				setOps.add("ms3:"+map.get("style3"), match.getId().toString());
+				
+				map.forEach((key,material)->{
+					setOps.add(RedisVariableUtil.m_categoryMap.get(material.getCategoryName()), match.getId().toString());
+					setOps.add("ms1:"+material.getStyle1(), match.getId().toString());
+					setOps.add("ms2:"+material.getStyle2(), match.getId().toString());
+					setOps.add("ms3:"+material.getStyle3(), match.getId().toString());
+				});
+				
 			    return operations.exec();
 			  }
 		});
@@ -79,10 +81,15 @@ public class MatchCacheImpl implements MatchCache {
 					ListOperations<String, String> listOps = operations.opsForList();
 					listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, match.getId().toString());
 					SetOperations<String,String> setOps = operations.opsForSet();
-					setOps.remove(RedisVariableUtil.m_categoryMap.get(map.get("category")), match.getId().toString());
-					setOps.remove("ms1:"+map.get("style1"), match.getId().toString());
-					setOps.remove("ms2:"+map.get("style2"), match.getId().toString());
-					setOps.remove("ms3:"+map.get("style3"), match.getId().toString());
+					
+					map.forEach((key,material)->{
+						setOps.remove(RedisVariableUtil.m_categoryMap.get(material.getCategoryName()), match.getId().toString());
+						setOps.remove("ms1:" + material.getStyle1(), match.getId().toString());
+						setOps.remove("ms2:" + material.getStyle2(), match.getId().toString());
+						setOps.remove("ms3:" + material.getStyle3(), match.getId().toString());
+					});
+					
+					
 					redisTemplate.delete(RedisVariableUtil.MATERIAL_DATA_HASH+":"+match.getId().toString());
 				}
 			    return operations.exec();
@@ -103,10 +110,12 @@ public class MatchCacheImpl implements MatchCache {
 				if (matchObj != null){
 					ListOperations<String, String> listOps = operations.opsForList();
 					listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, matchObj.getId().toString());
-					setOps.remove(RedisVariableUtil.m_categoryMap.get(map.get("category")), matchObj.getId().toString());
-					setOps.remove("ms1:"+map.get("style1"), matchObj.getId().toString());
-					setOps.remove("ms2:"+map.get("style2"), matchObj.getId().toString());
-					setOps.remove("ms3:"+map.get("style3"), matchObj.getId().toString());
+					map.forEach((key,material)->{
+						setOps.remove(RedisVariableUtil.m_categoryMap.get(material.getCategoryName()), matchObj.getId().toString());
+						setOps.remove("ms1:" + material.getStyle1(), matchObj.getId().toString());
+						setOps.remove("ms2:" + material.getStyle2(), matchObj.getId().toString());
+						setOps.remove("ms3:" + material.getStyle3(), matchObj.getId().toString());
+					});
 					redisTemplate.delete(RedisVariableUtil.MATERIAL_DATA_HASH+":"+matchObj.getId().toString());
 				}
 				
@@ -115,10 +124,12 @@ public class MatchCacheImpl implements MatchCache {
 				listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, match.getId().toString());
 				listOps.leftPush(RedisVariableUtil.MATCH_ID_LIST, match.getId().toString());
 				
-				setOps.add(RedisVariableUtil.m_categoryMap.get(map.get("category")), match.getId().toString());
-				setOps.add("ms1:"+map.get("style1"), match.getId().toString());
-				setOps.add("ms2:"+map.get("style2"), match.getId().toString());
-				setOps.add("ms3:"+map.get("style3"), match.getId().toString());
+				map.forEach((key,material)->{
+					setOps.add(RedisVariableUtil.m_categoryMap.get(material.getCategoryName()), match.getId().toString());
+					setOps.add("ms1:"+material.getStyle1(), match.getId().toString());
+					setOps.add("ms2:"+material.getStyle2(), match.getId().toString());
+					setOps.add("ms3:"+material.getStyle3(), match.getId().toString());
+				});
 				
 			    return operations.exec();
 			  }

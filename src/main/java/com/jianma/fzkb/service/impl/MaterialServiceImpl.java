@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jianma.fzkb.cache.redis.MaterialCache;
 import com.jianma.fzkb.dao.MaterialDao;
 import com.jianma.fzkb.model.Material;
 import com.jianma.fzkb.model.MaterialTableModel;
@@ -27,10 +28,15 @@ public class MaterialServiceImpl implements MaterialService {
 	@Qualifier("materialDaoImpl")
 	private MaterialDao materialDaoImpl;
 	
+	@Autowired
+	@Qualifier("materialCacheImpl")
+	private MaterialCache materialCacheImpl;
+	
 	@Override
 	public int createMaterial(Material material) {
 		try{
 			materialDaoImpl.createMaterial(material);
+			materialCacheImpl.addMaterial(material);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		}
 		catch(Exception e){
@@ -42,6 +48,7 @@ public class MaterialServiceImpl implements MaterialService {
 	public int updateMaterial(Material material) {
 		try{
 			materialDaoImpl.updateMaterial(material);
+			materialCacheImpl.updateMaterial(material);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		}
 		catch(Exception e){
@@ -53,6 +60,7 @@ public class MaterialServiceImpl implements MaterialService {
 	public int deleteMaterial(int id) {
 		try{
 			materialDaoImpl.deleteMaterial(id);
+			materialCacheImpl.deleteMaterial(id);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		}
 		catch(Exception e){

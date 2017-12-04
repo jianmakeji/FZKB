@@ -39,12 +39,12 @@ public class MatchDaoImpl implements MatchDao {
 	}
 
 	@Override
-	public void updateMaterial(Match match) {
+	public void updateMatch(Match match) {
 		sessionFactory.getCurrentSession().update(match);
 	}
 
 	@Override
-	public void deleteMaterial(int id) {
+	public void deleteMatch(int id) {
 		Session session = this.getSessionFactory().getCurrentSession();
 		String hql = " delete from Match m where m.id = ? ";
 		Query query = session.createQuery(hql);

@@ -9,9 +9,9 @@ public interface MatchDao {
 
 	public void createMatch(Match match);
 	
-	public void updateMaterial(Match match);
+	public void updateMatch(Match match);
 	
-	public void deleteMaterial(int id);
+	public void deleteMatch(int id);
 	
 	public List<Match> getMatchByPage(int offset, int limit);
 		
