@@ -28,65 +28,59 @@ public class MatchServiceImpl implements MatchService {
 	@Autowired
 	@Qualifier("matchDaoImpl")
 	private MatchDao matchDaoImpl;
-	
+
 	@Autowired
 	@Qualifier("matchDaoImpl")
 	private MatchCache matchCacheImpl;
-	
+
 	@Autowired
 	@Qualifier("materialCacheImpl")
 	private MaterialCache materialCacheImpl;
-	
+
 	@Override
 	public int createMatch(Match match) {
-		try{
+		try {
 			matchDaoImpl.createMatch(match);
-			Map<String,Material> map = new HashMap<String,Material>();
+			Map<String, Material> map = new HashMap<String, Material>();
 			map.put("underwear", materialCacheImpl.getMaterialById(match.getUwId()));
 			map.put("greatcoat", materialCacheImpl.getMaterialById(match.getGcId()));
 			map.put("trouser", materialCacheImpl.getMaterialById(match.getTrId()));
 			matchCacheImpl.addMatch(match, map);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			return ResponseCodeUtil.DB_OPERATION_FAILURE;
 		}
 	}
 
 	@Override
 	public int updateMatch(Match match) {
-		try{
+		try {
 			matchDaoImpl.updateMatch(match);
-			Map<String,Material> map = new HashMap<String,Material>();
+			Map<String, Material> map = new HashMap<String, Material>();
 			map.put("underwear", materialCacheImpl.getMaterialById(match.getUwId()));
 			map.put("greatcoat", materialCacheImpl.getMaterialById(match.getGcId()));
 			map.put("trouser", materialCacheImpl.getMaterialById(match.getTrId()));
 			matchCacheImpl.updateMatch(match, map);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			return ResponseCodeUtil.DB_OPERATION_FAILURE;
 		}
 	}
 
 	@Override
 	public int deleteMatch(int id) {
-		try{
+		try {
 			Optional<Match> match = matchDaoImpl.getDataByMatchId(id);
-			if (match.isPresent()){
+			match.ifPresent((matchObj) -> {
 				matchDaoImpl.deleteMatch(id);
-				Map<String,Material> map = new HashMap<String,Material>();
-				map.put("underwear", materialCacheImpl.getMaterialById(match.get().getUwId()));
-				map.put("greatcoat", materialCacheImpl.getMaterialById(match.get().getGcId()));
-				map.put("trouser", materialCacheImpl.getMaterialById(match.get().getTrId()));
+				Map<String, Material> map = new HashMap<String, Material>();
+				map.put("underwear", materialCacheImpl.getMaterialById(matchObj.getUwId()));
+				map.put("greatcoat", materialCacheImpl.getMaterialById(matchObj.getGcId()));
+				map.put("trouser", materialCacheImpl.getMaterialById(matchObj.getTrId()));
 				matchCacheImpl.deleteMatch(id, map);
-				return ResponseCodeUtil.DB_OPERATION_SUCCESS;
-			}
-			else{
-				return ResponseCodeUtil.DB_OPERATION_FAILURE;
-			}
-		}
-		catch(Exception e){
+			});
+			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
+		} catch (Exception e) {
 			return ResponseCodeUtil.DB_OPERATION_FAILURE;
 		}
 	}
