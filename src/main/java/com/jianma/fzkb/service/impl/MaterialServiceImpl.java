@@ -72,14 +72,14 @@ public class MaterialServiceImpl implements MaterialService {
 	@Override
 	public MaterialTableModel getMaterialByPage(int offset, int limit) {
 		MaterialTableModel materialTableModel = new MaterialTableModel();
-		materialTableModel.setCount(materialDaoImpl.getCountMaterial());
-		materialTableModel.setList(materialDaoImpl.getMaterialByPage(offset, limit));
+		materialTableModel.setCount(materialCacheImpl.getCountMaterial(0));
+		materialTableModel.setList(materialCacheImpl.getMaterialByCondition(0, limit, offset));
 		return materialTableModel;
 	}
 
 	@Override
 	public int getCountMaterial() {
-		return materialDaoImpl.getCountMaterial();
+		return materialCacheImpl.getCountMaterial(0);
 	}
 
 	@Override

@@ -79,12 +79,13 @@ public class MaterialCacheImpl implements MaterialCache {
 
 	@Override
 	public void deleteMaterial(int id) {
+		Material material = getMaterialById(id);
 		
 		redisTemplate.execute(new SessionCallback<List<Object>>() {
 			  public List<Object> execute(RedisOperations operations) throws DataAccessException {
 			    operations.multi();
 			    HashOperations<String, String, String> hashOperations = operations.opsForHash();
-			    Material material = loadHash(hashOperations,RedisVariableUtil.MATERIAL_DATA_HASH+":"+id);
+			    
 				if (material != null){
 					ListOperations<String, String> listOps = operations.opsForList();
 					listOps.remove(RedisVariableUtil.MATERIAL_ID_LIST, 0, material.getId().toString());
