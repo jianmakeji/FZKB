@@ -30,7 +30,7 @@ public class MatchServiceImpl implements MatchService {
 	private MatchDao matchDaoImpl;
 
 	@Autowired
-	@Qualifier("matchDaoImpl")
+	@Qualifier("matchCacheImpl")
 	private MatchCache matchCacheImpl;
 
 	@Autowired

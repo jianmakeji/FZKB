@@ -35,7 +35,8 @@ public class MaterialServiceImpl implements MaterialService {
 	@Override
 	public int createMaterial(Material material) {
 		try{
-			materialDaoImpl.createMaterial(material);
+			int id = materialDaoImpl.createMaterial(material);
+			material.setId(id);
 			materialCacheImpl.addMaterial(material);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		}
@@ -47,7 +48,7 @@ public class MaterialServiceImpl implements MaterialService {
 	@Override
 	public int updateMaterial(Material material) {
 		try{
-			materialDaoImpl.updateMaterial(material);
+			//materialDaoImpl.updateMaterial(material);
 			materialCacheImpl.updateMaterial(material);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		}

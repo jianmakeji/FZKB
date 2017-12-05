@@ -30,6 +30,19 @@ public class Material implements java.io.Serializable {
 	public Material() {
 	}
 
+	public Material(int id,String name, String thumb, String masterImage, String categoryName, String style1, String style2,
+			String style3, Date createTime) {
+		this.id = id;
+		this.name = name;
+		this.thumb = thumb;
+		this.masterImage = masterImage;
+		this.categoryName = categoryName;
+		this.style1 = style1;
+		this.style2 = style2;
+		this.style3 = style3;
+		this.createTime = createTime;
+	}
+	
 	public Material(String name, String thumb, String masterImage, String categoryName, String style1, String style2,
 			String style3, Date createTime) {
 		this.name = name;
@@ -44,7 +57,6 @@ public class Material implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "Id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;

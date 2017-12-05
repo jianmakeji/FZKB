@@ -7,7 +7,7 @@ import com.jianma.fzkb.model.Material;
 
 public interface MaterialDao {
 	
-	public void createMaterial(Material material);
+	public int createMaterial(Material material);
 	
 	public void updateMaterial(Material material);
 	

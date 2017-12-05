@@ -33,8 +33,8 @@ public class MaterialDaoImpl implements MaterialDao {
 	}
 	
 	@Override
-	public void createMaterial(Material material) {
-		sessionFactory.getCurrentSession().save(material);
+	public int createMaterial(Material material) {
+		return (int)sessionFactory.getCurrentSession().save(material);
 	}
 
 	@Override

@@ -1,11 +1,12 @@
 package com.jianma.fzkb.cache.redis.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -39,12 +40,17 @@ public class MaterialCacheImpl implements MaterialCache {
     
     public void writeHash(HashOperations<String, String, String> hashOperations, String key, Material material) {
       Map<String, String> mappedHash = mapper.toHash(material);
+      mappedHash.remove("class");
       hashOperations.putAll(key, mappedHash);
     }
 
     public Material loadHash(HashOperations<String, String, String> hashOperations,String key) {
+      DateConverter dateConverter = new DateConverter(null);
+      dateConverter.setPatterns(new String[]{"yyyy-MM-dd","yyyy/MM/dd"});
+      ConvertUtils.register(dateConverter, Date.class);      
       Map<String, String> loadedHash = hashOperations.entries(key);
-      return (Material) mapper.fromHash(loadedHash);
+      Material material = (Material) mapper.fromHash(loadedHash);
+      return material;
     }
     
 	@Override
@@ -100,35 +106,40 @@ public class MaterialCacheImpl implements MaterialCache {
 
 	@Override
 	public void updateMaterial(Material materialObj) {
-		redisTemplate.execute(new SessionCallback<List<Object>>() {
-			  public List<Object> execute(RedisOperations operations) throws DataAccessException {
-			    operations.multi();
-			    HashOperations<String, String, String> hashOperations = operations.opsForHash();
-			    ListOperations<String, String> listOps = operations.opsForList();
-			    SetOperations<String,String> setOps = operations.opsForSet();
-			    
-			    Material material = loadHash(hashOperations,RedisVariableUtil.MATERIAL_DATA_HASH+":"+materialObj.getId());
-				if (material != null){
-					listOps.remove(RedisVariableUtil.MATERIAL_ID_LIST, 0, material.getId().toString());
-					setOps.remove(RedisVariableUtil.categoryMap.get(material.getCategoryName()), material.getId().toString());
-					setOps.remove("s1:"+material.getStyle1(), material.getId().toString());
-					setOps.remove("s2:"+material.getStyle2(), material.getId().toString());
-					setOps.remove("s3:"+material.getStyle3(), material.getId().toString());
-					operations.delete(RedisVariableUtil.MATERIAL_DATA_HASH+":"+material.getId().toString());
-				}
-				writeHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH+":"+material.getId().toString(), material);
-			    
-				listOps.remove(RedisVariableUtil.MATERIAL_ID_LIST, 0, material.getId().toString());
-				listOps.leftPush(RedisVariableUtil.MATERIAL_ID_LIST, material.getId().toString());
-				
-				setOps.add(RedisVariableUtil.categoryMap.get(material.getCategoryName()), material.getId().toString());
-				setOps.add("s1:"+material.getStyle1(), material.getId().toString());
-				setOps.add("s2:"+material.getStyle2(), material.getId().toString());
-				setOps.add("s3:"+material.getStyle3(), material.getId().toString());
-			    return operations.exec();
-			  }
-		});
-		
+
+	    Material material = getMaterialById(materialObj.getId());
+
+	    if (material != null){
+	    	redisTemplate.execute(new SessionCallback<List<Object>>() {
+				  public List<Object> execute(RedisOperations operations) throws DataAccessException {
+				    operations.multi();
+				    HashOperations<String, String, String> hashOperations = operations.opsForHash();
+				    ListOperations<String, String> listOps = operations.opsForList();
+				    SetOperations<String,String> setOps = operations.opsForSet();
+				   			    
+					if (material != null){
+						listOps.remove(RedisVariableUtil.MATERIAL_ID_LIST, 0, material.getId().toString());
+						setOps.remove(RedisVariableUtil.categoryMap.get(material.getCategoryName()), material.getId().toString());
+						setOps.remove("s1:"+material.getStyle1(), material.getId().toString());
+						setOps.remove("s2:"+material.getStyle2(), material.getId().toString());
+						setOps.remove("s3:"+material.getStyle3(), material.getId().toString());
+						operations.delete(RedisVariableUtil.MATERIAL_DATA_HASH+":"+material.getId().toString());
+					}
+					
+					writeHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH+":"+materialObj.getId().toString(), materialObj);
+				    
+					listOps.remove(RedisVariableUtil.MATERIAL_ID_LIST, 0, materialObj.getId().toString());
+					listOps.leftPush(RedisVariableUtil.MATERIAL_ID_LIST, materialObj.getId().toString());
+					
+					setOps.add(RedisVariableUtil.categoryMap.get(materialObj.getCategoryName()), materialObj.getId().toString());
+					setOps.add("s1:"+material.getStyle1(), materialObj.getId().toString());
+					setOps.add("s2:"+material.getStyle2(), materialObj.getId().toString());
+					setOps.add("s3:"+material.getStyle3(), materialObj.getId().toString());
+					
+				    return operations.exec();
+				  }
+			});
+	    }
 	}
 
 	@Override
