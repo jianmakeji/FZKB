@@ -90,9 +90,7 @@ public class MaterialCacheImpl implements MaterialCache {
 	@Override
 	public void deleteMaterial(int id) {
 		Material material = getMaterialById(id);
-		
-		Material material = getMaterialById(id);
-		
+				
 		redisTemplate.execute(new SessionCallback<List<Object>>() {
 			  public List<Object> execute(RedisOperations operations) throws DataAccessException {
 			    operations.multi();
