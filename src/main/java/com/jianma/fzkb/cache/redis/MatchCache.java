@@ -3,7 +3,9 @@ package com.jianma.fzkb.cache.redis;
 import java.util.Map;
 
 import com.jianma.fzkb.model.Match;
+import com.jianma.fzkb.model.MatchTableModel;
 import com.jianma.fzkb.model.Material;
+import com.jianma.fzkb.model.MaterialTableModel;
 
 public interface MatchCache {
 
@@ -13,17 +15,6 @@ public interface MatchCache {
 	
 	public void updateMatch(Match match, Map<String,Material> map);
 	
-	/**
-	 * userId=0 查找全部的，userId!=0 按照userId查找
-	 * @param userId
-	 * @param limit
-	 * @param offset
-	 */
-	public void getMatchByCondition(int userId, int limit, int offset);
-	
-	/**
-	 * userId=0 查找全部的，userId!=0 按照userId查找
-	 * @param userId
-	 */
-	public void getCountMatch(int userId);
+	//根据条件筛选
+	public MatchTableModel getMatchPageByCondition(int offset, int limit, Map<String,String> map);
 }

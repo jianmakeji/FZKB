@@ -1,8 +1,10 @@
 package com.jianma.fzkb.cache.redis;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jianma.fzkb.model.Material;
+import com.jianma.fzkb.model.MaterialTableModel;
 
 public interface MaterialCache {
 
@@ -27,4 +29,7 @@ public interface MaterialCache {
 	public int getCountMaterial(int userId);
 	
 	public Material getMaterialById(int id);
+	
+	//根据条件筛选
+	public MaterialTableModel getMaterialPageByCondition(int offset, int limit, Map<String,String> map);
 }

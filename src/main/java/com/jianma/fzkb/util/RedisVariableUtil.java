@@ -5,6 +5,18 @@ import java.util.Map;
 
 public class RedisVariableUtil {
 	
+	public final static String DIVISION_CHAR = ":";
+	
+	public final static String CATEGORY_PREFIX = "category"; //品类
+	public final static String STYLE1_PREFIX = "style1";  //简单--复杂
+	public final static String STYLE2_PREFIX = "style2";  //硬朗--圆润
+	public final static String STYLE3_PREFIX = "style3";  //冷酷--温暖
+	
+	public final static String M_CATEGORY_PREFIX = "m_category"; //品类
+	public final static String M_STYLE1_PREFIX = "m_style1";  //简单--复杂
+	public final static String M_STYLE2_PREFIX = "m_style2";  //硬朗--圆润
+	public final static String M_STYLE3_PREFIX = "m_style3";  //冷酷--温暖
+	
 	//种类key
 	public static final String CATEGOTY_ARTWORK = "artwork"; //艺术品
 	public static final String CATEGOTY_ARCHITECTURE = "architecture"; //建筑

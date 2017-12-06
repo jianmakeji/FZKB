@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.jianma.fzkb.model.Material;
+import com.jianma.fzkb.model.MaterialTableModel;
 
 public interface MaterialDao {
 	
@@ -20,4 +21,9 @@ public interface MaterialDao {
 	public Optional<Material> getDataByMaterialId(int id);
 	
 	public List<Material> getAllMaterial();
+	
+	//根据编号查询
+	public List<Material> getMaterialPageByNumber(int offset, int limit, String number);
+	
+	public int getMaterialCountByNumber(String number);
 }

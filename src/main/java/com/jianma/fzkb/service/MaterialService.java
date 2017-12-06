@@ -1,6 +1,7 @@
 package com.jianma.fzkb.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.jianma.fzkb.model.Material;
@@ -21,5 +22,11 @@ public interface MaterialService {
 	public Optional<Material> getDataByMaterialId(int id);
 	
 	public List<Material> getMaterialByCount(int count);
+	
+	//根据条件筛选
+	public MaterialTableModel getMaterialPageByCondition(int offset, int limit, Map<String,String> map);
+	
+	//根据编号查询
+	public MaterialTableModel getMaterialPageByNumber(int offset, int limit, String number);
 	
 }

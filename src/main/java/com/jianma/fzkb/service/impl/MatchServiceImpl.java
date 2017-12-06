@@ -1,6 +1,7 @@
 package com.jianma.fzkb.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import com.jianma.fzkb.dao.MatchDao;
 import com.jianma.fzkb.model.Match;
 import com.jianma.fzkb.model.MatchTableModel;
 import com.jianma.fzkb.model.Material;
+import com.jianma.fzkb.model.MaterialTableModel;
 import com.jianma.fzkb.service.MatchService;
 import com.jianma.fzkb.util.ResponseCodeUtil;
 
@@ -104,6 +106,22 @@ public class MatchServiceImpl implements MatchService {
 	public Optional<Match> getDataByMatchId(int id) {
 
 		return matchDaoImpl.getDataByMatchId(id);
+	}
+
+	@Override
+	public MatchTableModel getMatchPageByCondition(int offset, int limit, Map<String, String> map) {
+		
+		return matchCacheImpl.getMatchPageByCondition(offset, limit, map);
+	}
+
+	@Override
+	public List<Match> getMatchPageByUserId(int offset, int limit, int userId) {
+		return matchDaoImpl.getMatchPageByUserId(offset, limit, userId);
+	}
+
+	@Override
+	public int getCountMatchByUserId(int userId) {
+		return matchDaoImpl.getCountMatchByUserId(userId);
 	}
 
 }

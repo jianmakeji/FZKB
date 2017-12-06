@@ -2,6 +2,7 @@ package com.jianma.fzkb.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -84,7 +85,14 @@ public class MaterialServiceImpl implements MaterialService {
 
 	@Override
 	public Optional<Material> getDataByMaterialId(int id) {
-		return materialDaoImpl.getDataByMaterialId(id);
+		Material material = materialCacheImpl.getMaterialById(id);
+		if (material == null){
+			return Optional.empty();
+		}
+		else{
+			return materialDaoImpl.getDataByMaterialId(id);
+		}
+		
 	}
 
 	@Override
@@ -96,6 +104,19 @@ public class MaterialServiceImpl implements MaterialService {
 			resultList.add(list.get(ra.nextInt(list.size())));
 		}
 		return resultList;
+	}
+
+	@Override
+	public MaterialTableModel getMaterialPageByCondition(int offset, int limit, Map<String, String> map) {
+		return materialCacheImpl.getMaterialPageByCondition(offset, limit, map);
+	}
+
+	@Override
+	public MaterialTableModel getMaterialPageByNumber(int offset, int limit, String number) {
+		MaterialTableModel materialTableModel = new MaterialTableModel();
+		materialTableModel.setCount(materialDaoImpl.getMaterialCountByNumber(number));
+		materialTableModel.setList(materialDaoImpl.getMaterialPageByNumber(offset, limit, number));
+		return materialTableModel;
 	}
 
 }

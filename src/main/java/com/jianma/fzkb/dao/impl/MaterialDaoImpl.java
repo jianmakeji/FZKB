@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.jianma.fzkb.dao.MaterialDao;
 import com.jianma.fzkb.model.Material;
+import com.jianma.fzkb.model.MaterialTableModel;
 
 
 @Repository
@@ -97,6 +98,29 @@ public class MaterialDaoImpl implements MaterialDao {
         @SuppressWarnings("unchecked")
 		final List<Material> list = query.list(); 
 		return list;
+	}
+
+	@Override
+	public List<Material> getMaterialPageByNumber(int offset, int limit, String number) {
+		Session session = this.getSessionFactory().getCurrentSession();
+		String hql = " from Material where number like ? ";
+		final Query query = session.createQuery(hql);
+		query.setParameter(0, "%" + number + "%");
+        query.setFirstResult(offset);    
+        query.setMaxResults(limit); 
+        @SuppressWarnings("unchecked")
+		final List<Material> list = query.list(); 
+		return list;
+	}
+
+	@Override
+	public int getMaterialCountByNumber(String number) {
+		Session session = this.getSessionFactory().getCurrentSession();
+		final String hql = " select count(m) from Material m where number like ? "; 
+        final Query query = session.createQuery(hql);
+        query.setParameter(0, "%" + number + "%");
+        long count = (Long)query.uniqueResult();
+        return (int)count;
 	}
 
 }

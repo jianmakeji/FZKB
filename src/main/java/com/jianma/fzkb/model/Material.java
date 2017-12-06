@@ -19,6 +19,7 @@ public class Material implements java.io.Serializable {
 
 	private Integer id;
 	private String name;
+	private String number;
 	private String thumb;
 	private String masterImage;
 	private String categoryName;
@@ -30,7 +31,7 @@ public class Material implements java.io.Serializable {
 	public Material() {
 	}
 
-	public Material(int id,String name, String thumb, String masterImage, String categoryName, String style1, String style2,
+	public Material(int id,String name, String number,String thumb, String masterImage, String categoryName, String style1, String style2,
 			String style3, Date createTime) {
 		this.id = id;
 		this.name = name;
@@ -41,9 +42,10 @@ public class Material implements java.io.Serializable {
 		this.style2 = style2;
 		this.style3 = style3;
 		this.createTime = createTime;
+		this.number = number;
 	}
 	
-	public Material(String name, String thumb, String masterImage, String categoryName, String style1, String style2,
+	public Material(String name, String number,String thumb, String masterImage, String categoryName, String style1, String style2,
 			String style3, Date createTime) {
 		this.name = name;
 		this.thumb = thumb;
@@ -53,6 +55,7 @@ public class Material implements java.io.Serializable {
 		this.style2 = style2;
 		this.style3 = style3;
 		this.createTime = createTime;
+		this.number = number;
 	}
 
 	@Id
@@ -139,4 +142,14 @@ public class Material implements java.io.Serializable {
 		this.createTime = createTime;
 	}
 
+	@Column(name = "number", nullable = false, length = 20)
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	
 }
