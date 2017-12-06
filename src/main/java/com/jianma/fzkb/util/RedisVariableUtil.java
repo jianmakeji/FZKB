@@ -87,10 +87,10 @@ public class RedisVariableUtil {
 	
 	public static final HashMap<String,String> m_categoryMap = new HashMap<String,String>();
 	static {
-		categoryMap.put("艺术品", "m_artwork");
-		categoryMap.put("建筑", "m_architecture");
-		categoryMap.put("动物", "m_animal");
-		categoryMap.put("植物", "m_plant");
-		categoryMap.put("风景", "m_landscape");
+		m_categoryMap.put("艺术品", "m_artwork");
+		m_categoryMap.put("建筑", "m_architecture");
+		m_categoryMap.put("动物", "m_animal");
+		m_categoryMap.put("植物", "m_plant");
+		m_categoryMap.put("风景", "m_landscape");
 	}
 }

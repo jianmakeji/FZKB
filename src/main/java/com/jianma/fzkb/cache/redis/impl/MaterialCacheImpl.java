@@ -1,12 +1,11 @@
 package com.jianma.fzkb.cache.redis.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
@@ -83,8 +82,6 @@ public class MaterialCacheImpl implements MaterialCache {
 			    return operations.exec();
 			  }
 		});
-		
-		
 	}
 
 	@Override
@@ -222,35 +219,36 @@ public class MaterialCacheImpl implements MaterialCache {
 					List<String> calculateKeys = new ArrayList<>();
 					
 					String calculateCategoryResult = RedisVariableUtil.CATEGORY_PREFIX + RedisVariableUtil.DIVISION_CHAR + cacheKey;
+					System.out.println(category.size()+"  "+style1.size()+"  "+style2.size()+"  "+style3.size());
 					
-					if (category.size() > 0) {
+					if (category.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(category.get(0), category, calculateCategoryResult);
 						calculateKeys.add(calculateCategoryResult);
 					}
 
 					String calculateStyle1Result = RedisVariableUtil.STYLE1_PREFIX + RedisVariableUtil.DIVISION_CHAR + cacheKey;
 					
-					if (style1.size() > 0) {
+					if (style1.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(style1.get(0), style1, calculateStyle1Result);
 						calculateKeys.add(calculateStyle1Result);
 					}
 					
 					String calculateStyle2Result = RedisVariableUtil.STYLE2_PREFIX + RedisVariableUtil.DIVISION_CHAR + cacheKey;
 					
-					if (style2.size() > 0) {
+					if (style2.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(style2.get(0), style2, calculateStyle2Result);
 						calculateKeys.add(calculateStyle2Result);
 					}
 					
 					String calculateStyle3Result = RedisVariableUtil.STYLE3_PREFIX + RedisVariableUtil.DIVISION_CHAR + cacheKey;
 					
-					if (style3.size() > 0) {
+					if (style3.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(style3.get(0), style3, calculateStyle3Result);
 						calculateKeys.add(calculateStyle3Result);
 					}
 
 					Set<String> result = redisTemplate.opsForSet().intersect(calculateKeys.get(0), calculateKeys);
-
+					
 					for (String data : result) {
 						connection.lPush(ser.serialize(cacheKey), ser.serialize(data));
 					}
@@ -277,9 +275,11 @@ public class MaterialCacheImpl implements MaterialCache {
 				}
 				
 				for (byte[] key : keyList){
+					System.out.println(ser.deserialize(key));
 					list.add(getMaterialById(Integer.parseInt(ser.deserialize(key))));
 				}
 
+				materialTableModel.setList(list);
 				return materialTableModel;
 			}
 		});

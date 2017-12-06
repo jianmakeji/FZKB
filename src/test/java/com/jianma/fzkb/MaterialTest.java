@@ -1,6 +1,8 @@
 package com.jianma.fzkb;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -13,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jianma.fzkb.cache.redis.MaterialCache;
 import com.jianma.fzkb.model.Material;
+import com.jianma.fzkb.model.MaterialTableModel;
 import com.jianma.fzkb.service.MaterialService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,43 +39,47 @@ public class MaterialTest {
 		Material material = new Material();
 		material.setCategoryName("艺术品");
 		material.setMasterImage("http://");
-		material.setName("材料");
+		material.setName("材料1");
 		material.setThumb("http://");
 		material.setStyle1("2.0");
 		material.setStyle2("1.0");
 		material.setStyle3("-2.5");
 		material.setCreateTime(new Date());
+		material.setNumber("9635358695");
 		materialServiceImpl.createMaterial(material);
 		
 		material = new Material();
 		material.setCategoryName("建筑");
 		material.setMasterImage("http://");
-		material.setName("材料");
+		material.setName("材料2");
 		material.setThumb("http://");
-		material.setStyle1("1.0");
-		material.setStyle2("2.0");
+		material.setStyle1("0.5");
+		material.setStyle2("2.5");
 		material.setStyle3("-1.5");
+		material.setNumber("7896542356");
 		material.setCreateTime(new Date());
 		materialServiceImpl.createMaterial(material);
 		
 		material = new Material();
 		material.setCategoryName("动物");
 		material.setMasterImage("http://");
-		material.setName("材料");
+		material.setName("材料3");
 		material.setThumb("http://");
-		material.setStyle1("3.0");
+		material.setStyle1("-2.0");
 		material.setStyle2("2.5");
-		material.setStyle3("-0.5");
+		material.setStyle3("-1.5");
+		material.setNumber("2365896587");
 		material.setCreateTime(new Date());
 		materialServiceImpl.createMaterial(material);
 		
 		material = new Material();
 		material.setCategoryName("植物");
 		material.setMasterImage("http://");
-		material.setName("材料");
+		material.setName("材料4");
 		material.setThumb("http://");
 		material.setStyle1("-2.0");
-		material.setStyle2("2.0");
+		material.setStyle2("1.0");
+		material.setNumber("6547892351");
 		material.setStyle3("2.5");
 		material.setCreateTime(new Date());
 		materialServiceImpl.createMaterial(material);
@@ -80,16 +87,17 @@ public class MaterialTest {
 		material = new Material();
 		material.setCategoryName("风景");
 		material.setMasterImage("http://");
-		material.setName("材料");
+		material.setName("材料5");
 		material.setThumb("http://");
-		material.setStyle1("2.0");
-		material.setStyle2("1.0");
-		material.setStyle3("-0.5");
+		material.setStyle1("-1.0");
+		material.setStyle2("3.0");
+		material.setStyle3("-1.5");
+		material.setNumber("79865955632");
 		material.setCreateTime(new Date());
 		materialServiceImpl.createMaterial(material);
 	}
 	
-	@Test
+	//@Test
 	public void updateMaterial(){
 		Material material = new Material();
 		material.setId(13);
@@ -118,12 +126,43 @@ public class MaterialTest {
 		});*/
 	}
 	
+	//@Test
 	public void deleteMaterial(){
-		
+		materialServiceImpl.deleteMaterial(11);
 	}
 	
-	//@Test
+	@Test
 	public void loadMaterialTest(){
+		/*
+		Map<String,String> map = new HashMap<>();
+		map.put("category", "动物,风景");
+		map.put("style1", "-1.0,1.0,3.0");
+		map.put("style2", "1.0,2.0,1.5,3.0");
+		map.put("style3", "-0.5,-1.5,-2.5");
 		
+		MaterialTableModel materialTableModel = materialServiceImpl.getMaterialPageByCondition(0, 10, map);
+		System.out.println(materialTableModel.getCount());
+		
+		List<Material> list = materialTableModel.getList();
+		
+		list.stream().forEach((material)->{
+			System.out.println(material.getId() + " " +material.getName() + " " +material.getCategoryName() + "  " + material.getStyle1() + "  " + material.getStyle2() + "  " + material.getStyle3());
+		});
+		*/
+		
+		Map<String,String> map = new HashMap<>();
+		map.put("category", "动物,风景");
+		map.put("style1", "");
+		map.put("style2", "");
+		map.put("style3", "");
+		
+		MaterialTableModel materialTableModel = materialServiceImpl.getMaterialPageByCondition(0, 10, map);
+		System.out.println(materialTableModel.getCount());
+		
+		List<Material> list = materialTableModel.getList();
+		
+		list.stream().forEach((material)->{
+			System.out.println(material.getId() + " " +material.getName() + " " +material.getCategoryName() + "  " + material.getStyle1() + "  " + material.getStyle2() + "  " + material.getStyle3());
+		});
 	}
 }

@@ -201,7 +201,7 @@ public class MatchCacheImpl implements MatchCache {
 					String calculateCategoryResult = RedisVariableUtil.M_CATEGORY_PREFIX + RedisVariableUtil.DIVISION_CHAR
 							+ cacheKey;
 
-					if (category.size() > 0) {
+					if (category.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(category.get(0), category, calculateCategoryResult);
 						calculateKeys.add(calculateCategoryResult);
 					}
@@ -209,7 +209,7 @@ public class MatchCacheImpl implements MatchCache {
 					String calculateStyle1Result = RedisVariableUtil.M_STYLE1_PREFIX + RedisVariableUtil.DIVISION_CHAR
 							+ cacheKey;
 
-					if (style1.size() > 0) {
+					if (style1.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(style1.get(0), style1, calculateStyle1Result);
 						calculateKeys.add(calculateStyle1Result);
 					}
@@ -217,7 +217,7 @@ public class MatchCacheImpl implements MatchCache {
 					String calculateStyle2Result = RedisVariableUtil.M_STYLE2_PREFIX + RedisVariableUtil.DIVISION_CHAR
 							+ cacheKey;
 
-					if (style2.size() > 0) {
+					if (style2.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(style2.get(0), style2, calculateStyle2Result);
 						calculateKeys.add(calculateStyle2Result);
 					}
@@ -225,7 +225,7 @@ public class MatchCacheImpl implements MatchCache {
 					String calculateStyle3Result = RedisVariableUtil.M_STYLE3_PREFIX + RedisVariableUtil.DIVISION_CHAR
 							+ cacheKey;
 
-					if (style3.size() > 0) {
+					if (style3.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(style3.get(0), style3, calculateStyle3Result);
 						calculateKeys.add(calculateStyle3Result);
 					}

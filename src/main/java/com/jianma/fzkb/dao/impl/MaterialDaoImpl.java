@@ -46,7 +46,7 @@ public class MaterialDaoImpl implements MaterialDao {
 	@Override
 	public void deleteMaterial(int id) {
 		Session session = this.getSessionFactory().getCurrentSession();
-		String hql = " delete from Match m where m.id = ? ";
+		String hql = " delete from Material m where m.id = ? ";
 		Query query = session.createQuery(hql);
         query.setParameter(0, id); 
 		query.executeUpdate();
