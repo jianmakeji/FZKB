@@ -31,7 +31,6 @@ import com.jianma.fzkb.cache.redis.MatchCache;
 import com.jianma.fzkb.model.Match;
 import com.jianma.fzkb.model.MatchTableModel;
 import com.jianma.fzkb.model.Material;
-import com.jianma.fzkb.model.MaterialTableModel;
 import com.jianma.fzkb.util.RedisVariableUtil;
 
 @Repository
