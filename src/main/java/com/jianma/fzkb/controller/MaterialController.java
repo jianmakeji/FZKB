@@ -1,7 +1,9 @@
 package com.jianma.fzkb.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -102,9 +104,9 @@ public class MaterialController {
 		}
 	}
 	
-	@RequestMapping(value = "/getDataByCondition", method = RequestMethod.GET)
+	@RequestMapping(value = "/getDataByPage", method = RequestMethod.GET)
 	@ResponseBody
-	public ListResultModel getDataByCondition(HttpServletRequest request, HttpServletResponse response,
+	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho) {
 		
 		ListResultModel listResultModel = new ListResultModel();
@@ -153,5 +155,31 @@ public class MaterialController {
 		}catch (Exception e) {
 			throw new FZKBException(500, "操作失败！");
 		}
+	}
+	
+	@RequestMapping(value = "/getDataPageByTag", method = RequestMethod.GET)
+	@ResponseBody
+	public ListResultModel getDataPageByTag(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho,
+			@RequestParam String category, @RequestParam String style1, @RequestParam String style2, @RequestParam String style3) {
+		
+		ListResultModel listResultModel = new ListResultModel();
+		try {
+			Map<String,String> map = new HashMap<>();
+			map.put("category", category);
+			map.put("style1", style1);
+			map.put("style2", style2);
+			map.put("style3", style3);
+			MaterialTableModel brandTableModel = materialServiceImpl.getMaterialPageByCondition(iDisplayStart, iDisplayLength, map);
+			listResultModel.setAaData(brandTableModel.getList());
+			listResultModel.setsEcho(sEcho);
+			listResultModel.setiTotalRecords((int) brandTableModel.getCount());
+			listResultModel.setiTotalDisplayRecords((int) brandTableModel.getCount());
+			listResultModel.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			listResultModel.setSuccess(false);
+		}
+		return listResultModel;
 	}
 }

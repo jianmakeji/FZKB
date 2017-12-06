@@ -1,6 +1,8 @@
 package com.jianma.fzkb.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +22,7 @@ import com.jianma.fzkb.exception.FZKBException;
 import com.jianma.fzkb.model.ListResultModel;
 import com.jianma.fzkb.model.Match;
 import com.jianma.fzkb.model.MatchTableModel;
+import com.jianma.fzkb.model.MaterialTableModel;
 import com.jianma.fzkb.model.ResultModel;
 import com.jianma.fzkb.service.MatchService;
 import com.jianma.fzkb.util.ResponseCodeUtil;
@@ -108,9 +111,9 @@ public class MatchController {
 		}
 	}
 	
-	@RequestMapping(value = "/getDataByCondition", method = RequestMethod.GET)
+	@RequestMapping(value = "/getDataByPage", method = RequestMethod.GET)
 	@ResponseBody
-	public ListResultModel getDataByCondition(HttpServletRequest request, HttpServletResponse response,
+	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho) {
 		
 		ListResultModel listResultModel = new ListResultModel();
@@ -129,7 +132,31 @@ public class MatchController {
 		return listResultModel;
 	}
 	
-
+	@RequestMapping(value = "/getDataPageByTag", method = RequestMethod.GET)
+	@ResponseBody
+	public ListResultModel getDataPageByTag(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho,
+			@RequestParam String category, @RequestParam String style1, @RequestParam String style2, @RequestParam String style3) {
+		
+		ListResultModel listResultModel = new ListResultModel();
+		try {
+			Map<String,String> map = new HashMap<>();
+			map.put("category", category);
+			map.put("style1", style1);
+			map.put("style2", style2);
+			map.put("style3", style3);
+			MatchTableModel matchTableModel = matchServiceImpl.getMatchPageByCondition(iDisplayStart, iDisplayLength, map);
+			listResultModel.setAaData(matchTableModel.getList());
+			listResultModel.setsEcho(sEcho);
+			listResultModel.setiTotalRecords((int) matchTableModel.getCount());
+			listResultModel.setiTotalDisplayRecords((int) matchTableModel.getCount());
+			listResultModel.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			listResultModel.setSuccess(false);
+		}
+		return listResultModel;
+	}
 	
 	@RequestMapping(value = "/getBrandById", method = RequestMethod.POST)
 	@ResponseBody
