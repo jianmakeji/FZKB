@@ -23,6 +23,4 @@ public interface MatchDao {
 	
 	public Optional<Match> getDataByMatchId(int id);
 	
-	
-	
 }

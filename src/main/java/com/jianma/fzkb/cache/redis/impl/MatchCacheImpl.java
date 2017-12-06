@@ -1,11 +1,20 @@
 package com.jianma.fzkb.cache.redis.impl;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+import java.util.Date;
+>>>>>>> 4c00801264b47cdbe8b6e808576e3717de5162af
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+<<<<<<< HEAD
 import org.apache.commons.codec.digest.DigestUtils;
+=======
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
+>>>>>>> 4c00801264b47cdbe8b6e808576e3717de5162af
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -40,8 +49,11 @@ public class MatchCacheImpl implements MatchCache {
 	@Qualifier(value = "redisTemplate")
 	private RedisTemplate<String, String> redisTemplate;
 
+<<<<<<< HEAD
 	private String cacheKey;
 
+=======
+>>>>>>> 4c00801264b47cdbe8b6e808576e3717de5162af
 	private final HashMapper<Match, String, String> mapper = new DecoratingStringHashMapper<Match>(
 			new BeanUtilsHashMapper<Match>(Match.class));
 
@@ -51,6 +63,12 @@ public class MatchCacheImpl implements MatchCache {
 	}
 
 	public Match loadHash(HashOperations<String, String, String> hashOperations, String key) {
+<<<<<<< HEAD
+=======
+		DateConverter dateConverter = new DateConverter(null);
+		dateConverter.setPatterns(new String[] { "yyyy-MM-dd", "yyyy/MM/dd" });
+		ConvertUtils.register(dateConverter, Date.class);
+>>>>>>> 4c00801264b47cdbe8b6e808576e3717de5162af
 		Map<String, String> loadedHash = hashOperations.entries(key);
 		return (Match) mapper.fromHash(loadedHash);
 	}
@@ -149,6 +167,7 @@ public class MatchCacheImpl implements MatchCache {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public MatchTableModel getMatchPageByCondition(int offset, int limit, Map<String, String> map) {
 		String[] categoryArr = map.get("category").split(",");
 		List<String> category = new ArrayList<>();
@@ -255,6 +274,15 @@ public class MatchCacheImpl implements MatchCache {
 				return matchTableModel;
 			}
 		});
+=======
+	public void getMatchByCondition(int userId, int limit, int offset) {
+
+	}
+
+	@Override
+	public void getCountMatch(int userId) {
+
+>>>>>>> 4c00801264b47cdbe8b6e808576e3717de5162af
 	}
 
 }
