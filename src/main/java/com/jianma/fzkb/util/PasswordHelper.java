@@ -9,6 +9,7 @@ import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
+import com.jianma.fzkb.model.Designer;
 import com.jianma.fzkb.model.User;
 
 public class PasswordHelper {
@@ -31,17 +32,17 @@ public class PasswordHelper {
         user.setPassword(newPassword);
     }
     
-    public static void encryptAppPassword(User user) {
+    public static void encryptDesignerPassword(Designer designer) {
 
-        user.setSlot(randomNumberGenerator.nextBytes().toHex());
+    	designer.setSlot(randomNumberGenerator.nextBytes().toHex());
 
         String newPassword = new SimpleHash(
                 algorithmName,
-                user.getPassword(),
-                ByteSource.Util.bytes(user.getCredentialsSalt()),
+                designer.getPassword(),
+                ByteSource.Util.bytes(designer.getCredentialsSalt()),
                 hashIterations).toHex();
 
-        user.setPassword(newPassword);
+        designer.setPassword(newPassword);
     }
     
     /**

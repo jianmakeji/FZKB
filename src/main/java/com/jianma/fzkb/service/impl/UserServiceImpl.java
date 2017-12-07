@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 			if (optUser.isPresent()) {
 				return ResponseCodeUtil.UESR_CREATE_EXIST;
 			} else {
-				PasswordHelper.encryptAppPassword(user);
+				PasswordHelper.encryptPassword(user);
 				Set<UserRole> userRoles = new HashSet<>();
 				UserRole userRole = new UserRole();
 				userRole.setUser(user);
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
 			User user = new User();
 			user.setPassword(password);
 			user.setEmail(email);
-			PasswordHelper.encryptAppPassword(user);
+			PasswordHelper.encryptPassword(user);
 
 			userDaoImpl.updatePwd(email, user.getPassword(), oldSlot, user.getSlot());
 			return ResponseCodeUtil.UESR_OPERATION_SUCESS;
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
 			User user = new User();
 			user.setPassword(password);
 			user.setEmail(email);
-			PasswordHelper.encryptAppPassword(user);
+			PasswordHelper.encryptPassword(user);
 
 			userDaoImpl.resetLoginUserPwd(email, user.getPassword(), user.getSlot());
 			return ResponseCodeUtil.UESR_OPERATION_SUCESS;

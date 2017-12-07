@@ -99,7 +99,7 @@ public class MatchDaoImpl implements MatchDao {
 	@Override
 	public Optional<Match> getDataByMatchId(int id) {
 		Session session = this.getSessionFactory().getCurrentSession();
-		String hql = " from Match where Id = ?";
+		String hql = " from Match where id = ?";
 		Query query = session.createQuery(hql);
         query.setParameter(0, id); 
         @SuppressWarnings("unchecked")
