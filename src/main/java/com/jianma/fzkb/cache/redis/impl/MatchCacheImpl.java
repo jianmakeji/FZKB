@@ -53,7 +53,6 @@ public class MatchCacheImpl implements MatchCache {
 	}
 
 	public Match loadHash(HashOperations<String, String, String> hashOperations, String key) {
-
 		DateConverter dateConverter = new DateConverter(null);
 		dateConverter.setPatterns(new String[] { "yyyy-MM-dd", "yyyy/MM/dd" });
 		ConvertUtils.register(dateConverter, Date.class);
@@ -89,11 +88,11 @@ public class MatchCacheImpl implements MatchCache {
 
 	@Override
 	public void deleteMatch(int id, Map<String, Material> map) {
+		Match match = loadHash(redisTemplate.opsForHash(), RedisVariableUtil.MATCH_DATA_HASH + ":" + id);
 		redisTemplate.execute(new SessionCallback<List<Object>>() {
 			public List<Object> execute(RedisOperations operations) throws DataAccessException {
 				operations.multi();
-				HashOperations<String, String, String> hashOperations = operations.opsForHash();
-				Match match = loadHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH + ":" + id);
+				
 				if (match != null) {
 					ListOperations<String, String> listOps = operations.opsForList();
 					listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, match.getId().toString());
@@ -107,7 +106,7 @@ public class MatchCacheImpl implements MatchCache {
 						setOps.remove("ms3:" + material.getStyle3(), match.getId().toString());
 					});
 
-					redisTemplate.delete(RedisVariableUtil.MATERIAL_DATA_HASH + ":" + match.getId().toString());
+					redisTemplate.delete(RedisVariableUtil.MATCH_DATA_HASH + ":" + match.getId().toString());
 				}
 				return operations.exec();
 			}
@@ -117,12 +116,14 @@ public class MatchCacheImpl implements MatchCache {
 
 	@Override
 	public void updateMatch(Match match, Map<String, Material> map) {
+		Match matchObj = loadHash(redisTemplate.opsForHash(), RedisVariableUtil.MATCH_DATA_HASH + ":" + match.getId());
+		
 		redisTemplate.execute(new SessionCallback<List<Object>>() {
 			public List<Object> execute(RedisOperations operations) throws DataAccessException {
 				operations.multi();
 				HashOperations<String, String, String> hashOperations = operations.opsForHash();
 				SetOperations<String, String> setOps = operations.opsForSet();
-				Match matchObj = loadHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH + ":" + match.getId());
+				
 				if (matchObj != null) {
 					ListOperations<String, String> listOps = operations.opsForList();
 					listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, matchObj.getId().toString());
@@ -133,9 +134,9 @@ public class MatchCacheImpl implements MatchCache {
 						setOps.remove("ms2:" + material.getStyle2(), matchObj.getId().toString());
 						setOps.remove("ms3:" + material.getStyle3(), matchObj.getId().toString());
 					});
-					redisTemplate.delete(RedisVariableUtil.MATERIAL_DATA_HASH + ":" + matchObj.getId().toString());
+					redisTemplate.delete(RedisVariableUtil.MATCH_DATA_HASH + ":" + matchObj.getId().toString());
 				}
-
+				
 				writeHash(hashOperations, RedisVariableUtil.MATCH_DATA_HASH + ":" + match.getId().toString(), match);
 				ListOperations<String, String> listOps = operations.opsForList();
 				listOps.remove(RedisVariableUtil.MATCH_ID_LIST, 0, match.getId().toString());
@@ -249,15 +250,16 @@ public class MatchCacheImpl implements MatchCache {
 
 				List<byte[]> keyList = null;
 				if ((offset + limit) < length) {
-					keyList = connection.lRange(ser.serialize(cacheKey), offset, offset + limit);
+					keyList = connection.lRange(ser.serialize(cacheKey), offset, offset + limit - 1);
 				} else {
 					keyList = connection.lRange(ser.serialize(cacheKey), offset, length);
 				}
 
 				for (byte[] key : keyList) {
-					list.add(loadHash(redisTemplate.opsForHash(),ser.deserialize(key)));
+					list.add(loadHash(redisTemplate.opsForHash(),RedisVariableUtil.MATCH_DATA_HASH + ":" +ser.deserialize(key)));
 				}
-
+				matchTableModel.setList(list);
+				
 				return matchTableModel;
 			}
 		});

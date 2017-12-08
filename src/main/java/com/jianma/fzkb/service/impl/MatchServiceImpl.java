@@ -61,6 +61,7 @@ public class MatchServiceImpl implements MatchService {
 			map.put("underwear", materialCacheImpl.getMaterialById(match.getUwId()));
 			map.put("greatcoat", materialCacheImpl.getMaterialById(match.getGcId()));
 			map.put("trouser", materialCacheImpl.getMaterialById(match.getTrId()));
+			
 			matchCacheImpl.updateMatch(match, map);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		} catch (Exception e) {

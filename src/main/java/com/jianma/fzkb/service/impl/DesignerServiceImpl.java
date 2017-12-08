@@ -45,6 +45,7 @@ public class DesignerServiceImpl implements DesignerService {
 	@Override
 	public int updateDesigner(Designer designer) {
 		try {
+			PasswordHelper.encryptDesignerPassword(designer);
 			designerDaoImpl.updateDesigner(designer);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		} catch (Exception e) {

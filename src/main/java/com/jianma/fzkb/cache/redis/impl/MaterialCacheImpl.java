@@ -267,14 +267,13 @@ public class MaterialCacheImpl implements MaterialCache {
 				List<byte[]> keyList = null;
 				if ((offset + limit) < length)
 				{
-					keyList = connection.lRange(ser.serialize(cacheKey), offset, offset + limit);
+					keyList = connection.lRange(ser.serialize(cacheKey), offset, offset + limit - 1);
 				}
 				else{
 					keyList = connection.lRange(ser.serialize(cacheKey), offset, length);
 				}
 				
 				for (byte[] key : keyList){
-					System.out.println(ser.deserialize(key));
 					list.add(getMaterialById(Integer.parseInt(ser.deserialize(key))));
 				}
 
