@@ -62,7 +62,7 @@ public class DesignerController {
 	@ResponseBody
 	public ResultModel createDesigner(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		Designer designer = new Designer();
 		
@@ -89,7 +89,7 @@ public class DesignerController {
 		try {
 			subject.login(token);
 			if (subject.isAuthenticated()) {
-				msg = "登录成功！";
+				msg = "鐧诲綍鎴愬姛锛�";
 				DefaultWebSecurityManager dw = (DefaultWebSecurityManager)SecurityUtils.getSecurityManager();
 				for (Realm realm : dw.getRealms()){
 					resultModel.setObject(((DesignerRealm)realm).getSuccessDesigner());
@@ -100,7 +100,7 @@ public class DesignerController {
 				resultModel.setResultCode(500);
 				resultModel.setSuccess(false);
 			}
-		} catch (IncorrectCredentialsException e) {
+		}catch (IncorrectCredentialsException e) {
 			msg = "登录密码错误.";
 		} catch (ExcessiveAttemptsException e) {
 			msg = "登录失败次数过多";
@@ -111,7 +111,7 @@ public class DesignerController {
 		} catch (ExpiredCredentialsException e) {
 			msg = "帐号已过期.";
 		} catch (UnknownAccountException e) {
-			msg = "帐号不存在.";
+			msg = "帐号不存在.或者未激活";
 		} catch (UnauthorizedException e) {
 			msg = "您没有得到相应的授权！";
 		}
@@ -123,7 +123,7 @@ public class DesignerController {
 	@ResponseBody
 	public ResultModel updateDesigner(HttpServletRequest request, HttpServletResponse response, @RequestParam int id,
 			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		Designer designer = new Designer();
 		designer.setCreateTime(new Date());
@@ -142,7 +142,7 @@ public class DesignerController {
 	@RequestMapping(value = "/deleteDesigner", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel deleteDesigner(HttpServletRequest request, HttpServletResponse response, @RequestParam int id) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		int result = designerServiceImpl.deleteDesigner(id);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
@@ -158,7 +158,7 @@ public class DesignerController {
 	@ResponseBody
 	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
 			

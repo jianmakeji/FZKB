@@ -26,6 +26,7 @@ import com.jianma.fzkb.model.MaterialTableModel;
 import com.jianma.fzkb.model.ResultModel;
 import com.jianma.fzkb.service.MatchService;
 import com.jianma.fzkb.util.ResponseCodeUtil;
+import com.jianma.fzkb.util.WebRequestUtil;
 
 @Controller
 @RequestMapping(value = "/match")
@@ -50,7 +51,7 @@ public class MatchController {
 	@ResponseBody
 	public ResultModel createMatch(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		Match match = new Match();
 		match.setCreateTime(new Date());
@@ -76,7 +77,7 @@ public class MatchController {
 	@ResponseBody
 	public ResultModel updateMatch(HttpServletRequest request, HttpServletResponse response, @RequestParam int id,
 			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		Match match = new Match();
 		match.setCreateTime(new Date());
@@ -99,7 +100,7 @@ public class MatchController {
 	@RequestMapping(value = "/deleteMatch", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel deleteMatch(HttpServletRequest request, HttpServletResponse response, @RequestParam int id) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		int result = matchServiceImpl.deleteMatch(id);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
@@ -115,7 +116,7 @@ public class MatchController {
 	@ResponseBody
 	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
 			
@@ -137,7 +138,7 @@ public class MatchController {
 	public ListResultModel getDataPageByTag(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho,
 			@RequestParam String category, @RequestParam String style1, @RequestParam String style2, @RequestParam String style3) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
 			Map<String,String> map = new HashMap<>();
@@ -161,7 +162,7 @@ public class MatchController {
 	@RequestMapping(value = "/getBrandById", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel getBrandById(HttpServletRequest request, HttpServletResponse response,@RequestParam int id) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		try {
 			Match match = matchServiceImpl.getDataByMatchId(id).get();

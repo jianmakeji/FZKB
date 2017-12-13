@@ -2,5 +2,9 @@ package com.jianma.fzkb.cache.redis;
 
 public interface InitCache {
 
-	public void clearAllCache();
+	public boolean clearAllCache();
+	
+	public void initMaterial();
+	
+	public void initMatch();
 }

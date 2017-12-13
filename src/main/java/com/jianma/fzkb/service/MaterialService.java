@@ -29,4 +29,6 @@ public interface MaterialService {
 	//根据编号查询
 	public MaterialTableModel getMaterialPageByNumber(int offset, int limit, String number);
 	
+	public List<Material> getAllMaterial();
+	
 }

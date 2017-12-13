@@ -55,7 +55,7 @@ public class MatchDaoImpl implements MatchDao {
 	@Override
 	public List<Match> getMatchByPage(int offset, int limit) {
 		Session session = this.getSessionFactory().getCurrentSession();
-		String hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,d.realname from Match m,Designer d where m.userId = d.id";
+		String hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,d.realname,m.uwId,m.gcId,m.trId from Match m,Designer d where m.userId = d.id";
 		final Query query = session.createQuery(hql); 
         query.setFirstResult(offset);    
         query.setMaxResults(limit); 
@@ -74,6 +74,9 @@ public class MatchDaoImpl implements MatchDao {
             String trousers = (String)o[5];
             Date createTime = (Date)o[6];
             String realname = (String)o[7];
+            int uwId = ((Number)o[8]).intValue();
+            int gcId = ((Number)o[9]).intValue();
+            int trId = ((Number)o[10]).intValue();
             match.setId(id);
             match.setName(name);
             match.setUserId(userId);
@@ -82,6 +85,9 @@ public class MatchDaoImpl implements MatchDao {
             match.setTrousers(trousers);
             match.setUnderwear(underwear);
             match.setUsername(realname);
+            match.setUwId(uwId);
+            match.setGcId(gcId);
+            match.setTrId(trId);
             mList.add(match);
         }
 		return mList;

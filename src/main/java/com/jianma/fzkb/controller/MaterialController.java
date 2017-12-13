@@ -24,6 +24,7 @@ import com.jianma.fzkb.model.MaterialTableModel;
 import com.jianma.fzkb.model.ResultModel;
 import com.jianma.fzkb.service.MaterialService;
 import com.jianma.fzkb.util.ResponseCodeUtil;
+import com.jianma.fzkb.util.WebRequestUtil;
 
 @Controller
 @RequestMapping(value = "/material")
@@ -48,7 +49,7 @@ public class MaterialController {
 	@ResponseBody
 	public ResultModel createMaterial(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String name, @RequestParam String thumb, @RequestParam String masterImage) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		Material material = new Material();
 		material.setName(name);
@@ -70,7 +71,7 @@ public class MaterialController {
 	@ResponseBody
 	public ResultModel updateMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int id,
 			@RequestParam String name, @RequestParam String thumb, @RequestParam String masterImage) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		Material material = new Material();
 		material.setCreateTime(new Date());
@@ -92,7 +93,7 @@ public class MaterialController {
 	@RequestMapping(value = "/deleteMaterial", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel deleteMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int id) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		int result = materialServiceImpl.deleteMaterial(id);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
@@ -108,7 +109,7 @@ public class MaterialController {
 	@ResponseBody
 	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
 			
@@ -128,7 +129,7 @@ public class MaterialController {
 	@RequestMapping(value = "/getRandomMaterial", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel getRandomMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int count) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		try {
 			List<Material> list = materialServiceImpl.getMaterialByCount(count);
@@ -144,7 +145,7 @@ public class MaterialController {
 	@RequestMapping(value = "/getMaterialById", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel getMaterialById(HttpServletRequest request, HttpServletResponse response,@RequestParam int id) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		try {
 			Material material = materialServiceImpl.getDataByMaterialId(id).get();
@@ -162,7 +163,7 @@ public class MaterialController {
 	public ListResultModel getDataPageByTag(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho,
 			@RequestParam String category, @RequestParam String style1, @RequestParam String style2, @RequestParam String style3) {
-		
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
 			Map<String,String> map = new HashMap<>();

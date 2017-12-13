@@ -119,4 +119,9 @@ public class MaterialServiceImpl implements MaterialService {
 		return materialTableModel;
 	}
 
+	@Override
+	public List<Material> getAllMaterial() {
+		return materialDaoImpl.getAllMaterial();
+	}
+
 }

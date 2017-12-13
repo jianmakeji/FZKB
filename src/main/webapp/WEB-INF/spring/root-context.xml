@@ -79,5 +79,8 @@
 				/esApi/*=anon
 			</value>
 		</property>
-	</bean>	
+	</bean>
+	
+	
+	<!-- <bean class="com.jianma.fzkb.util.InitDataListener"></bean> -->
 </beans>
