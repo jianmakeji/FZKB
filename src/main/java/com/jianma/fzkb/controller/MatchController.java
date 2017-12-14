@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -97,9 +98,9 @@ public class MatchController {
 		}
 	}
 	
-	@RequestMapping(value = "/deleteMatch", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteMatch/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public ResultModel deleteMatch(HttpServletRequest request, HttpServletResponse response, @RequestParam int id) {
+	public ResultModel deleteMatch(HttpServletRequest request, HttpServletResponse response, @PathVariable int id) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		int result = matchServiceImpl.deleteMatch(id);
@@ -159,9 +160,9 @@ public class MatchController {
 		return listResultModel;
 	}
 	
-	@RequestMapping(value = "/getBrandById", method = RequestMethod.POST)
+	@RequestMapping(value = "/getMatch/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultModel getBrandById(HttpServletRequest request, HttpServletResponse response,@RequestParam int id) {
+	public ResultModel getBrandById(HttpServletRequest request, HttpServletResponse response,@PathVariable int id) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		try {
