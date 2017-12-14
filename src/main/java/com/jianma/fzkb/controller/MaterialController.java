@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,9 +91,9 @@ public class MaterialController {
 		}
 	}
 	
-	@RequestMapping(value = "/deleteMaterial", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteMaterial/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public ResultModel deleteMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int id) {
+	public ResultModel deleteMaterial(HttpServletRequest request, HttpServletResponse response, @PathVariable int id) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		int result = materialServiceImpl.deleteMaterial(id);
@@ -142,9 +143,9 @@ public class MaterialController {
 		}
 	}
 	
-	@RequestMapping(value = "/getMaterialById", method = RequestMethod.POST)
+	@RequestMapping(value = "/getMaterial/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public ResultModel getMaterialById(HttpServletRequest request, HttpServletResponse response,@RequestParam int id) {
+	public ResultModel getMaterialById(HttpServletRequest request, HttpServletResponse response,@PathVariable int id) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		try {
