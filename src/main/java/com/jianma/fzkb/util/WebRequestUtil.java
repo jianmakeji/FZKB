@@ -13,8 +13,16 @@ public class WebRequestUtil {
 	public static void AccrossAreaRequestSet(HttpServletRequest request,HttpServletResponse response){
 		response.setContentType("text/html;charset=UTF-8");
 		response.addHeader("Access-Control-Allow-Origin","*");
+		response.addHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+		response.addHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS"); 
+        
 	    if("IE".equals(request.getParameter("type"))){
 	    	response.addHeader("XDomainRequestAllowed","1");
+	    }
+	    
+	    String method = request.getMethod();
+	    if (method.equals("OPTIONS")){
+	    	response.setStatus(200);
 	    }
 	}
 	

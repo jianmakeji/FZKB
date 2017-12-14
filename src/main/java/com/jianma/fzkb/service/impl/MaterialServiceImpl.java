@@ -42,6 +42,7 @@ public class MaterialServiceImpl implements MaterialService {
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			return ResponseCodeUtil.DB_OPERATION_FAILURE;
 		}
 	}
@@ -49,7 +50,7 @@ public class MaterialServiceImpl implements MaterialService {
 	@Override
 	public int updateMaterial(Material material) {
 		try{
-			//materialDaoImpl.updateMaterial(material);
+			materialDaoImpl.updateMaterial(material);
 			materialCacheImpl.updateMaterial(material);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		}

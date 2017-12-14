@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,15 +50,10 @@ public class MaterialController {
 	@RequestMapping(value = "/createMaterial", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel createMaterial(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam String name, @RequestParam String thumb, @RequestParam String masterImage) {
+			@RequestBody Material material) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
-		Material material = new Material();
-		material.setName(name);
-		material.setMasterImage(masterImage);
-		material.setThumb(thumb);
-		material.setCreateTime(new Date());
-		
+		material.setCreateTime(new Date());		
 		int result = materialServiceImpl.createMaterial(material);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
 			resultModel.setResultCode(200);

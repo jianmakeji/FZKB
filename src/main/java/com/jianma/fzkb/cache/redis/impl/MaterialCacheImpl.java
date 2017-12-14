@@ -67,6 +67,7 @@ public class MaterialCacheImpl implements MaterialCache {
 			  public List<Object> execute(RedisOperations operations) throws DataAccessException {
 			    operations.multi();
 			    HashOperations<String, String, String> hashOperations = operations.opsForHash();
+
 			    writeHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH+":"+material.getId().toString(), material);
 			    
 			    ListOperations<String, String> listOps = operations.opsForList();
