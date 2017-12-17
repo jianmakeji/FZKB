@@ -66,16 +66,10 @@ public class MaterialController {
 	
 	@RequestMapping(value = "/updateMaterial", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultModel updateMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int id,
-			@RequestParam String name, @RequestParam String thumb, @RequestParam String masterImage) {
+	public ResultModel updateMaterial(HttpServletRequest request, HttpServletResponse response, @RequestBody Material material) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
-		Material material = new Material();
 		material.setCreateTime(new Date());
-		material.setName(name);
-		material.setMasterImage(masterImage);
-		material.setThumb(thumb);
-		material.setId(id);
 		
 		int result = materialServiceImpl.updateMaterial(material);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
