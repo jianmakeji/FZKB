@@ -160,7 +160,7 @@ public class MatchController {
 		return listResultModel;
 	}
 	
-	@RequestMapping(value = "/getMatch/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/getMatch/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResultModel getBrandById(HttpServletRequest request, HttpServletResponse response,@PathVariable int id) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);

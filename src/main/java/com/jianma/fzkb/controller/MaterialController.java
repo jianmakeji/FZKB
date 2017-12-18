@@ -152,7 +152,7 @@ public class MaterialController {
 	@RequestMapping(value = "/getDataPageByTag", method = RequestMethod.GET)
 	@ResponseBody
 	public ListResultModel getDataPageByTag(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho,
+			@RequestParam int limit, @RequestParam int offset, 
 			@RequestParam String category, @RequestParam String style1, @RequestParam String style2, @RequestParam String style3) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
@@ -162,9 +162,9 @@ public class MaterialController {
 			map.put("style1", style1);
 			map.put("style2", style2);
 			map.put("style3", style3);
-			MaterialTableModel brandTableModel = materialServiceImpl.getMaterialPageByCondition(iDisplayStart, iDisplayLength, map);
+			MaterialTableModel brandTableModel = materialServiceImpl.getMaterialPageByCondition(offset, limit, map);
 			listResultModel.setAaData(brandTableModel.getList());
-			listResultModel.setsEcho(sEcho);
+			listResultModel.setsEcho("");
 			listResultModel.setiTotalRecords((int) brandTableModel.getCount());
 			listResultModel.setiTotalDisplayRecords((int) brandTableModel.getCount());
 			listResultModel.setSuccess(true);
