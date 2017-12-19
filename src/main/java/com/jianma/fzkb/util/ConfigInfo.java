@@ -22,4 +22,9 @@ public class ConfigInfo {
 	@Value("${bucket}")
 	public String bucket;
 			
+	@Value("${imageRule_500}")
+	public String imageRule_500;
+	
+	@Value("${imageRule_100}")
+	public String imageRule_100;
 }
