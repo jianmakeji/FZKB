@@ -35,13 +35,13 @@ public class PasswordHelper {
     public static void encryptDesignerPassword(Designer designer) {
 
     	designer.setSlot(randomNumberGenerator.nextBytes().toHex());
-
+    	System.out.println("===============:"+designer.getPassword());
         String newPassword = new SimpleHash(
                 algorithmName,
                 designer.getPassword(),
                 ByteSource.Util.bytes(designer.getCredentialsSalt()),
                 hashIterations).toHex();
-
+        System.out.println("===============:"+newPassword);
         designer.setPassword(newPassword);
     }
     

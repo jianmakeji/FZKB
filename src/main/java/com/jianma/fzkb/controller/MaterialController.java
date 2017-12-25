@@ -99,14 +99,53 @@ public class MaterialController {
 	@RequestMapping(value = "/getDataByPage", method = RequestMethod.GET)
 	@ResponseBody
 	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho) {
+			@RequestParam int limit, @RequestParam int offset) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
 			
-			MaterialTableModel brandTableModel = materialServiceImpl.getMaterialByPage(iDisplayStart, iDisplayLength);
+			MaterialTableModel brandTableModel = materialServiceImpl.getMaterialByPage(offset, limit);
 			listResultModel.setAaData(brandTableModel.getList());
-			listResultModel.setsEcho(sEcho);
+			listResultModel.setiTotalRecords((int) brandTableModel.getCount());
+			listResultModel.setiTotalDisplayRecords((int) brandTableModel.getCount());
+			listResultModel.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			listResultModel.setSuccess(false);
+		}
+		return listResultModel;
+	}
+	
+	@RequestMapping(value = "/getDataPageByNumber", method = RequestMethod.GET)
+	@ResponseBody
+	public ListResultModel getDataPageByNumber(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam int limit, @RequestParam int offset, @RequestParam String number) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ListResultModel listResultModel = new ListResultModel();
+		try {
+			
+			MaterialTableModel brandTableModel = materialServiceImpl.getMaterialPageByNumber(offset, limit, number);
+			listResultModel.setAaData(brandTableModel.getList());
+			listResultModel.setiTotalRecords((int) brandTableModel.getCount());
+			listResultModel.setiTotalDisplayRecords((int) brandTableModel.getCount());
+			listResultModel.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			listResultModel.setSuccess(false);
+		}
+		return listResultModel;
+	}
+	
+	@RequestMapping(value = "/getDataPageByUserId", method = RequestMethod.GET)
+	@ResponseBody
+	public ListResultModel getDataPageByUserId(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam int limit, @RequestParam int offset, @RequestParam int userId) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ListResultModel listResultModel = new ListResultModel();
+		try {
+			
+			MaterialTableModel brandTableModel = materialServiceImpl.getMaterialPageByUserId(offset, limit, userId);
+			listResultModel.setAaData(brandTableModel.getList());
 			listResultModel.setiTotalRecords((int) brandTableModel.getCount());
 			listResultModel.setiTotalDisplayRecords((int) brandTableModel.getCount());
 			listResultModel.setSuccess(true);

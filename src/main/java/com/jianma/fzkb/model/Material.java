@@ -18,10 +18,10 @@ import javax.persistence.TemporalType;
 public class Material implements java.io.Serializable {
 
 	private Integer id;
+	private int userId;
 	private String name;
 	private String number;
-	private String thumb;
-	private String masterImage;
+	private String imageUrl;
 	private String categoryName;
 	private String style1;
 	private String style2;
@@ -31,31 +31,29 @@ public class Material implements java.io.Serializable {
 	public Material() {
 	}
 
-	public Material(int id,String name, String number,String thumb, String masterImage, String categoryName, String style1, String style2,
+	public Material(int id,String name, String number, String imageUrl, String categoryName, String style1, String style2,
 			String style3, Date createTime) {
 		this.id = id;
 		this.name = name;
-		this.thumb = thumb;
-		this.masterImage = masterImage;
 		this.categoryName = categoryName;
 		this.style1 = style1;
 		this.style2 = style2;
 		this.style3 = style3;
 		this.createTime = createTime;
 		this.number = number;
+		this.imageUrl = imageUrl;
 	}
 	
-	public Material(String name, String number,String thumb, String masterImage, String categoryName, String style1, String style2,
+	public Material(String name, String number,String imageUrl, String categoryName, String style1, String style2,
 			String style3, Date createTime) {
 		this.name = name;
-		this.thumb = thumb;
-		this.masterImage = masterImage;
 		this.categoryName = categoryName;
 		this.style1 = style1;
 		this.style2 = style2;
 		this.style3 = style3;
 		this.createTime = createTime;
 		this.number = number;
+		this.imageUrl = imageUrl;
 	}
 
 	@Id
@@ -69,6 +67,15 @@ public class Material implements java.io.Serializable {
 		this.id = id;
 	}
 
+	@Column(name = "userId")
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
 	@Column(name = "name", nullable = false, length = 30)
 	public String getName() {
 		return this.name;
@@ -78,22 +85,13 @@ public class Material implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "thumb", nullable = false)
-	public String getThumb() {
-		return this.thumb;
+	@Column(name = "imageUrl", nullable = false)
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
-	public void setThumb(String thumb) {
-		this.thumb = thumb;
-	}
-
-	@Column(name = "masterImage", nullable = false)
-	public String getMasterImage() {
-		return this.masterImage;
-	}
-
-	public void setMasterImage(String masterImage) {
-		this.masterImage = masterImage;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	@Column(name = "categoryName", nullable = false, length = 10)

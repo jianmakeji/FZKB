@@ -53,7 +53,7 @@ public class Designer implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "username", length = 20)
+	@Column(name = "username", length = 50)
 	public String getUsername() {
 		return this.username;
 	}

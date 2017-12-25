@@ -88,12 +88,11 @@ public class MaterialServiceImpl implements MaterialService {
 	public Optional<Material> getDataByMaterialId(int id) {
 		Material material = materialCacheImpl.getMaterialById(id);
 		if (material == null){
-			return Optional.empty();
-		}
-		else{
 			return materialDaoImpl.getDataByMaterialId(id);
 		}
-		
+		else{
+			return Optional.ofNullable(material);
+		}
 	}
 
 	@Override
@@ -123,6 +122,14 @@ public class MaterialServiceImpl implements MaterialService {
 	@Override
 	public List<Material> getAllMaterial() {
 		return materialDaoImpl.getAllMaterial();
+	}
+
+	@Override
+	public MaterialTableModel getMaterialPageByUserId(int offset, int limit, int userId) {
+		MaterialTableModel materialTableModel = new MaterialTableModel();
+		materialTableModel.setCount(materialDaoImpl.getMaterialCountByUserId(userId));
+		materialTableModel.setList(materialDaoImpl.getMaterialPageByUserId(offset, limit, userId));
+		return materialTableModel;
 	}
 
 }

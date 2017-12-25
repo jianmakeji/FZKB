@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,16 +51,11 @@ public class MatchController {
 	
 	@RequestMapping(value = "/createMatch", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultModel createMatch(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
+	public ResultModel createMatch(HttpServletRequest request, HttpServletResponse response,@RequestBody Match match) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
-		Match match = new Match();
 		match.setCreateTime(new Date());
-		match.setName(name);
-		match.setUnderwear(underwear);
-		match.setGreatcoat(greatcoat);
-		match.setTrousers(trousers);
+		
 		Subject subject = SecurityUtils.getSubject();
 		int userId = (int)subject.getSession().getAttribute("userId");
 		match.setUserId(userId);
@@ -76,17 +72,10 @@ public class MatchController {
 	
 	@RequestMapping(value = "/updateMatch", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultModel updateMatch(HttpServletRequest request, HttpServletResponse response, @RequestParam int id,
-			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
+	public ResultModel updateMatch(HttpServletRequest request, HttpServletResponse response, @RequestBody Match match) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
-		Match match = new Match();
 		match.setCreateTime(new Date());
-		match.setName(name);
-		match.setId(id);
-		match.setUnderwear(underwear);
-		match.setGreatcoat(greatcoat);
-		match.setTrousers(trousers);
 		
 		int result = matchServiceImpl.updateMatch(match);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
@@ -116,14 +105,13 @@ public class MatchController {
 	@RequestMapping(value = "/getDataByPage", method = RequestMethod.GET)
 	@ResponseBody
 	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho) {
+			@RequestParam int limit, @RequestParam int offset) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
 			
-			MatchTableModel brandTableModel = matchServiceImpl.getMatchByPage(iDisplayStart, iDisplayLength);
+			MatchTableModel brandTableModel = matchServiceImpl.getMatchByPage(offset, limit);
 			listResultModel.setAaData(brandTableModel.getList());
-			listResultModel.setsEcho(sEcho);
 			listResultModel.setiTotalRecords((int) brandTableModel.getCount());
 			listResultModel.setiTotalDisplayRecords((int) brandTableModel.getCount());
 			listResultModel.setSuccess(true);
@@ -137,8 +125,8 @@ public class MatchController {
 	@RequestMapping(value = "/getDataPageByTag", method = RequestMethod.GET)
 	@ResponseBody
 	public ListResultModel getDataPageByTag(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho,
-			@RequestParam String category, @RequestParam String style1, @RequestParam String style2, @RequestParam String style3) {
+			@RequestParam int limit, @RequestParam int offset, @RequestParam String category, 
+			@RequestParam String style1, @RequestParam String style2, @RequestParam String style3) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
@@ -147,9 +135,8 @@ public class MatchController {
 			map.put("style1", style1);
 			map.put("style2", style2);
 			map.put("style3", style3);
-			MatchTableModel matchTableModel = matchServiceImpl.getMatchPageByCondition(iDisplayStart, iDisplayLength, map);
+			MatchTableModel matchTableModel = matchServiceImpl.getMatchPageByCondition(offset, limit, map);
 			listResultModel.setAaData(matchTableModel.getList());
-			listResultModel.setsEcho(sEcho);
 			listResultModel.setiTotalRecords((int) matchTableModel.getCount());
 			listResultModel.setiTotalDisplayRecords((int) matchTableModel.getCount());
 			listResultModel.setSuccess(true);

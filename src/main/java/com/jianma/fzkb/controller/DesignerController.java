@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,12 +62,10 @@ public class DesignerController {
 	
 	@RequestMapping(value = "/createDesigner", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultModel createDesigner(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
+	public ResultModel createDesigner(HttpServletRequest request, HttpServletResponse response,@RequestBody Designer designer) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
-		Designer designer = new Designer();
-		
+		designer.setCreateTime(new Date());
 		
 		int result = designerServiceImpl.createDesigner(designer);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
@@ -121,13 +121,10 @@ public class DesignerController {
 	
 	@RequestMapping(value = "/updateDesigner", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultModel updateDesigner(HttpServletRequest request, HttpServletResponse response, @RequestParam int id,
-			@RequestParam String name, @RequestParam String underwear, @RequestParam String greatcoat, @RequestParam String trousers) {
+	public ResultModel updateDesigner(HttpServletRequest request, HttpServletResponse response, @RequestBody Designer designer) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
-		Designer designer = new Designer();
 		designer.setCreateTime(new Date());
-		
 		
 		int result = designerServiceImpl.updateDesigner(designer);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
@@ -139,9 +136,9 @@ public class DesignerController {
 		}
 	}
 	
-	@RequestMapping(value = "/deleteDesigner", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteDesigner/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public ResultModel deleteDesigner(HttpServletRequest request, HttpServletResponse response, @RequestParam int id) {
+	public ResultModel deleteDesigner(HttpServletRequest request, HttpServletResponse response, @PathVariable int id) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		int result = designerServiceImpl.deleteDesigner(id);
@@ -157,14 +154,13 @@ public class DesignerController {
 	@RequestMapping(value = "/getDataByPage", method = RequestMethod.GET)
 	@ResponseBody
 	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam int iDisplayLength, @RequestParam int iDisplayStart, @RequestParam String sEcho) {
+			@RequestParam int limit, @RequestParam int offset) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
 			
-			DesignerTableModel designerTableModel = designerServiceImpl.getDesignerByPage(iDisplayStart, iDisplayLength);
+			DesignerTableModel designerTableModel = designerServiceImpl.getDesignerByPage(offset, limit);
 			listResultModel.setAaData(designerTableModel.getList());
-			listResultModel.setsEcho(sEcho);
 			listResultModel.setiTotalRecords((int) designerTableModel.getCount());
 			listResultModel.setiTotalDisplayRecords((int) designerTableModel.getCount());
 			listResultModel.setSuccess(true);
@@ -173,5 +169,44 @@ public class DesignerController {
 			listResultModel.setSuccess(false);
 		}
 		return listResultModel;
+	}
+	
+	@RequestMapping(value = "/getDesignerByRealname", method = RequestMethod.GET)
+	@ResponseBody
+	public ListResultModel getDesignerByRealname(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam int limit, @RequestParam int offset,@RequestParam String realname) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ListResultModel listResultModel = new ListResultModel();
+		try {
+			
+			DesignerTableModel designerTableModel = designerServiceImpl.getDesignerByRealname(realname,offset, limit);
+			listResultModel.setAaData(designerTableModel.getList());
+			listResultModel.setiTotalRecords((int) designerTableModel.getCount());
+			listResultModel.setiTotalDisplayRecords((int) designerTableModel.getCount());
+			listResultModel.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			listResultModel.setSuccess(false);
+		}
+		return listResultModel;
+	}
+	
+	@RequestMapping(value = "/getDesigner/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResultModel getDesignerByRealname(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable int id) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		resultModel = new ResultModel();
+		try {
+			Designer designer = designerServiceImpl.getDesignerById(id).get();
+			resultModel.setResultCode(200);
+			resultModel.setSuccess(true);
+			resultModel.setObject(designer);
+			return resultModel;
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new FZKBException(500, "操作失败！");
+		}	
+		
 	}
 }

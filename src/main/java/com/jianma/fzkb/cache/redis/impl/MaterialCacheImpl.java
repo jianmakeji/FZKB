@@ -1,5 +1,7 @@
 package com.jianma.fzkb.cache.redis.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,123 +42,136 @@ public class MaterialCacheImpl implements MaterialCache {
 	@Autowired
 	@Qualifier(value = "redisTemplate")
 	private RedisTemplate<String, String> redisTemplate;
-	
-	private final HashMapper<Material, String, String> mapper =
-    	     new DecoratingStringHashMapper<Material>(new BeanUtilsHashMapper<Material>(Material.class));
-    
-	private String cacheKey;
-	
-    public void writeHash(HashOperations<String, String, String> hashOperations, String key, Material material) {
-      Map<String, String> mappedHash = mapper.toHash(material);
-      mappedHash.remove("class");
-      hashOperations.putAll(key, mappedHash);
-    }
 
-    public Material loadHash(HashOperations<String, String, String> hashOperations,String key) {
-      DateConverter dateConverter = new DateConverter(null);
-      dateConverter.setPatterns(new String[]{"yyyy-MM-dd","yyyy/MM/dd"});
-      ConvertUtils.register(dateConverter, Date.class);      
-      Map<String, String> loadedHash = hashOperations.entries(key);
-      Material material = (Material) mapper.fromHash(loadedHash);
-      return material;
-    }
-    
+	private final HashMapper<Material, String, String> mapper = new DecoratingStringHashMapper<Material>(
+			new BeanUtilsHashMapper<Material>(Material.class));
+
+	private String cacheKey;
+
+	public void writeHash(HashOperations<String, String, String> hashOperations, String key, Material material) {
+		Map<String, String> mappedHash = mapper.toHash(material);
+		mappedHash.remove("class");
+		hashOperations.putAll(key, mappedHash);
+	}
+
+	public Material loadHash(HashOperations<String, String, String> hashOperations, String key) {
+		DateConverter dateConverter = new DateConverter(null);
+		dateConverter.setPatterns(new String[] { "yyyy-MM-dd", "yyyy/MM/dd" });
+		ConvertUtils.register(dateConverter, Date.class);
+		Map<String, String> loadedHash = hashOperations.entries(key);
+
+		Material material = (Material) mapper.fromHash(loadedHash);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			String dateStr = loadedHash.get("createTime");
+			material.setCreateTime(sdf.parse(dateStr));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return material;
+	}
+
 	@Override
 	public void addMaterial(Material material) {
 		redisTemplate.execute(new SessionCallback<List<Object>>() {
-			  public List<Object> execute(RedisOperations operations) throws DataAccessException {
-			    operations.multi();
-			    HashOperations<String, String, String> hashOperations = operations.opsForHash();
+			public List<Object> execute(RedisOperations operations) throws DataAccessException {
+				operations.multi();
+				HashOperations<String, String, String> hashOperations = operations.opsForHash();
 
-			    writeHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH+":"+material.getId().toString(), material);
-			    
-			    ListOperations<String, String> listOps = operations.opsForList();
+				writeHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH + ":" + material.getId().toString(),
+						material);
+
+				ListOperations<String, String> listOps = operations.opsForList();
 				listOps.remove(RedisVariableUtil.MATERIAL_ID_LIST, 0, material.getId().toString());
 				listOps.leftPush(RedisVariableUtil.MATERIAL_ID_LIST, material.getId().toString());
-				
-				SetOperations<String,String> setOps = operations.opsForSet();
+
+				SetOperations<String, String> setOps = operations.opsForSet();
 				setOps.add(RedisVariableUtil.categoryMap.get(material.getCategoryName()), material.getId().toString());
-				setOps.add("s1:"+material.getStyle1(), material.getId().toString());
-				setOps.add("s2:"+material.getStyle2(), material.getId().toString());
-				setOps.add("s3:"+material.getStyle3(), material.getId().toString());
-			    return operations.exec();
-			  }
+				setOps.add("s1:" + material.getStyle1(), material.getId().toString());
+				setOps.add("s2:" + material.getStyle2(), material.getId().toString());
+				setOps.add("s3:" + material.getStyle3(), material.getId().toString());
+				return operations.exec();
+			}
 		});
 	}
 
 	@Override
 	public void deleteMaterial(int id) {
 		Material material = getMaterialById(id);
-				
+
 		redisTemplate.execute(new SessionCallback<List<Object>>() {
-			  public List<Object> execute(RedisOperations operations) throws DataAccessException {
-			    operations.multi();
-			    HashOperations<String, String, String> hashOperations = operations.opsForHash();
-			    
-				if (material != null){
+			public List<Object> execute(RedisOperations operations) throws DataAccessException {
+				operations.multi();
+				HashOperations<String, String, String> hashOperations = operations.opsForHash();
+
+				if (material != null) {
 					ListOperations<String, String> listOps = operations.opsForList();
 					listOps.remove(RedisVariableUtil.MATERIAL_ID_LIST, 0, material.getId().toString());
-					
-					SetOperations<String,String> setOps = operations.opsForSet();
-					setOps.remove(RedisVariableUtil.categoryMap.get(material.getCategoryName()), material.getId().toString());
-					setOps.remove("s1:"+material.getStyle1(), material.getId().toString());
-					setOps.remove("s2:"+material.getStyle2(), material.getId().toString());
-					setOps.remove("s3:"+material.getStyle3(), material.getId().toString());
-					operations.delete(RedisVariableUtil.MATERIAL_DATA_HASH+":"+material.getId().toString());
-					
+
+					SetOperations<String, String> setOps = operations.opsForSet();
+					setOps.remove(RedisVariableUtil.categoryMap.get(material.getCategoryName()),
+							material.getId().toString());
+					setOps.remove("s1:" + material.getStyle1(), material.getId().toString());
+					setOps.remove("s2:" + material.getStyle2(), material.getId().toString());
+					setOps.remove("s3:" + material.getStyle3(), material.getId().toString());
+					operations.delete(RedisVariableUtil.MATERIAL_DATA_HASH + ":" + material.getId().toString());
+
 				}
-			    return operations.exec();
-			  }
+				return operations.exec();
+			}
 		});
 	}
 
 	@Override
 	public void updateMaterial(Material materialObj) {
 
-	    Material material = getMaterialById(materialObj.getId());
+		Material material = getMaterialById(materialObj.getId());
 
-	    if (material != null){
-	    	redisTemplate.execute(new SessionCallback<List<Object>>() {
-				  public List<Object> execute(RedisOperations operations) throws DataAccessException {
-				    operations.multi();
-				    HashOperations<String, String, String> hashOperations = operations.opsForHash();
-				    ListOperations<String, String> listOps = operations.opsForList();
-				    SetOperations<String,String> setOps = operations.opsForSet();
-				   			    
-					if (material != null){
+		if (material != null) {
+			redisTemplate.execute(new SessionCallback<List<Object>>() {
+				public List<Object> execute(RedisOperations operations) throws DataAccessException {
+					operations.multi();
+					HashOperations<String, String, String> hashOperations = operations.opsForHash();
+					ListOperations<String, String> listOps = operations.opsForList();
+					SetOperations<String, String> setOps = operations.opsForSet();
+
+					if (material != null) {
 						listOps.remove(RedisVariableUtil.MATERIAL_ID_LIST, 0, material.getId().toString());
-						setOps.remove(RedisVariableUtil.categoryMap.get(material.getCategoryName()), material.getId().toString());
-						setOps.remove("s1:"+material.getStyle1(), material.getId().toString());
-						setOps.remove("s2:"+material.getStyle2(), material.getId().toString());
-						setOps.remove("s3:"+material.getStyle3(), material.getId().toString());
-						operations.delete(RedisVariableUtil.MATERIAL_DATA_HASH+":"+material.getId().toString());
+						setOps.remove(RedisVariableUtil.categoryMap.get(material.getCategoryName()),
+								material.getId().toString());
+						setOps.remove("s1:" + material.getStyle1(), material.getId().toString());
+						setOps.remove("s2:" + material.getStyle2(), material.getId().toString());
+						setOps.remove("s3:" + material.getStyle3(), material.getId().toString());
+						operations.delete(RedisVariableUtil.MATERIAL_DATA_HASH + ":" + material.getId().toString());
 					}
-					
-					writeHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH+":"+materialObj.getId().toString(), materialObj);
-				    
+
+					writeHash(hashOperations,
+							RedisVariableUtil.MATERIAL_DATA_HASH + ":" + materialObj.getId().toString(), materialObj);
+
 					listOps.remove(RedisVariableUtil.MATERIAL_ID_LIST, 0, materialObj.getId().toString());
 					listOps.leftPush(RedisVariableUtil.MATERIAL_ID_LIST, materialObj.getId().toString());
-					
-					setOps.add(RedisVariableUtil.categoryMap.get(materialObj.getCategoryName()), materialObj.getId().toString());
-					setOps.add("s1:"+material.getStyle1(), materialObj.getId().toString());
-					setOps.add("s2:"+material.getStyle2(), materialObj.getId().toString());
-					setOps.add("s3:"+material.getStyle3(), materialObj.getId().toString());
-					
-				    return operations.exec();
-				  }
+
+					setOps.add(RedisVariableUtil.categoryMap.get(materialObj.getCategoryName()),
+							materialObj.getId().toString());
+					setOps.add("s1:" + material.getStyle1(), materialObj.getId().toString());
+					setOps.add("s2:" + material.getStyle2(), materialObj.getId().toString());
+					setOps.add("s3:" + material.getStyle3(), materialObj.getId().toString());
+
+					return operations.exec();
+				}
 			});
-	    }
+		}
 	}
 
 	@Override
 	public List<Material> getMaterialByCondition(int userId, int limit, int offset) {
-		
+
 		ListOperations<String, String> listOps = redisTemplate.opsForList();
-		List<String> idList = listOps.range(RedisVariableUtil.MATERIAL_ID_LIST, offset, offset+limit);
+		List<String> idList = listOps.range(RedisVariableUtil.MATERIAL_ID_LIST, offset, offset + limit);
 		List<Material> materialList = new ArrayList<>();
 		HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-		for (String id : idList){
-			materialList.add(loadHash(hashOperations,RedisVariableUtil.MATERIAL_DATA_HASH + ":" + id));
+		for (String id : idList) {
+			materialList.add(loadHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH + ":" + id));
 		}
 		return materialList;
 	}
@@ -171,7 +186,7 @@ public class MaterialCacheImpl implements MaterialCache {
 	public Material getMaterialById(int id) {
 		// TODO Auto-generated method stub
 		HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-		return this.loadHash(hashOperations,RedisVariableUtil.MATERIAL_DATA_HASH + ":" + id);
+		return this.loadHash(hashOperations, RedisVariableUtil.MATERIAL_DATA_HASH + ":" + id);
 	}
 
 	@Override
@@ -179,35 +194,35 @@ public class MaterialCacheImpl implements MaterialCache {
 
 		String[] categoryArr = map.get("category").split(",");
 		List<String> category = new ArrayList<>();
-		for (String s : categoryArr){
+		for (String s : categoryArr) {
 			category.add(RedisVariableUtil.categoryMap.get(s));
 		}
-		
+
 		String[] style1Arr = map.get("style1").split(",");
 		List<String> style1 = new ArrayList<>();
-		for (String s : style1Arr){
-			style1.add("s1:"+s);
+		for (String s : style1Arr) {
+			style1.add("s1:" + s);
 		}
-		
+
 		String[] style2Arr = map.get("style2").split(",");
 		List<String> style2 = new ArrayList<>();
-		for (String s : style2Arr){
-			style2.add("s2:"+s);
+		for (String s : style2Arr) {
+			style2.add("s2:" + s);
 		}
-		
+
 		String[] style3Arr = map.get("style3").split(",");
 		List<String> style3 = new ArrayList<>();
-		for (String s : style3Arr){
-			style3.add("s3:"+s);
+		for (String s : style3Arr) {
+			style3.add("s3:" + s);
 		}
-		
+
 		return redisTemplate.execute(new RedisCallback<MaterialTableModel>() {
 
 			@Override
-			public  MaterialTableModel doInRedis(RedisConnection connection) throws DataAccessException {
+			public MaterialTableModel doInRedis(RedisConnection connection) throws DataAccessException {
 
 				RedisSerializer<String> ser = redisTemplate.getStringSerializer();
-				
+
 				StringBuilder tagListStr = new StringBuilder();
 				map.forEach((k, v) -> {
 					tagListStr.append(v);
@@ -217,38 +232,43 @@ public class MaterialCacheImpl implements MaterialCache {
 				if (!connection.exists(ser.serialize(cacheKey))) {
 
 					List<String> calculateKeys = new ArrayList<>();
-					
-					String calculateCategoryResult = RedisVariableUtil.CATEGORY_PREFIX + RedisVariableUtil.DIVISION_CHAR + cacheKey;
-					System.out.println(category.size()+"  "+style1.size()+"  "+style2.size()+"  "+style3.size());
-					
+
+					String calculateCategoryResult = RedisVariableUtil.CATEGORY_PREFIX + RedisVariableUtil.DIVISION_CHAR
+							+ cacheKey;
+					System.out.println(
+							category.size() + "  " + style1.size() + "  " + style2.size() + "  " + style3.size());
+
 					if (category.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(category.get(0), category, calculateCategoryResult);
 						calculateKeys.add(calculateCategoryResult);
 					}
 
-					String calculateStyle1Result = RedisVariableUtil.STYLE1_PREFIX + RedisVariableUtil.DIVISION_CHAR + cacheKey;
-					
+					String calculateStyle1Result = RedisVariableUtil.STYLE1_PREFIX + RedisVariableUtil.DIVISION_CHAR
+							+ cacheKey;
+
 					if (style1.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(style1.get(0), style1, calculateStyle1Result);
 						calculateKeys.add(calculateStyle1Result);
 					}
-					
-					String calculateStyle2Result = RedisVariableUtil.STYLE2_PREFIX + RedisVariableUtil.DIVISION_CHAR + cacheKey;
-					
+
+					String calculateStyle2Result = RedisVariableUtil.STYLE2_PREFIX + RedisVariableUtil.DIVISION_CHAR
+							+ cacheKey;
+
 					if (style2.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(style2.get(0), style2, calculateStyle2Result);
 						calculateKeys.add(calculateStyle2Result);
 					}
-					
-					String calculateStyle3Result = RedisVariableUtil.STYLE3_PREFIX + RedisVariableUtil.DIVISION_CHAR + cacheKey;
-					
+
+					String calculateStyle3Result = RedisVariableUtil.STYLE3_PREFIX + RedisVariableUtil.DIVISION_CHAR
+							+ cacheKey;
+
 					if (style3.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(style3.get(0), style3, calculateStyle3Result);
 						calculateKeys.add(calculateStyle3Result);
 					}
 
 					Set<String> result = redisTemplate.opsForSet().intersect(calculateKeys.get(0), calculateKeys);
-					
+
 					for (String data : result) {
 						connection.lPush(ser.serialize(cacheKey), ser.serialize(data));
 					}
@@ -259,22 +279,20 @@ public class MaterialCacheImpl implements MaterialCache {
 						redisTemplate.delete(s);
 					});
 				}
-				
+
 				MaterialTableModel materialTableModel = new MaterialTableModel();
 				List<Material> list = new ArrayList<>();
 				long length = connection.lLen(ser.serialize(cacheKey));
 				materialTableModel.setCount(length);
-				
+
 				List<byte[]> keyList = null;
-				if ((offset + limit) < length)
-				{
+				if ((offset + limit) < length) {
 					keyList = connection.lRange(ser.serialize(cacheKey), offset, offset + limit - 1);
-				}
-				else{
+				} else {
 					keyList = connection.lRange(ser.serialize(cacheKey), offset, length);
 				}
-				
-				for (byte[] key : keyList){
+
+				for (byte[] key : keyList) {
 					list.add(getMaterialById(Integer.parseInt(ser.deserialize(key))));
 				}
 

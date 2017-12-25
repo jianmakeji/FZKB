@@ -123,4 +123,27 @@ public class MaterialDaoImpl implements MaterialDao {
         return (int)count;
 	}
 
+	@Override
+	public List<Material> getMaterialPageByUserId(int offset, int limit, int userId) {
+		Session session = this.getSessionFactory().getCurrentSession();
+		String hql = " from Material where userId = ? ";
+		final Query query = session.createQuery(hql);
+		query.setParameter(0, userId);
+        query.setFirstResult(offset);    
+        query.setMaxResults(limit); 
+        @SuppressWarnings("unchecked")
+		final List<Material> list = query.list(); 
+		return list;
+	}
+
+	@Override
+	public int getMaterialCountByUserId(int userId) {
+		Session session = this.getSessionFactory().getCurrentSession();
+		final String hql = " select count(m) from Material m where userId = ? "; 
+        final Query query = session.createQuery(hql);
+        query.setParameter(0, userId);
+        long count = (Long)query.uniqueResult();
+        return (int)count;
+	}
+
 }

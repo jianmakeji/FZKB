@@ -26,4 +26,8 @@ public interface MaterialDao {
 	public List<Material> getMaterialPageByNumber(int offset, int limit, String number);
 	
 	public int getMaterialCountByNumber(String number);
+	
+	public List<Material> getMaterialPageByUserId(int offset, int limit, int userId);
+	
+	public int getMaterialCountByUserId(int userId);
 }

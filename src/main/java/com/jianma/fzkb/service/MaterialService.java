@@ -31,4 +31,6 @@ public interface MaterialService {
 	
 	public List<Material> getAllMaterial();
 	
+	public MaterialTableModel getMaterialPageByUserId(int offset, int limit, int userId);
+	
 }
