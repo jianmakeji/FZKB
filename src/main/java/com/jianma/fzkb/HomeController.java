@@ -1,5 +1,6 @@
 package com.jianma.fzkb;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -24,6 +25,7 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.jianma.fzkb.model.ResultModel;
 import com.jianma.fzkb.util.ConfigInfo;
 import com.jianma.fzkb.util.WebRequestUtil;
 
@@ -54,6 +56,26 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "home";
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public void home(Locale locale, Model model,HttpServletRequest request,HttpServletResponse response) {
+		try {
+			response.sendRedirect("html/login.html");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/loginResult", method = RequestMethod.GET)
+	@ResponseBody
+	public ResultModel loginResult(Locale locale, Model model,HttpServletRequest request,HttpServletResponse response) {
+		ResultModel resultModel = new ResultModel();
+		resultModel.setResultCode(110);
+		resultModel.setSuccess(true);
+		resultModel.setMessage("无权限进行操作，请登录");
+		return resultModel;
 	}
 	
 	@RequestMapping(value = "/uploadKey/{type}", method = RequestMethod.GET)

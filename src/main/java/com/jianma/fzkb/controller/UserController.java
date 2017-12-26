@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -18,6 +19,7 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.realm.Realm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -25,12 +27,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jianma.fzkb.exception.FZKBException;
 import com.jianma.fzkb.model.ResultModel;
 import com.jianma.fzkb.service.UserService;
 import com.jianma.fzkb.util.GraphicsUtil;
+import com.jianma.fzkb.util.WebRequestUtil;
 
 
 
@@ -59,6 +63,46 @@ public class UserController {
 		return resultModel;
 	}
 	
+	@RequestMapping(value = "/authorityCheck", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultModel authorityCheck(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String username, @RequestParam String password) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		resultModel = new ResultModel();
+		String msg = "";
+		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+		Subject subject = SecurityUtils.getSubject();
+		try {
+			subject.login(token);
+			if (subject.isAuthenticated()) {
+				msg = "登录成功";
+				resultModel.setResultCode(200);
+				resultModel.setSuccess(true);
+				resultModel.setUptoken(subject.getSession().getId().toString());
+				System.out.println(subject.getSession().getId().toString());
+			} else {
+				resultModel.setResultCode(500);
+				resultModel.setSuccess(false);
+			}
+		} catch (IncorrectCredentialsException e) {
+			msg = "登录密码错误.";
+		} catch (ExcessiveAttemptsException e) {
+			msg = "登录失败次数过多";
+		} catch (LockedAccountException e) {
+			msg = "帐号已被锁定.";
+		} catch (DisabledAccountException e) {
+			msg = "帐号已被禁用. ";
+		} catch (ExpiredCredentialsException e) {
+			msg = "帐号已过期.";
+		} catch (UnknownAccountException e) {
+			msg = "帐号不存在.或者未激活";
+		} catch (UnauthorizedException e) {
+			msg = "您没有得到相应的授权！";
+		}
+		resultModel.setMessage(msg);
+		return resultModel;
+	}
+	
 	@RequestMapping(value = "/dologin")
 	public void doLogin(HttpServletRequest request, Model model,HttpServletResponse response) throws IOException {
 		String msg = "";
@@ -69,6 +113,7 @@ public class UserController {
 		Subject subject = SecurityUtils.getSubject();
 		try {
 			subject.login(token);
+			System.out.println(subject.getSession().getId());
 			if (subject.isAuthenticated()) {
 				response.sendRedirect("main.jsp");
 				
