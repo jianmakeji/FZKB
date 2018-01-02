@@ -1,12 +1,18 @@
 package com.jianma.fzkb;
 
+import java.awt.image.RenderedImage;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,15 +25,28 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.jianma.fzkb.model.Designer;
+import com.jianma.fzkb.model.Material;
 import com.jianma.fzkb.model.ResultModel;
+import com.jianma.fzkb.service.DesignerService;
+import com.jianma.fzkb.service.MaterialService;
 import com.jianma.fzkb.util.ConfigInfo;
+import com.jianma.fzkb.util.GraphicsUtil;
+import com.jianma.fzkb.util.JwtUtil;
+import com.jianma.fzkb.util.Md5SaltTool;
+import com.jianma.fzkb.util.ResponseCodeUtil;
 import com.jianma.fzkb.util.WebRequestUtil;
+
+import io.jsonwebtoken.Claims;
 
 /**
  * Handles requests for the application home page.
@@ -40,6 +59,14 @@ public class HomeController {
 	@Autowired
 	@Qualifier(value = "configInfo")
 	private ConfigInfo configInfo;
+	
+	@Autowired
+	@Qualifier(value = "designerServiceImpl")
+	private DesignerService designerServiceImpl;
+	
+	@Autowired
+	@Qualifier(value = "materialServiceImpl")
+	private MaterialService materialServiceImpl;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -58,23 +85,87 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public void home(Locale locale, Model model,HttpServletRequest request,HttpServletResponse response) {
-		try {
-			response.sendRedirect("html/login.html");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	@RequestMapping(value = "/authorityCheck", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultModel authorityCheck(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String username, @RequestParam String password) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ResultModel resultModel = new ResultModel();
+
+		Optional<Designer> designer = designerServiceImpl.findDesignerByUsername(username);
+		if (designer.isPresent()){
+			try {
+				if(Md5SaltTool.validPassword(password, designer.get().getPassword())){
+					String subject = JwtUtil.generalSubject(designer.get());
+					String token = JwtUtil.createJWT(ResponseCodeUtil.JWT_ID, subject, ResponseCodeUtil.JWT_TTL);
+					String refreshToken = JwtUtil.createJWT(ResponseCodeUtil.JWT_ID, subject, ResponseCodeUtil.JWT_REFRESH_TTL);
+					JSONObject jo = new JSONObject();
+					jo.put("token", token);
+					jo.put("refreshToken", refreshToken);
+					jo.put("userId", designer.get().getId());
+					resultModel.setObject(jo);
+					resultModel.setMessage("验证成功!");
+					resultModel.setResultCode(200);
+				}else{
+					resultModel.setMessage("密码不正确!");
+					resultModel.setResultCode(110);
+				}
+			} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+				resultModel.setMessage("验证失败!");
+				resultModel.setResultCode(110);
+				e.printStackTrace();
+			}
+			
+		}else{
+			resultModel.setResultCode(110);
+			resultModel.setMessage("用户不存在！");
 		}
+		
+		return resultModel;
 	}
 	
-	@RequestMapping(value = "/loginResult", method = RequestMethod.GET)
+	@RequestMapping(value = "/matchReview", method = RequestMethod.GET)
+	public ModelAndView matchMgr(HttpServletRequest request, HttpServletResponse response,
+			Locale locale, Model model) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ModelAndView modelView = new ModelAndView();
+		String uwId = request.getParameter("uwId");
+		String gcId = request.getParameter("gcId");
+		String trId = request.getParameter("trId");
+		
+		if (uwId != null && gcId != null && trId != null){
+			Map<String,Material> map = materialServiceImpl.getMaterialByIds(Integer.parseInt(uwId), Integer.parseInt(gcId), Integer.parseInt(trId));
+			
+			modelView.addObject("uwUrl", map.get("underwear").getImageUrl());
+			modelView.addObject("gcUrl", map.get("greatcoat").getImageUrl());
+			modelView.addObject("trUrl", map.get("trouser").getImageUrl());
+		}
+		
+		modelView.setViewName("/preview");
+		
+		return modelView;
+	}
+	
+	@RequestMapping(value = "/refreshToken", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultModel loginResult(Locale locale, Model model,HttpServletRequest request,HttpServletResponse response) {
+	public ResultModel refreshToken(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String token) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ResultModel resultModel = new ResultModel();
-		resultModel.setResultCode(110);
-		resultModel.setSuccess(true);
-		resultModel.setMessage("无权限进行操作，请登录");
+
+    	Claims claims = JwtUtil.parseJWT(token);
+ 		String json = claims.getSubject();
+ 		JSONObject jObject = JSONObject.parseObject(json);
+ 		Designer designer = new Designer();
+ 		designer.setId(jObject.getIntValue("userId"));
+ 		designer.setRole(jObject.getIntValue("roleId"));
+ 		String subject = JwtUtil.generalSubject(designer);
+ 		String refreshToken = JwtUtil.createJWT(ResponseCodeUtil.JWT_ID, subject, ResponseCodeUtil.JWT_TTL);
+ 		
+		resultModel.setResultCode(200);
+		resultModel.setMessage("更新token成功！");
+		resultModel.setObject(refreshToken);
+		
 		return resultModel;
 	}
 	
@@ -129,5 +220,23 @@ public class HomeController {
             return null;
         }
         
+	}
+	
+	@RequestMapping(value = "/getCode", method = RequestMethod.GET)
+	public void getCode(HttpServletRequest request, HttpServletResponse response) {
+		try {
+
+			response.setHeader("Pragma", "No-cache");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setDateHeader("Expires", 0);
+			// 表明生成的响应是图片
+			response.setContentType("image/jpeg");
+
+			Map<String, Object> map = new GraphicsUtil().getGraphics();
+			request.getSession().setAttribute("rand", map.get("rand"));
+			ImageIO.write((RenderedImage) map.get("image"), "JPEG", response.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

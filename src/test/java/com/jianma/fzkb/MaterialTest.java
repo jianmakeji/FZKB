@@ -38,9 +38,7 @@ public class MaterialTest {
 	public void MaterialRedisTest(){
 		Material material = new Material();
 		material.setCategoryName("艺术品");
-		material.setMasterImage("http://");
 		material.setName("材料1");
-		material.setThumb("http://");
 		material.setStyle1("2.0");
 		material.setStyle2("1.0");
 		material.setStyle3("-2.5");
@@ -50,9 +48,7 @@ public class MaterialTest {
 		
 		material = new Material();
 		material.setCategoryName("建筑");
-		material.setMasterImage("http://");
 		material.setName("材料2");
-		material.setThumb("http://");
 		material.setStyle1("0.5");
 		material.setStyle2("2.5");
 		material.setStyle3("-1.5");
@@ -62,9 +58,7 @@ public class MaterialTest {
 		
 		material = new Material();
 		material.setCategoryName("动物");
-		material.setMasterImage("http://");
 		material.setName("材料3");
-		material.setThumb("http://");
 		material.setStyle1("-2.0");
 		material.setStyle2("2.5");
 		material.setStyle3("-1.5");
@@ -74,9 +68,7 @@ public class MaterialTest {
 		
 		material = new Material();
 		material.setCategoryName("植物");
-		material.setMasterImage("http://");
 		material.setName("材料4");
-		material.setThumb("http://");
 		material.setStyle1("-2.0");
 		material.setStyle2("1.0");
 		material.setNumber("6547892351");
@@ -86,9 +78,7 @@ public class MaterialTest {
 		
 		material = new Material();
 		material.setCategoryName("风景");
-		material.setMasterImage("http://");
 		material.setName("材料5");
-		material.setThumb("http://");
 		material.setStyle1("-1.0");
 		material.setStyle2("3.0");
 		material.setStyle3("-1.5");
@@ -102,9 +92,7 @@ public class MaterialTest {
 		Material material = new Material();
 		material.setId(13);
 		material.setCategoryName("艺术品");
-		material.setMasterImage("http://www");
 		material.setName("东方艺术");
-		material.setThumb("http://xxx");
 		material.setStyle1("-1.0");
 		material.setStyle2("-3.0");
 		material.setStyle3("3");

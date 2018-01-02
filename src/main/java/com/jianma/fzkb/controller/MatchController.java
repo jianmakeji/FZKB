@@ -2,16 +2,16 @@ package com.jianma.fzkb.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jianma.fzkb.BaseController;
 import com.jianma.fzkb.exception.FZKBException;
 import com.jianma.fzkb.model.ListResultModel;
 import com.jianma.fzkb.model.Match;
@@ -32,7 +33,7 @@ import com.jianma.fzkb.util.WebRequestUtil;
 
 @Controller
 @RequestMapping(value = "/match")
-public class MatchController {
+public class MatchController{
 
 	@Autowired
 	@Qualifier(value = "matchServiceImpl")
@@ -56,9 +57,7 @@ public class MatchController {
 		resultModel = new ResultModel();
 		match.setCreateTime(new Date());
 		
-		Subject subject = SecurityUtils.getSubject();
-		int userId = (int)subject.getSession().getAttribute("userId");
-		match.setUserId(userId);
+		//match.setUserId(userId);
 		
 		int result = matchServiceImpl.createMatch(match);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {

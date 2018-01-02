@@ -165,4 +165,5 @@
 		p:valueSerializer-ref="valueSerializer" p:hashKeySerializer-ref="hashKeySerializer"
 		p:hashValueSerializer-ref="hashValueSerializer" />
 	
+	
 </beans:beans>

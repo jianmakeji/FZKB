@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="css/materialize/materialize.css" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="css/src/match.css"/>
+	</head>
+
+	<body>
+		<div id="modelContainer" class="modelContent">
+			<div class="selectArea">
+				<input name="clothingGroup" type="radio" value="0" id="underwear" checked="checked" />
+				<label for="underwear">内搭</label>
+
+				<input name="clothingGroup" type="radio" value="1" id="cloth" />
+				<label for="cloth">外套</label>
+
+				<input name="clothingGroup" type="radio" value="2" id="trousers" />
+				<label for="trousers">裤装</label>
+				
+				<label id="matchNameLabel" for="matchName">搭配名称:</label>
+				<input id="matchName" type="text" class="validate">
+          		
+				<a class="waves-effect waves-light btn" id="saveMatchBtn">保存搭配</a>
+				
+				<a class="waves-effect waves-light btn" id="resetBtn">重&nbsp;&nbsp;&nbsp;&nbsp;置</a>
+			</div>
+			
+		</div>
+
+		<div class="operationContent">
+
+			<div id="container"></div>
+		</div>
+	</body>
+
+	<script src="js/lib/three.js"></script>
+	<script src="js/lib/tween.min.js"></script>
+	<script src="js/controls/TrackballControls.js"></script>
+	<script src="js/renderers/CSS3DRenderer.js"></script>
+	<script src="js/lib/jquery-2.1.0.js"></script>
+	<script src="js/materialize/materialize.js"></script>
+	<script src="js/controls/OrbitControls.js"></script>
+	<script src="js/curves/NURBSCurve.js"></script>
+	<script src="js/curves/NURBSUtils.js"></script>
+	<script src="js/loaders/FBXLoader.js"></script>
+
+	<script src="js/Detector.js"></script>
+	<script src="js/lib/stats.min.js"></script>
+	<script src="js/lib/inflate.min.js"></script>
+	<script src="js/src/3dmodel.js"  async="async"></script>
+	<script src="js/src/spherePanel.js" async="async"></script>
+
+
+</html>

@@ -1,8 +1,7 @@
 package com.jianma.fzkb.exception;
 
-import org.apache.shiro.authc.AuthenticationException;
 
-public class CaptchaException extends AuthenticationException {
+public class CaptchaException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 

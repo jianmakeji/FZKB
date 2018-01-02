@@ -12,9 +12,18 @@ public class WebRequestUtil {
 
 	public static void AccrossAreaRequestSet(HttpServletRequest request,HttpServletResponse response){
 		response.setContentType("text/html;charset=UTF-8");
-		response.addHeader("Access-Control-Allow-Origin","*");
-		response.addHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-		response.addHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS"); 
+		        
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers",
+                "User-Agent,Origin,Cache-Control,Content-type,Date,Server,withCredentials,AccessToken");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+        response.setHeader("Access-Control-Max-Age", "1209600");
+        response.setHeader("Access-Control-Expose-Headers", "accesstoken");
+        response.setHeader("Access-Control-Request-Headers", "accesstoken");
+        response.setHeader("Expires", "-1");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("pragma", "no-cache");
         
 	    if("IE".equals(request.getParameter("type"))){
 	    	response.addHeader("XDomainRequestAllowed","1");
@@ -44,4 +53,13 @@ public class WebRequestUtil {
 			}
 		}
 	}
+	
+	public static boolean isAjaxRequest(HttpServletRequest request) {
+        String requestedWith = request.getHeader("x-requested-with");
+        if (requestedWith != null && requestedWith.equalsIgnoreCase("XMLHttpRequest")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

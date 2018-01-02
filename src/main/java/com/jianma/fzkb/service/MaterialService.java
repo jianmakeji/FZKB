@@ -33,4 +33,6 @@ public interface MaterialService {
 	
 	public MaterialTableModel getMaterialPageByUserId(int offset, int limit, int userId);
 	
+	public Map<String,Material> getMaterialByIds(int uwId,int gcId,int trId);
+	
 }

@@ -1,6 +1,7 @@
 package com.jianma.fzkb.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -130,6 +131,15 @@ public class MaterialServiceImpl implements MaterialService {
 		materialTableModel.setCount(materialDaoImpl.getMaterialCountByUserId(userId));
 		materialTableModel.setList(materialDaoImpl.getMaterialPageByUserId(offset, limit, userId));
 		return materialTableModel;
+	}
+
+	@Override
+	public Map<String, Material> getMaterialByIds(int uwId, int gcId, int trId) {
+		Map<String, Material> map = new HashMap<String,Material>();
+		map.put("underwear", materialDaoImpl.getDataByMaterialId(uwId).get());
+		map.put("greatcoat", materialDaoImpl.getDataByMaterialId(gcId).get());
+		map.put("trouser", materialDaoImpl.getDataByMaterialId(trId).get());
+		return map;
 	}
 
 }

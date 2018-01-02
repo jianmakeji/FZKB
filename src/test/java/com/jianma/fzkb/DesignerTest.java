@@ -22,7 +22,7 @@ public class DesignerTest {
 	@Qualifier(value="designerServiceImpl")
 	private DesignerService designerServiceImpl;
 	
-	//@Test
+	@Test
 	public void addDesigner(){
 		Designer designer = new Designer();
 		designer.setCreateTime(new Date());
@@ -64,7 +64,7 @@ public class DesignerTest {
 		});
 	}
 	
-	@Test
+	//@Test
 	public void checkAuth(){
 		/*
 		 Optional<Designer> designerOpt1 = designerServiceImpl.authorityCheck("cidic@188.vip.com", "111111");

@@ -24,7 +24,7 @@ public class Designer implements java.io.Serializable {
 	private String password;
 	private String introduce;
 	private Date createTime;
-	private String slot;
+	private int role;
 	
 	public Designer() {
 	}
@@ -71,7 +71,7 @@ public class Designer implements java.io.Serializable {
 		this.realname = realname;
 	}
 
-	@Column(name = "password", nullable = false, length = 50)
+	@Column(name = "password", nullable = false, length = 60)
 	public String getPassword() {
 		return this.password;
 	}
@@ -99,17 +99,15 @@ public class Designer implements java.io.Serializable {
 		this.createTime = createTime;
 	}
 	
-	@Column(name = "slot", length = 40)
-	public String getSlot() {
-		return slot;
+
+	@Column(name = "role")
+	public int getRole() {
+		return role;
 	}
 
-	public void setSlot(String slot) {
-		this.slot = slot;
+	public void setRole(int role) {
+		this.role = role;
 	}
-
-	@Transient
-	public String getCredentialsSalt() {
-		return username + slot;
-	}
+	
+	
 }

@@ -12,7 +12,7 @@ import com.jianma.fzkb.dao.DesignerDao;
 import com.jianma.fzkb.model.Designer;
 import com.jianma.fzkb.model.DesignerTableModel;
 import com.jianma.fzkb.service.DesignerService;
-import com.jianma.fzkb.util.PasswordHelper;
+import com.jianma.fzkb.util.Md5SaltTool;
 import com.jianma.fzkb.util.ResponseCodeUtil;
 
 @Repository
@@ -32,7 +32,7 @@ public class DesignerServiceImpl implements DesignerService {
 			if (optDesigner.isPresent()) {
 				return ResponseCodeUtil.UESR_CREATE_EXIST;
 			} else {
-				PasswordHelper.encryptDesignerPassword(designer);
+				designer.setPassword(Md5SaltTool.getEncryptedPwd(designer.getPassword()));
 				designerDaoImpl.createDesigner(designer);
 				return ResponseCodeUtil.UESR_OPERATION_SUCESS;
 			}
@@ -45,7 +45,7 @@ public class DesignerServiceImpl implements DesignerService {
 	@Override
 	public int updateDesigner(Designer designer) {
 		try {
-			PasswordHelper.encryptDesignerPassword(designer);
+			designer.setPassword(Md5SaltTool.getEncryptedPwd(designer.getPassword()));
 			designerDaoImpl.updateDesigner(designer);
 			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
 		} catch (Exception e) {
