@@ -36,6 +36,7 @@ import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
 import com.jianma.fzkb.model.Designer;
 import com.jianma.fzkb.model.Material;
+import com.jianma.fzkb.model.ResponseData;
 import com.jianma.fzkb.model.ResultModel;
 import com.jianma.fzkb.service.DesignerService;
 import com.jianma.fzkb.service.MaterialService;
@@ -47,6 +48,7 @@ import com.jianma.fzkb.util.ResponseCodeUtil;
 import com.jianma.fzkb.util.WebRequestUtil;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 
 /**
  * Handles requests for the application home page.
@@ -125,7 +127,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/matchReview", method = RequestMethod.GET)
-	public ModelAndView matchMgr(HttpServletRequest request, HttpServletResponse response,
+	public ModelAndView matchReview(HttpServletRequest request, HttpServletResponse response,
 			Locale locale, Model model) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ModelAndView modelView = new ModelAndView();
@@ -142,6 +144,45 @@ public class HomeController {
 		}
 		
 		modelView.setViewName("/preview");
+		
+		return modelView;
+	}
+	
+	@RequestMapping(value = "/match", method = RequestMethod.GET)
+	public ModelAndView match(HttpServletRequest request, HttpServletResponse response,
+			Locale locale, Model model) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ModelAndView modelView = new ModelAndView();
+		String authCode = request.getParameter("authCode");
+		String userId = request.getParameter("userId");
+		
+		if (null != authCode) {
+			try{
+				Claims claims = JwtUtil.parseJWT(authCode);
+				
+				JSONObject jsonObject = JSONObject.parseObject(claims.getSubject());
+				if (null != userId && null != jsonObject) {
+					if (Integer.parseInt(userId) == jsonObject.getIntValue("userId")) {
+						modelView.addObject("authCode", authCode);
+						modelView.addObject("userId", userId);
+						modelView.setViewName("/match");
+					} else {
+						modelView.setViewName("/error");
+					}
+				} else {
+					modelView.setViewName("/error");
+				}
+				
+			}
+			catch(ExpiredJwtException ex){
+				modelView.setViewName("/error");
+			}
+			
+		} else {
+			modelView.setViewName("/error");
+		}
+		
+		
 		
 		return modelView;
 	}

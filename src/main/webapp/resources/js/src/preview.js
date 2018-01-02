@@ -48,7 +48,7 @@ $(document).ready(function() {
 		var overcoatTexture = new THREE.Texture();
 		
 		var tLoader = new THREE.ImageLoader(manager);
-		tLoader.crossOrigin = '';
+		tLoader.crossOrigin = '*';
 		
 		tLoader.load(trouserImageUrl, function(image) {
 			trouserTexture.image = image;
