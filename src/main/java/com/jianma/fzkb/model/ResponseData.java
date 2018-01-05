@@ -44,19 +44,19 @@ public class ResponseData {
     }
 
     public static ResponseData forbidden() {
-        return new ResponseData(403, "Forbidden");
+        return new ResponseData(403, "禁止访问");
     }
 
     public static ResponseData unauthorized() {
-        return new ResponseData(401, "unauthorized");
+        return new ResponseData(401, "没有进行身份认证，请登录");
     }
 
     public static ResponseData authorizeOverTime() {
-        return new ResponseData(405, "authorize Over Time");
+        return new ResponseData(405, "身份认证超时，请重新登录");
     }
     
     public static ResponseData serverInternalError() {
-        return new ResponseData(500, "Server Internal Error");
+        return new ResponseData(500, "服务器内部错误");
     }
 
     public static ResponseData customerError() {

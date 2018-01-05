@@ -12,15 +12,14 @@ public interface MatchDao {
 	public void updateMatch(Match match);
 	
 	public void deleteMatch(int id);
-	
-	public List<Match> getMatchByPage(int offset, int limit);
 		
 	public List<Match> getMatchPageByUserId(int offset, int limit,int userId);
-	
-	public int getCountMatch();
 	
 	public int getCountMatchByUserId(int userId);
 	
 	public Optional<Match> getDataByMatchId(int id);
 	
+	public List<Match> getMatchBySearchKeyword(int offset, int limit, int userId, String keyword);
+	
+	public int getCountMatchBySearchKeyword(int userId,String keyword);
 }

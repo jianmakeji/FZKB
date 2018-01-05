@@ -88,21 +88,6 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
-	public MatchTableModel getMatchByPage(int offset, int limit) {
-
-		MatchTableModel matchTableModel = new MatchTableModel();
-		matchTableModel.setCount(matchDaoImpl.getCountMatch());
-		matchTableModel.setList(matchDaoImpl.getMatchByPage(offset, limit));
-		return matchTableModel;
-	}
-
-	@Override
-	public int getCountMatch() {
-
-		return matchDaoImpl.getCountMatch();
-	}
-
-	@Override
 	public Optional<Match> getDataByMatchId(int id) {
 
 		return matchDaoImpl.getDataByMatchId(id);
@@ -115,13 +100,28 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
-	public List<Match> getMatchPageByUserId(int offset, int limit, int userId) {
-		return matchDaoImpl.getMatchPageByUserId(offset, limit, userId);
+	public MatchTableModel getMatchPageByUserId(int offset, int limit, int userId) {
+		MatchTableModel matchTableModel = new MatchTableModel();
+		List<Match> list = matchDaoImpl.getMatchPageByUserId(offset, limit, userId);
+		int count = matchDaoImpl.getCountMatchByUserId(userId);
+		matchTableModel.setList(list);
+		matchTableModel.setCount(count);
+		return matchTableModel;
 	}
 
 	@Override
-	public int getCountMatchByUserId(int userId) {
-		return matchDaoImpl.getCountMatchByUserId(userId);
+	public List<Match> getMatchByPage(int offset, int limit) {
+		return matchDaoImpl.getMatchPageByUserId(offset, limit, 0);
+	}
+
+	@Override
+	public MatchTableModel getMatchBySearchKeyword(int offset, int limit, int userId, String keyword) {
+		MatchTableModel matchTableModel = new MatchTableModel();
+		List<Match> list = matchDaoImpl.getMatchBySearchKeyword(offset, limit, userId, keyword);
+		int count = matchDaoImpl.getCountMatchBySearchKeyword(userId, keyword);
+		matchTableModel.setList(list);
+		matchTableModel.setCount(count);
+		return matchTableModel;
 	}
 
 }

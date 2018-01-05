@@ -56,9 +56,6 @@ public class MatchController{
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		resultModel = new ResultModel();
 		match.setCreateTime(new Date());
-		
-		//match.setUserId(userId);
-		
 		int result = matchServiceImpl.createMatch(match);
 		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
 			resultModel.setResultCode(200);
@@ -104,12 +101,12 @@ public class MatchController{
 	@RequestMapping(value = "/getDataByPage", method = RequestMethod.GET)
 	@ResponseBody
 	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam int limit, @RequestParam int offset) {
+			@RequestParam int limit, @RequestParam int offset,@RequestParam int userId) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
 			
-			MatchTableModel brandTableModel = matchServiceImpl.getMatchByPage(offset, limit);
+			MatchTableModel brandTableModel = matchServiceImpl.getMatchPageByUserId(offset, limit, userId);
 			listResultModel.setAaData(brandTableModel.getList());
 			listResultModel.setiTotalRecords((int) brandTableModel.getCount());
 			listResultModel.setiTotalDisplayRecords((int) brandTableModel.getCount());
@@ -160,5 +157,25 @@ public class MatchController{
 		}catch (Exception e) {
 			throw new FZKBException(500, "操作失败！");
 		}
+	}
+	
+	@RequestMapping(value = "/getDataBySearchKeyword", method = RequestMethod.GET)
+	@ResponseBody
+	public ListResultModel getDataBySearchKeyword(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam int limit, @RequestParam int offset,@RequestParam int userId,@RequestParam String keyword) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ListResultModel listResultModel = new ListResultModel();
+		try {
+			
+			MatchTableModel brandTableModel = matchServiceImpl.getMatchBySearchKeyword(offset, limit, userId, keyword);
+			listResultModel.setAaData(brandTableModel.getList());
+			listResultModel.setiTotalRecords((int) brandTableModel.getCount());
+			listResultModel.setiTotalDisplayRecords((int) brandTableModel.getCount());
+			listResultModel.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			listResultModel.setSuccess(false);
+		}
+		return listResultModel;
 	}
 }

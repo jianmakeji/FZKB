@@ -72,7 +72,7 @@ public class InitCacheImpl implements InitCache {
 
 	@Override
 	public void initMatch() {
-		List<Match> list = matchServiceImpl.getMatchByPage(0, Integer.MAX_VALUE).getList();
+		List<Match> list = matchServiceImpl.getMatchByPage(0, Integer.MAX_VALUE);
 		for (Match match : list){
 			Map<String, Material> map = new HashMap<String, Material>();
 			map.put("underwear", materialCacheImpl.getMaterialById(match.getUwId()));

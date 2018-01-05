@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import com.jianma.fzkb.model.Match;
 import com.jianma.fzkb.model.MatchTableModel;
-import com.jianma.fzkb.model.MaterialTableModel;
 
 public interface MatchService {
 
@@ -16,16 +15,14 @@ public interface MatchService {
 	
 	public int deleteMatch(int id);
 	
-	public MatchTableModel getMatchByPage(int offset, int limit);
-		
-	public int getCountMatch();
-	
 	public Optional<Match> getDataByMatchId(int id);
 	
 	//根据条件筛选
 	public MatchTableModel getMatchPageByCondition(int offset, int limit, Map<String,String> map);
 	
-	public List<Match> getMatchPageByUserId(int offset, int limit,int userId);
+	public MatchTableModel getMatchPageByUserId(int offset, int limit,int userId);
 	
-	public int getCountMatchByUserId(int userId);
+	public List<Match> getMatchByPage(int offset, int limit);
+	
+	public MatchTableModel getMatchBySearchKeyword(int offset, int limit,int userId,String keyword);
 }

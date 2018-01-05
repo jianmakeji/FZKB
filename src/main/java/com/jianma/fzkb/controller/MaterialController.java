@@ -157,7 +157,7 @@ public class MaterialController extends BaseController{
 		return listResultModel;
 	}
 	
-	@RequestMapping(value = "/getRandomMaterial", method = RequestMethod.POST)
+	@RequestMapping(value = "/getRandomMaterial", method = RequestMethod.GET)
 	@ResponseBody
 	public ResultModel getRandomMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int count) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);

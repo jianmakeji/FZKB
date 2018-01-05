@@ -105,6 +105,7 @@ public class HomeController {
 					jo.put("token", token);
 					jo.put("refreshToken", refreshToken);
 					jo.put("userId", designer.get().getId());
+					jo.put("roleId", designer.get().getRole());
 					resultModel.setObject(jo);
 					resultModel.setMessage("验证成功!");
 					resultModel.setResultCode(200);
@@ -148,8 +149,8 @@ public class HomeController {
 		return modelView;
 	}
 	
-	@RequestMapping(value = "/match", method = RequestMethod.GET)
-	public ModelAndView match(HttpServletRequest request, HttpServletResponse response,
+	@RequestMapping(value = "/matchPage", method = RequestMethod.GET)
+	public ModelAndView matchPage(HttpServletRequest request, HttpServletResponse response,
 			Locale locale, Model model) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ModelAndView modelView = new ModelAndView();
@@ -165,24 +166,22 @@ public class HomeController {
 					if (Integer.parseInt(userId) == jsonObject.getIntValue("userId")) {
 						modelView.addObject("authCode", authCode);
 						modelView.addObject("userId", userId);
-						modelView.setViewName("/match");
+						modelView.setViewName("matchView");
 					} else {
-						modelView.setViewName("/error");
+						modelView.setViewName("error");
 					}
 				} else {
-					modelView.setViewName("/error");
+					modelView.setViewName("error");
 				}
 				
 			}
 			catch(ExpiredJwtException ex){
-				modelView.setViewName("/error");
+				modelView.setViewName("error");
 			}
 			
 		} else {
-			modelView.setViewName("/error");
+			modelView.setViewName("error");
 		}
-		
-		
 		
 		return modelView;
 	}
