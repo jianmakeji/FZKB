@@ -2,6 +2,7 @@ package com.jianma.fzkb.cache.redis.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -230,7 +231,13 @@ public class MatchCacheImpl implements MatchCache {
 						calculateKeys.add(calculateStyle3Result);
 					}
 
-					Set<String> result = redisTemplate.opsForSet().intersect(calculateKeys.get(0), calculateKeys);
+					Set<String> result = new HashSet<>();
+					if (calculateKeys.size() > 1){
+						result = redisTemplate.opsForSet().intersect(calculateKeys.get(0), calculateKeys);
+					}
+					else if (calculateKeys.size() == 1){
+						result = redisTemplate.opsForSet().members(calculateKeys.get(0));
+					} 
 
 					for (String data : result) {
 						connection.lPush(ser.serialize(cacheKey), ser.serialize(data));

@@ -74,12 +74,12 @@ public class MatchDaoImpl implements MatchDao {
 		Session session = this.getSessionFactory().getCurrentSession();
 		String hql = "";
 		if (userId == 0){
-			hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,d.realname from Match m,"
-					+ " Designer d where m.userId = d.id";
+			hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,d.realname,"
+					+ " m.uwId,m.gcId,m.trId from Match m,Designer d where m.userId = d.id ";
 		}
 		else{
-			hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,d.realname from Match m,"
-					+ " Designer d where m.userId = d.id and m.userId = ?";
+			hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,"
+					+ " d.realname,m.uwId,m.gcId,m.trId from Match m,Designer d where m.userId = d.id and m.userId = ?";
 		}
 		
 		final Query query = session.createQuery(hql); 
@@ -103,6 +103,9 @@ public class MatchDaoImpl implements MatchDao {
             String trousers = (String)o[5];
             Date createTime = (Date)o[6];
             String realname = (String)o[7];
+            int uwId = ((Number)o[8]).intValue();
+            int gcId = ((Number)o[9]).intValue();
+            int trId = ((Number)o[10]).intValue();
             match.setId(id);
             match.setName(name);
             match.setUserId(uId);
@@ -111,6 +114,9 @@ public class MatchDaoImpl implements MatchDao {
             match.setTrousers(trousers);
             match.setUnderwear(underwear);
             match.setUsername(realname);
+            match.setUwId(uwId);
+            match.setGcId(gcId);
+            match.setTrId(trId);
             mList.add(match);
         }
 		return mList;
@@ -139,12 +145,12 @@ public class MatchDaoImpl implements MatchDao {
 		Session session = this.getSessionFactory().getCurrentSession();
 		String hql = "";
 		if (userId == 0){
-			hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,d.realname from Match m,"
-					+ " Designer d where m.userId = d.id and m.name like ? ";
+			hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,d.realname,m.uwId,m.gcId,m.trId from "
+					+ " Match m,Designer d where m.userId = d.id and m.name like ? ";
 		}
 		else{
-			hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,d.realname from Match m,"
-					+ " Designer d where m.userId = d.id and m.userId = ? and m.name like ? ";
+			hql = "select m.id,m.userId,m.name,m.underwear,m.greatcoat,m.trousers,m.createTime,d.realname,m.uwId,m.gcId,m.trId from "
+					+ " Match m,Designer d where m.userId = d.id and m.userId = ? and m.name like ? ";
 		}
 		
 		final Query query = session.createQuery(hql); 
@@ -172,6 +178,9 @@ public class MatchDaoImpl implements MatchDao {
             String trousers = (String)o[5];
             Date createTime = (Date)o[6];
             String realname = (String)o[7];
+            int uwId = ((Number)o[8]).intValue();
+            int gcId = ((Number)o[9]).intValue();
+            int trId = ((Number)o[10]).intValue();
             match.setId(id);
             match.setName(name);
             match.setUserId(uId);
@@ -180,6 +189,9 @@ public class MatchDaoImpl implements MatchDao {
             match.setTrousers(trousers);
             match.setUnderwear(underwear);
             match.setUsername(realname);
+            match.setUwId(uwId);
+            match.setGcId(gcId);
+            match.setTrId(trId);
             mList.add(match);
         }
 		return mList;

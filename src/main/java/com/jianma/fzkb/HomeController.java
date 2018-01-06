@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +36,7 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.jianma.fzkb.exception.FZKBException;
 import com.jianma.fzkb.model.Designer;
 import com.jianma.fzkb.model.Material;
 import com.jianma.fzkb.model.ResponseData;
@@ -69,6 +72,15 @@ public class HomeController {
 	@Autowired
 	@Qualifier(value = "materialServiceImpl")
 	private MaterialService materialServiceImpl;
+	
+	@ExceptionHandler(FZKBException.class)
+	public @ResponseBody ResultModel handleCustomException(FZKBException ex) {
+		ResultModel resultModel = new ResultModel();
+		resultModel.setResultCode(ex.getErrCode());
+		resultModel.setMessage(ex.getErrMsg());
+		resultModel.setSuccess(false);
+		return resultModel;
+	}
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -277,6 +289,22 @@ public class HomeController {
 			ImageIO.write((RenderedImage) map.get("image"), "JPEG", response.getOutputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/getRandomMaterial", method = RequestMethod.GET)
+	@ResponseBody
+	public ResultModel getRandomMaterial(HttpServletRequest request, HttpServletResponse response, @RequestParam int count) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ResultModel resultModel = new ResultModel();
+		try {
+			List<Material> list = materialServiceImpl.getMaterialByCount(count);
+			resultModel.setResultCode(200);
+			resultModel.setSuccess(true);
+			resultModel.setObject(list);
+			return resultModel;
+		}catch (Exception e) {
+			throw new FZKBException(500, "操作失败！");
 		}
 	}
 }

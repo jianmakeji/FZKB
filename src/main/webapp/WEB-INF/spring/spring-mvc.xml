@@ -23,6 +23,7 @@
             <!-- 需排除拦截的地址 -->  
             <mvc:exclude-mapping path="/authorityCheck"/>
             <mvc:exclude-mapping path="/refreshToken"/>
+            <mvc:exclude-mapping path="material/getRandomMaterial"/>
             <mvc:exclude-mapping path="/home"/>
             <mvc:exclude-mapping path="matchReview"/>
             <bean class="com.jianma.fzkb.interceptor.TokenInterceptor" />  

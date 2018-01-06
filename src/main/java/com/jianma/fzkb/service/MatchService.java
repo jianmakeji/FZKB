@@ -22,7 +22,7 @@ public interface MatchService {
 	
 	public MatchTableModel getMatchPageByUserId(int offset, int limit,int userId);
 	
-	public List<Match> getMatchByPage(int offset, int limit);
+	public List<Match> getMatchByPage(int offset, int limit, int userId);
 	
 	public MatchTableModel getMatchBySearchKeyword(int offset, int limit,int userId,String keyword);
 }

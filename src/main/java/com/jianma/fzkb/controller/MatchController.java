@@ -2,7 +2,6 @@ package com.jianma.fzkb.controller;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,12 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jianma.fzkb.BaseController;
 import com.jianma.fzkb.exception.FZKBException;
 import com.jianma.fzkb.model.ListResultModel;
 import com.jianma.fzkb.model.Match;
 import com.jianma.fzkb.model.MatchTableModel;
-import com.jianma.fzkb.model.MaterialTableModel;
 import com.jianma.fzkb.model.ResultModel;
 import com.jianma.fzkb.service.MatchService;
 import com.jianma.fzkb.util.ResponseCodeUtil;
@@ -105,7 +101,6 @@ public class MatchController{
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ListResultModel listResultModel = new ListResultModel();
 		try {
-			
 			MatchTableModel brandTableModel = matchServiceImpl.getMatchPageByUserId(offset, limit, userId);
 			listResultModel.setAaData(brandTableModel.getList());
 			listResultModel.setiTotalRecords((int) brandTableModel.getCount());

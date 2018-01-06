@@ -110,8 +110,8 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	@Override
-	public List<Match> getMatchByPage(int offset, int limit) {
-		return matchDaoImpl.getMatchPageByUserId(offset, limit, 0);
+	public List<Match> getMatchByPage(int offset, int limit, int userId) {
+		return matchDaoImpl.getMatchPageByUserId(offset, limit, userId);
 	}
 
 	@Override

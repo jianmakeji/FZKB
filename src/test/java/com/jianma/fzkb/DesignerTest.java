@@ -26,10 +26,11 @@ public class DesignerTest {
 	public void addDesigner(){
 		Designer designer = new Designer();
 		designer.setCreateTime(new Date());
-		designer.setUsername("cidic@outlook.com");
+		designer.setUsername("cidic@cidic.cn");
 		designer.setRealname("cidic_hn");
 		designer.setIntroduce("hello cidic...");
 		designer.setPassword("111111");
+		designer.setRole(0);
 		designerServiceImpl.createDesigner(designer);
 	}
 	

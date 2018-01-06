@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -64,7 +65,13 @@ public class MaterialCacheImpl implements MaterialCache {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			String dateStr = loadedHash.get("createTime");
-			material.setCreateTime(sdf.parse(dateStr));
+			if (dateStr.contains("CST")){
+				material.setCreateTime(sdf.parse(com.jianma.fzkb.util.DateUtil.strToDateLong(dateStr)));
+			}
+			else{
+				material.setCreateTime(sdf.parse(dateStr));
+			}
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -267,7 +274,13 @@ public class MaterialCacheImpl implements MaterialCache {
 						calculateKeys.add(calculateStyle3Result);
 					}
 
-					Set<String> result = redisTemplate.opsForSet().intersect(calculateKeys.get(0), calculateKeys);
+					Set<String> result = new HashSet<>();
+					if (calculateKeys.size() > 1){
+						result = redisTemplate.opsForSet().intersect(calculateKeys.get(0), calculateKeys);
+					}
+					else if (calculateKeys.size() == 1){
+						result = redisTemplate.opsForSet().members(calculateKeys.get(0));
+					} 
 
 					for (String data : result) {
 						connection.lPush(ser.serialize(cacheKey), ser.serialize(data));
