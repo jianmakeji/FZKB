@@ -45,7 +45,7 @@ $(document).ready(function() {
 		var loader = new THREE.FBXLoader(manager);
 		var texture = new THREE.Texture();
 		var tLoader = new THREE.ImageLoader(manager);
-		var imageUrl = "img/5_9.jpg";
+		var imageUrl = "resources/img/texture.png";
 		tLoader.load(imageUrl, function(image) {
 			texture.image = image;
 			texture.needsUpdate = true;

@@ -224,9 +224,9 @@ $.ajax({
 
 			var imageUrl = $(this).find("img").attr('src');
 			var id = $(this).find("img").attr('id');
-			console.log(imageUrl);
-			console.log(id);
+			
 			tLoader.load(imageUrl, function(image) {
+
 				texture.image = image;
 				texture.needsUpdate = true;
 				texture.wrapS = THREE.RepeatWrapping;
@@ -340,8 +340,12 @@ $(document).ready(function() {
 
 		$.ajax({
 			type:'POST',
-			url:'/match/createMatch',
-			data:{
+			url:'match/createMatch',
+			headers: {
+				"Authorization": authCode,
+				"userId":userId
+		    },
+			data:JSON.stringify({
 				'userId':userId,
 				'name':name,
 				'uwId':uwId,
@@ -350,8 +354,9 @@ $(document).ready(function() {
 				'greatcoat':greatcoat,
 				'trId':trId,
 				'trousers':trousers
-			},
+			}),
 			dataType:'json',
+			contentType: "application/json",
 			success:function(data){
 				if (data.resultCode == 200){
 					Materialize.toast('保存成功！', 4000);

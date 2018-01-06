@@ -24,7 +24,7 @@
 				<label for="trousers">裤装</label>
 				
 				<label id="matchNameLabel" for="matchName">搭配名称:</label>
-				<input id="matchName" type="text" class="validate">
+				<input id="matchName" type="text" class="validate" style="color:gray;">
           		
 				<a class="waves-effect waves-light btn" id="saveMatchBtn">保存搭配</a>
 				

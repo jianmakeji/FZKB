@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jianma.fzkb.BaseController;
 import com.jianma.fzkb.exception.FZKBException;
 import com.jianma.fzkb.model.ListResultModel;
 import com.jianma.fzkb.model.Material;
@@ -31,7 +30,7 @@ import com.jianma.fzkb.util.WebRequestUtil;
 
 @Controller
 @RequestMapping(value = "/material")
-public class MaterialController extends BaseController{
+public class MaterialController{
 
 	@Autowired
 	@Qualifier(value = "materialServiceImpl")

@@ -58,6 +58,17 @@ public class Match implements java.io.Serializable {
 		this.username = username;
 	}
 
+	public Match(int userId, String name, String underwear, String greatcoat, String trousers, int uwId, int gcId, int trId) {
+		this.userId = userId;
+		this.name = name;
+		this.underwear = underwear;
+		this.greatcoat = greatcoat;
+		this.trousers = trousers;
+		this.uwId = uwId;
+		this.gcId = gcId;
+		this.trId = trId;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 
