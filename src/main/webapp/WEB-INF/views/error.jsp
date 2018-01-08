@@ -4,8 +4,30 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>出错啦</title>
+<style type="text/css">
+body{
+        width:90%;
+        margin:0px auto;
+        text-align:center;
+}
+img{
+        width:600px;
+        height:auto;
+}
+	
+
+h2{
+	color:#484848;
+}
+
+h4{
+	color:#8492a6;
+}
+</style>
 </head>
 <body>
-	<h1>无权限进行操作！</h1>
+	<img alt="" src="resources/img/bad-luck.gif">
+	<h2>Oh no, bad luck!</h2>
+	<h4>无权限进行操作！,如果您是管理员，则请申请设计师账号进行操作！</h1>
 </body>
 </html>
