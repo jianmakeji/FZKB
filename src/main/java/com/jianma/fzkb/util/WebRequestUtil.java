@@ -12,8 +12,8 @@ public class WebRequestUtil {
 
 	public static void AccrossAreaRequestSet(HttpServletRequest request,HttpServletResponse response){
 		response.setContentType("text/html;charset=UTF-8");
-		        
-        response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		
         response.setHeader("Access-Control-Allow-Headers",
                 "User-Agent,Origin,Cache-Control,Content-type,Date,Server,withCredentials,AccessToken");
         response.setHeader("Access-Control-Allow-Credentials", "true");
