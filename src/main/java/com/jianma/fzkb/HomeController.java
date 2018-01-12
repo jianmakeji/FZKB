@@ -198,6 +198,16 @@ public class HomeController {
 		return modelView;
 	}
 	
+	@RequestMapping(value = "/matchMobilePage", method = RequestMethod.GET)
+	public ModelAndView matchMobilePage(HttpServletRequest request, HttpServletResponse response,
+			Locale locale, Model model) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ModelAndView modelView = new ModelAndView();
+		modelView.setViewName("mobile");
+		
+		return modelView;
+	}
+	
 	@RequestMapping(value = "/refreshToken", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel refreshToken(HttpServletRequest request, HttpServletResponse response,

@@ -13,9 +13,12 @@ $(document).ready(function() {
 	init();
 
 	function init() {
+		var screenWidth = 420;
+		var screenHeight = 640;
 		container = document.createElement('div');
 		$("#modelContainer").append(container);
-		camera = new THREE.PerspectiveCamera(45, window.innerWidth * 0.9 / window.innerHeight, 1, 2000);
+
+		camera = new THREE.PerspectiveCamera(45, screenWidth * 0.9 / screenHeight, 1, 2000);
 		scene = new THREE.Scene();
 		//scene.fog = THREE.FogExp2(0xffffff,0.02);
 		// grid
@@ -45,7 +48,7 @@ $(document).ready(function() {
 		var loader = new THREE.FBXLoader(manager);
 		var texture = new THREE.Texture();
 		var tLoader = new THREE.ImageLoader(manager);
-		var imageUrl = "img/5_9.jpg";
+		var imageUrl = "resources/img/texture.png";
 		tLoader.load(imageUrl, function(image) {
 			texture.image = image;
 			texture.needsUpdate = true;
@@ -54,12 +57,12 @@ $(document).ready(function() {
 			texture.repeat.set(1, 1);
 		});
 		
-		loader.load('models/fbx/body4.fbx', function(object) {
+		loader.load('resources/models/fbx/body4.fbx', function(object) {
 
 			scene.add(object);
 			//object.castShadow = true;
 			//加载裤装模型
-			loader.load('models/fbx/kuzi.fbx', function(object) {
+			loader.load('resources/models/fbx/kuzi.fbx', function(object) {
 				trouserObject = object; //裤装
 				scene.add(object);
 				trouserObject.traverse(function(child) {
@@ -72,7 +75,7 @@ $(document).ready(function() {
 			}, onProgress, onError);
 			
 			//加载内衣模型
-			loader.load('models/fbx/neida.fbx', function(object) {
+			loader.load('resources/models/fbx/neida.fbx', function(object) {
 				underwearObject = object;
 				scene.add(object);
 				underwearObject.traverse(function(child) {
@@ -83,7 +86,7 @@ $(document).ready(function() {
 			}, onProgress, onError);
 	
 			//加载外套模型
-			loader.load('models/fbx/xizhuang.fbx', function(object) {
+			loader.load('resources/models/fbx/xizhuang.fbx', function(object) {
 				overcoatObject = object; //外套
 				scene.add(object);
 				overcoatObject.traverse(function(child) {
@@ -97,7 +100,7 @@ $(document).ready(function() {
 
 		renderer = new THREE.WebGLRenderer();
 		renderer.setPixelRatio(window.devicePixelRatio);
-		renderer.setSize(window.innerWidth * 0.9, window.innerHeight - 230);
+		renderer.setSize(screenWidth * 0.9, screenHeight - 230);
 		container.appendChild(renderer.domElement);
 		// controls, camera
 		controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -120,9 +123,9 @@ $(document).ready(function() {
 	}
 
 	function onWindowResize() {
-		camera.aspect = window.innerWidth * 0.6 / window.innerHeight;
+		camera.aspect = screenWidth/ screenHeight;
 		camera.updateProjectionMatrix();
-		renderer.setSize(window.innerWidth * 0.6, window.innerHeight);
+		renderer.setSize(screenWidth, screenHeight);
 	}
 	//
 	function animate() {

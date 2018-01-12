@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<html>
 
 	<head>
 		<meta charset="utf-8">
 		<title>服装设计师看板</title>
-		<link rel="stylesheet" href="css/materialize/materialize.css" />
+		<link rel="stylesheet" href="resources/css/materialize/materialize.css" />
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 
 		<!-- Link Swiper's CSS -->
-		<link rel="stylesheet" href="css/swiper/swiper.min.css">
+		<link rel="stylesheet" href="resources/css/swiper/swiper.min.css">
 		<!-- Demo styles -->
 		<style>
 			body {
@@ -97,55 +97,52 @@
 		</div>
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
-				<div class="swiper-slide" style="background-image:url(img/1_1.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/1_2.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/1_3.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/1_4.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/1_5.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/1_6.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/1_7.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/1_8.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/1_9.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/2_1.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/2_2.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/2_3.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/2_4.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/2_5.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/2_6.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/2_7.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/2_8.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/2_9.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/3_1.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/3_2.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/3_3.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/3_4.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/3_5.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/3_6.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/3_7.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/3_8.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(img/3_9.jpg)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/children.jpg"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/children.jpg)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/children.jpg)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
 			</div>
 			<!-- Add Pagination 
         <div class="swiper-pagination"></div>-->
 		</div>
 
 		<!-- Swiper JS -->
-		<script src="js/lib/three.js"></script>
-		<script src="js/lib/tween.min.js"></script>
-		<script src="js/controls/TrackballControls.js"></script>
-		<script src="js/renderers/CSS3DRenderer.js"></script>
-		<script src="js/lib/jquery-2.1.0.js"></script>
-		<script src="js/materialize/materialize.js"></script>
-		<script src="js/controls/OrbitControls.js"></script>
-		<script src="js/curves/NURBSCurve.js"></script>
-		<script src="js/curves/NURBSUtils.js"></script>
-		<script src="js/loaders/FBXLoader.js"></script>
+		<script src="resources/js/lib/three.js"></script>
+		<script src="resources/js/lib/tween.min.js"></script>
+		<script src="resources/js/controls/TrackballControls.js"></script>
+		<script src="resources/js/renderers/CSS3DRenderer.js"></script>
+		<script src="resources/js/lib/jquery-2.1.0.js"></script>
+		<script src="resources/js/materialize/materialize.js"></script>
+		<script src="resources/js/controls/OrbitControls.js"></script>
+		<script src="resources/js/curves/NURBSCurve.js"></script>
+		<script src="resources/js/curves/NURBSUtils.js"></script>
+		<script src="resources/js/loaders/FBXLoader.js"></script>
 
-		<script src="js/Detector.js"></script>
-		<script src="js/lib/stats.min.js"></script>
-		<script src="js/lib/inflate.min.js"></script>
-		<script src="js/src/3dmodel_mobile.js" async="async"></script>
-		<script src="js/swiper/swiper.min.js"></script>
+		<script src="resources/js/Detector.js"></script>
+		<script src="resources/js/lib/stats.min.js"></script>
+		<script src="resources/js/lib/inflate.min.js"></script>
+		<script src="resources/js/src/3dmodel_mobile.js" async="async"></script>
+		<script src="resources/js/swiper/swiper.min.js"></script>
 
 		<!-- Initialize Swiper -->
 		<script>
@@ -167,7 +164,6 @@
 			var underwear;
 			var greatcoat;
 			var trousers;
-
 			$(document).ready(function(){
 				$(".swiper-slide").click(function(){
 					var radioVal = $('input[name="clothingGroup"]:checked').val();
@@ -210,12 +206,11 @@
 				});
 				
 				$("#resetBtn").click(function() {
-
 					$("#matchName").val("");
 			
 					var texture = new THREE.Texture();
 					var tLoader = new THREE.ImageLoader(manager);
-					var imageUrl = "img/5_9.jpg";
+					var imageUrl = "resources/img/texture.png";
 					tLoader.load(imageUrl, function(image) {
 						texture.image = image;
 						texture.needsUpdate = true;
