@@ -203,7 +203,35 @@ public class HomeController {
 			Locale locale, Model model) {
 		WebRequestUtil.AccrossAreaRequestSet(request, response);
 		ModelAndView modelView = new ModelAndView();
-		modelView.setViewName("mobile");
+		
+		String authCode = request.getParameter("authCode");
+		String userId = request.getParameter("userId");
+		
+		if (null != authCode) {
+			try{
+				Claims claims = JwtUtil.parseJWT(authCode);
+				
+				JSONObject jsonObject = JSONObject.parseObject(claims.getSubject());
+				if (null != userId && null != jsonObject) {
+					if (Integer.parseInt(userId) == jsonObject.getIntValue("userId")) {
+						modelView.addObject("authCode", authCode);
+						modelView.addObject("userId", userId);
+						modelView.setViewName("mobile");
+					} else {
+						modelView.setViewName("error");
+					}
+				} else {
+					modelView.setViewName("error");
+				}
+				
+			}
+			catch(ExpiredJwtException ex){
+				modelView.setViewName("error");
+			}
+			
+		} else {
+			modelView.setViewName("error");
+		}
 		
 		return modelView;
 	}

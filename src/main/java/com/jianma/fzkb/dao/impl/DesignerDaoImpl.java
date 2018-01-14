@@ -143,4 +143,14 @@ public class DesignerDaoImpl implements DesignerDao {
         }
 	}
 
+	@Override
+	public void updatePwd(int designerId, String password) {
+		Session session = this.getSessionFactory().getCurrentSession();
+		String hql = " update from Designer d set d.password = ? where d.id = ? ";
+		Query query = session.createQuery(hql);
+        query.setParameter(0, password);
+        query.setParameter(1, designerId); 
+		query.executeUpdate();
+	}
+
 }

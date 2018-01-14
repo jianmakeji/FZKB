@@ -94,6 +94,23 @@ public class DesignerController{
 		}
 	}
 
+	@RequestMapping(value = "/updatePwd", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultModel updatePwd(HttpServletRequest request, HttpServletResponse response,@RequestParam String password,@RequestParam int designerId) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		
+		resultModel = new ResultModel();
+		
+		int result = designerServiceImpl.updatePwd(designerId, password);
+		if (result == ResponseCodeUtil.DB_OPERATION_SUCCESS) {
+			resultModel.setResultCode(200);
+			resultModel.setSuccess(true);
+			return resultModel;
+		} else {
+			throw new FZKBException(500, "操作失败！");
+		}
+	}
+	
 	@RequestMapping(value = "/getDataByPage", method = RequestMethod.GET)
 	@ResponseBody
 	public ListResultModel getDataByPage(HttpServletRequest request, HttpServletResponse response,

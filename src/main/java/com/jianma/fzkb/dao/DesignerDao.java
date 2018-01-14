@@ -26,4 +26,6 @@ public interface DesignerDao {
 	public int getCountDesignerByRealname(String realname);
 	
 	public Optional<Designer> authorityCheck(String username, String password); 
+	
+	public void updatePwd(int designerId, String password);
 }

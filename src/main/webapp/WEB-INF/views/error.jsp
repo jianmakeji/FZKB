@@ -11,7 +11,7 @@ body{
         text-align:center;
 }
 img{
-        width:600px;
+        width:60%;
         height:auto;
 }
 	

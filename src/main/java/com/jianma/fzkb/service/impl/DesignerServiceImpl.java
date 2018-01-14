@@ -1,5 +1,7 @@
 package com.jianma.fzkb.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +95,20 @@ public class DesignerServiceImpl implements DesignerService {
 	public Optional<Designer> findDesignerByUsername(String username) {
 		// TODO Auto-generated method stub
 		return designerDaoImpl.findDesignerByUsername(username);
+	}
+
+	@Override
+	public int updatePwd(int designerId, String password) {
+		try {
+			designerDaoImpl.updatePwd(designerId, Md5SaltTool.getEncryptedPwd(password));
+			return ResponseCodeUtil.DB_OPERATION_SUCCESS;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return ResponseCodeUtil.DB_OPERATION_FAILURE;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return ResponseCodeUtil.DB_OPERATION_FAILURE;
+		}
 	}
 
 }

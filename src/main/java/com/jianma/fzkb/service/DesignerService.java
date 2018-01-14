@@ -22,4 +22,6 @@ public interface DesignerService {
 	public DesignerTableModel getDesignerByRealname(String realname, int offset, int limit);
 	
 	public Optional<Designer> authorityCheck(String username, String password); 
+	
+	public int updatePwd(int designerId, String password);
 }
