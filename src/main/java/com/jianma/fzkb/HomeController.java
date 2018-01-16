@@ -1,8 +1,14 @@
 package com.jianma.fzkb;
 
 import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.Date;
@@ -21,6 +27,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -344,5 +354,31 @@ public class HomeController {
 		}catch (Exception e) {
 			throw new FZKBException(500, "操作失败！");
 		}
+	}
+	
+	@RequestMapping(value = "/image", method = RequestMethod.GET)
+	public void getImage(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String imgPath) throws IOException { 
+		System.out.println("=======:"+imgPath);
+        try {  
+        	URL url = new URL(imgPath);  
+            //打开链接  
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();  
+            //设置请求方式为"GET"  
+            conn.setRequestMethod("GET");  
+            //超时响应时间为5秒  
+            conn.setConnectTimeout(5 * 1000);  
+            //通过输入流获取图片数据  
+            InputStream inStream = conn.getInputStream();  
+            //得到图片的二进制数据，以二进制封装得到数据，具有通用性  
+            byte[] data = WebRequestUtil.readInputStream(inStream);  
+            //new一个文件对象用来保存图片，默认保存当前工程根目录  
+            OutputStream toClient = response.getOutputStream(); // 得到向客户端输出二进制数据的对象    
+            toClient.write(data); // 输出数据    
+            toClient.close();    
+            
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
 	}
 }

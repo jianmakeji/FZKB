@@ -27,8 +27,8 @@ $(document).ready(function() {
 		gridHelper.receiveShadow = true;
 		scene.add(gridHelper);
 		// stats
-		stats = new Stats();
-		container.appendChild(stats.dom);
+		//stats = new Stats();
+		//container.appendChild(stats.dom);
 
 		// model
 		manager = new THREE.LoadingManager();
@@ -135,7 +135,7 @@ $(document).ready(function() {
 				mixers[i].update(clock.getDelta());
 			}
 		}
-		stats.update();
+		//stats.update();
 		render();
 	}
 

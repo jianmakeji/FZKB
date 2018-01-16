@@ -222,7 +222,7 @@ $.ajax({
 			var texture = new THREE.Texture();
 			var tLoader = new THREE.ImageLoader(manager);
 
-			var imageUrl = $(this).find("img").attr('src');
+			var imageUrl = "image?imgPath="+$(this).find("img").attr('src');
 			var id = $(this).find("img").attr('id');
 			
 			tLoader.load(imageUrl, function(image) {

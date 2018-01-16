@@ -24,8 +24,8 @@ $(document).ready(function() {
 		gridHelper.receiveShadow = true;
 		scene.add(gridHelper);
 		// stats
-		stats = new Stats();
-		container.appendChild(stats.dom);
+		//stats = new Stats();
+		//container.appendChild(stats.dom);
 
 		// model
 		manager = new THREE.LoadingManager();
@@ -48,9 +48,8 @@ $(document).ready(function() {
 		var overcoatTexture = new THREE.Texture();
 		
 		var tLoader = new THREE.ImageLoader(manager);
-		tLoader.crossOrigin = '*';
-		
-		tLoader.load(trouserImageUrl, function(image) {
+
+		tLoader.load("image?imgPath="+trouserImageUrl, function(image) {
 			trouserTexture.image = image;
 			trouserTexture.needsUpdate = true;
 			trouserTexture.wrapS = THREE.RepeatWrapping;
@@ -58,7 +57,7 @@ $(document).ready(function() {
 			trouserTexture.repeat.set(1, 1);
 		});
 		
-		tLoader.load(underwearImageUrl, function(image) {
+		tLoader.load("image?imgPath="+underwearImageUrl, function(image) {
 			underwearTexture.image = image;
 			underwearTexture.needsUpdate = true;
 			underwearTexture.wrapS = THREE.RepeatWrapping;
@@ -66,7 +65,7 @@ $(document).ready(function() {
 			underwearTexture.repeat.set(1, 1);
 		});
 		
-		tLoader.load(overcoatImageUrl, function(image) {
+		tLoader.load("image?imgPath="+overcoatImageUrl, function(image) {
 			overcoatTexture.image = image;
 			overcoatTexture.needsUpdate = true;
 			overcoatTexture.wrapS = THREE.RepeatWrapping;
@@ -152,7 +151,7 @@ $(document).ready(function() {
 				mixers[i].update(clock.getDelta());
 			}
 		}
-		stats.update();
+		//stats.update();
 		render();
 	}
 

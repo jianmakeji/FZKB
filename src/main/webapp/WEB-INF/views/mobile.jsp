@@ -97,33 +97,8 @@
 		</div>
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/children.jpg"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/children.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/children.jpg)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
-				<div class="swiper-slide" style="background-image:url(resources/img/texture.png)"></div>
+
 			</div>
-			<!-- Add Pagination 
-        <div class="swiper-pagination"></div>-->
 		</div>
 
 		<!-- Swiper JS -->
@@ -139,71 +114,123 @@
 		<script src="resources/js/loaders/FBXLoader.js"></script>
 
 		<script src="resources/js/Detector.js"></script>
-		<script src="resources/js/lib/stats.min.js"></script>
+		<!--  <script src="resources/js/lib/stats.min.js"></script>-->
 		<script src="resources/js/lib/inflate.min.js"></script>
 		<script src="resources/js/src/3dmodel_mobile.js" async="async"></script>
 		<script src="resources/js/swiper/swiper.min.js"></script>
 
 		<!-- Initialize Swiper -->
 		<script>
-			var swiper = new Swiper('.swiper-container', {
-				effect: 'coverflow',
-				grabCursor: true,
-				centeredSlides: true,
-				slidesPerView: 'auto',
-				initialSlide: 3,
-				coverflow: {
-					rotate: 50,
-					stretch: 0,
-					depth: 100,
-					modifier: 1,
-					slideShadows: true
-				}
-			});
 			
 			var underwear;
+			var uwId;
 			var greatcoat;
+			var gcId;
 			var trousers;
-			$(document).ready(function(){
-				$(".swiper-slide").click(function(){
-					var radioVal = $('input[name="clothingGroup"]:checked').val();
-					var urlStr = $(this).css('background-image');
-					var imageUrl = urlStr.substring(4,urlStr.length - 1);
+			var trId;
+			
+			function IsPC() {
+				  var userAgentInfo = navigator.userAgent;
+				  var Agents = ["Android", "iPhone",
+				        "SymbianOS", "Windows Phone",
+				        "iPad", "iPod"];
+				  var flag = true;
+				  for (var v = 0; v < Agents.length; v++) {
+				    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+				      flag = false;
+				      break;
+				    }
+				  }
+				  return flag;
+				}
+			
+			$.ajax({
+				type:'GET',
+				url:'getRandomMaterial',
+				data:{count:10},
+				dataType:'json',
+				success:function(data){
+
+					for (var i = 0; i < data.object.length; i++){
+						var html = '<div class="swiper-slide" id="'+data.object[i].id+'" style="background-image:url('+data.object[i].imageUrl+')"></div>';
+						$(".swiper-wrapper").append(html);
+						
+					}
 					
-					var texture = new THREE.Texture();
-					var tLoader = new THREE.ImageLoader(manager);
-			
-					tLoader.load(imageUrl, function(image) {
-						texture.image = image;
-						texture.needsUpdate = true;
-						texture.wrapS = THREE.RepeatWrapping;
-						texture.wrapT = THREE.RepeatWrapping;
-						texture.repeat.set(1, 1);
-			
-						if(radioVal == 0) { //内搭
-							underwearObject.traverse(function(child) {
-								if(child instanceof THREE.Mesh) {
-									child.material.map = texture;
-								}
-							});
-							underwear = imageUrl;
-						} else if(radioVal == 1) { //外套
-							overcoatObject.traverse(function(child) {
-								if(child instanceof THREE.Mesh) {
-									child.material.map = texture;
-								}
-							});
-							greatcoat = imageUrl;
-						} else if(radioVal == 2) { //裤装
-							trouserObject.traverse(function(child) {
-								if(child instanceof THREE.Mesh) {
-									child.material.map = texture;
-								}
-							});
-							trousers = imageUrl;
+					var swiper = new Swiper('.swiper-container', {
+						effect: 'coverflow',
+						grabCursor: true,
+						centeredSlides: true,
+						slidesPerView: 'auto',
+						initialSlide: 3,
+						coverflow: {
+							rotate: 50,
+							stretch: 0,
+							depth: 100,
+							modifier: 1,
+							slideShadows: true
 						}
 					});
-				});
+					
+					$(".swiper-slide").click(function(){
+						var radioVal = $('input[name="clothingGroup"]:checked').val();
+						var urlStr = $(this).css('background-image');
+						if (IsPC()){
+							urlStr = urlStr.substring(5,urlStr.length - 2);
+						}
+						else{
+							urlStr = urlStr.substring(4,urlStr.length - 1);
+						}
+						
+						var arrayStr = urlStr.split('/');
+						var imageUrl = "image?imgPath="+urlStr;
+						
+						var id = $(this).attr('id');
+						
+						var texture = new THREE.Texture();
+						var tLoader = new THREE.ImageLoader(manager);
+						tLoader.crossOrigin = true;
+						tLoader.load(imageUrl, function(image) {
+							
+							texture.image = image;
+							texture.needsUpdate = true;
+							texture.wrapS = THREE.RepeatWrapping;
+							texture.wrapT = THREE.RepeatWrapping;
+							texture.repeat.set(1, 1);
+				
+							if(radioVal == 0) { //内搭
+								underwearObject.traverse(function(child) {
+									if(child instanceof THREE.Mesh) {
+										child.material.map = texture;
+									}
+								});
+								underwear = imageUrl;
+								uwId = id;
+							} else if(radioVal == 1) { //外套
+								overcoatObject.traverse(function(child) {
+									if(child instanceof THREE.Mesh) {
+										child.material.map = texture;
+									}
+								});
+								greatcoat = imageUrl;
+								gcId = id;
+							} else if(radioVal == 2) { //裤装
+								trouserObject.traverse(function(child) {
+									if(child instanceof THREE.Mesh) {
+										child.material.map = texture;
+									}
+								});
+								trousers = imageUrl;
+								trId = id;
+							}
+						});
+					});
+				},
+			});
+			$(document).ready(function(){
+				
+				
+				
 				
 				$("#resetBtn").click(function() {
 					$("#matchName").val("");
@@ -263,6 +290,31 @@
 						return;
 					}
 			
+					$.ajax({
+						type:'POST',
+						url:'match/createMatch',
+						headers: {
+							"Authorization": authCode,
+							"userId":userId
+					    },
+						data:JSON.stringify({
+							'userId':userId,
+							'name':name,
+							'uwId':uwId,
+							'underwear':underwear,
+							'gcId':gcId,
+							'greatcoat':greatcoat,
+							'trId':trId,
+							'trousers':trousers
+						}),
+						dataType:'json',
+						contentType: "application/json",
+						success:function(data){
+							if (data.resultCode == 200){
+								Materialize.toast('保存成功！', 4000);
+							}
+						}
+					});
 				});
 				
 			});
