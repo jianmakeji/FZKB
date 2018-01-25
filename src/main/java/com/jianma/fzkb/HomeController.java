@@ -359,7 +359,7 @@ public class HomeController {
 	@RequestMapping(value = "/image", method = RequestMethod.GET)
 	public void getImage(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String imgPath) throws IOException { 
-		System.out.println("=======:"+imgPath);
+
         try {  
         	URL url = new URL(imgPath);  
             //打开链接  
@@ -380,5 +380,21 @@ public class HomeController {
         } catch (Exception e) {  
             e.printStackTrace();  
         }  
+	}
+	
+	@RequestMapping(value = "/JudgeTokenOvertime", method = RequestMethod.GET)
+	@ResponseBody
+	public ResultModel JudgeTokenOvertime(HttpServletRequest request, HttpServletResponse response, @RequestParam String token) {
+		WebRequestUtil.AccrossAreaRequestSet(request, response);
+		ResultModel resultModel = new ResultModel();
+		try{
+			Claims claims = JwtUtil.parseJWT(token);
+			resultModel.setResultCode(200);
+			
+		}
+		catch(ExpiredJwtException ex){
+			resultModel.setResultCode(400);
+		}
+		return resultModel;
 	}
 }

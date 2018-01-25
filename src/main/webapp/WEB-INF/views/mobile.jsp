@@ -204,7 +204,7 @@
 										child.material.map = texture;
 									}
 								});
-								underwear = imageUrl;
+								underwear = urlStr;
 								uwId = id;
 							} else if(radioVal == 1) { //外套
 								overcoatObject.traverse(function(child) {
@@ -212,7 +212,7 @@
 										child.material.map = texture;
 									}
 								});
-								greatcoat = imageUrl;
+								greatcoat = urlStr;
 								gcId = id;
 							} else if(radioVal == 2) { //裤装
 								trouserObject.traverse(function(child) {
@@ -220,7 +220,7 @@
 										child.material.map = texture;
 									}
 								});
-								trousers = imageUrl;
+								trousers = urlStr;
 								trId = id;
 							}
 						});

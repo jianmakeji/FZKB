@@ -224,6 +224,7 @@ $.ajax({
 
 			var imageUrl = "image?imgPath="+$(this).find("img").attr('src');
 			var id = $(this).find("img").attr('id');
+			var saveImageUrl = $(this).find("img").attr('src');
 			
 			tLoader.load(imageUrl, function(image) {
 
@@ -239,7 +240,7 @@ $.ajax({
 							child.material.map = texture;
 						}
 					});
-					underwear = imageUrl;
+					underwear = saveImageUrl;
 					uwId = id;
 				} else if(radioVal == 1) { //外套
 					overcoatObject.traverse(function(child) {
@@ -247,7 +248,7 @@ $.ajax({
 							child.material.map = texture;
 						}
 					});
-					greatcoat = imageUrl;
+					greatcoat = saveImageUrl;
 					gcId = id;
 				} else if(radioVal == 2) { //裤装
 					trouserObject.traverse(function(child) {
@@ -255,7 +256,7 @@ $.ajax({
 							child.material.map = texture;
 						}
 					});
-					trousers = imageUrl;
+					trousers = saveImageUrl;
 					trId = id;
 				}
 			});
