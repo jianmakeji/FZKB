@@ -24,6 +24,7 @@ public class Designer implements java.io.Serializable {
 	private String password;
 	private String introduce;
 	private Date createTime;
+	private String address;
 	private int role;
 	
 	public Designer() {
@@ -107,6 +108,15 @@ public class Designer implements java.io.Serializable {
 
 	public void setRole(int role) {
 		this.role = role;
+	}
+
+	@Column(name = "address")
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	
