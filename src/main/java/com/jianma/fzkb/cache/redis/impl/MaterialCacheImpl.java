@@ -35,6 +35,7 @@ import com.jianma.fzkb.model.Material;
 import com.jianma.fzkb.model.MaterialTableModel;
 import com.jianma.fzkb.util.RedisVariableUtil;
 
+
 @Repository
 @Component
 @Qualifier(value = "materialCacheImpl")
@@ -82,6 +83,7 @@ public class MaterialCacheImpl implements MaterialCache {
 	public void addMaterial(Material material) {
 		redisTemplate.execute(new SessionCallback<List<Object>>() {
 			public List<Object> execute(RedisOperations operations) throws DataAccessException {
+				
 				operations.multi();
 				HashOperations<String, String, String> hashOperations = operations.opsForHash();
 

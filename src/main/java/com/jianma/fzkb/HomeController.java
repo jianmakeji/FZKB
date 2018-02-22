@@ -208,6 +208,7 @@ public class HomeController {
 		return modelView;
 	}
 	
+	
 	@RequestMapping(value = "/matchMobilePage", method = RequestMethod.GET)
 	public ModelAndView matchMobilePage(HttpServletRequest request, HttpServletResponse response,
 			Locale locale, Model model) {
