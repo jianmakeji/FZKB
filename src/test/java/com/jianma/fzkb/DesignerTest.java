@@ -28,7 +28,6 @@ public class DesignerTest {
 		designer.setCreateTime(new Date());
 		designer.setUsername("cidic@cidic.cn");
 		designer.setRealname("cidic_hn");
-		designer.setIntroduce("hello cidic...");
 		designer.setPassword("111111");
 		designer.setRole(0);
 		designerServiceImpl.createDesigner(designer);
