@@ -15,7 +15,7 @@ $(document).ready(function() {
 	function init() {
 		container = document.createElement('div');
 		$("#modelContainer").append(container);
-		camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+		camera = new THREE.PerspectiveCamera(45, window.innerWidth * 0.6 / window.innerHeight, 1, 2000);
 		scene = new THREE.Scene();
 		//scene.fog = THREE.FogExp2(0xffffff,0.02);
 		// grid
@@ -116,7 +116,7 @@ $(document).ready(function() {
 
 		renderer = new THREE.WebGLRenderer();
 		renderer.setPixelRatio(window.devicePixelRatio);
-		renderer.setSize(window.innerWidth, window.innerHeight - 20);
+		renderer.setSize(window.innerWidth * 0.6, window.innerHeight - 20);
 		container.appendChild(renderer.domElement);
 		// controls, camera
 		controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -139,9 +139,9 @@ $(document).ready(function() {
 	}
 
 	function onWindowResize() {
-		camera.aspect = window.innerWidth/ window.innerHeight;
+		camera.aspect = window.innerWidth * 0.6/ window.innerHeight;
 		camera.updateProjectionMatrix();
-		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.setSize(window.innerWidth * 0.6, window.innerHeight);
 	}
 	//
 	function animate() {

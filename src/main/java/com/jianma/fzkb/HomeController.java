@@ -161,9 +161,9 @@ public class HomeController {
 		if (uwId != null && gcId != null && trId != null){
 			Map<String,Material> map = materialServiceImpl.getMaterialByIds(Integer.parseInt(uwId), Integer.parseInt(gcId), Integer.parseInt(trId));
 			
-			modelView.addObject("uwUrl", map.get("underwear").getImageUrl());
-			modelView.addObject("gcUrl", map.get("greatcoat").getImageUrl());
-			modelView.addObject("trUrl", map.get("trouser").getImageUrl());
+			modelView.addObject("uw", map.get("underwear"));
+			modelView.addObject("gc", map.get("greatcoat"));
+			modelView.addObject("tr", map.get("trouser"));
 		}
 		
 		modelView.setViewName("/preview");
