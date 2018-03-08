@@ -242,9 +242,7 @@ public class MaterialCacheImpl implements MaterialCache {
 
 					String calculateCategoryResult = RedisVariableUtil.CATEGORY_PREFIX + RedisVariableUtil.DIVISION_CHAR
 							+ cacheKey;
-					System.out.println(
-							category.size() + "  " + style1.size() + "  " + style2.size() + "  " + style3.size());
-
+					
 					if (category.size() > 1) {
 						redisTemplate.opsForSet().unionAndStore(category.get(0), category, calculateCategoryResult);
 						calculateKeys.add(calculateCategoryResult);

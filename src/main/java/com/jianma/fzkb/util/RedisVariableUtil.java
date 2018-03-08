@@ -23,6 +23,9 @@ public class RedisVariableUtil {
 	public static final String CATEGOTY_ANIMAL = "animal"; //动物
 	public static final String CATEGOTY_PLANT = "plant"; //植物
 	public static final String CATEGOTY_LANDSCAPE = "landscape"; //风景
+	public static final String CATEGOTY_INNER_CLOTH = "innerCloth"; //内搭
+	public static final String CATEGOTY_OUTTER_CLOTH = "outterCloth"; //外套
+	public static final String CATEGOTY_PANTS = "pants"; //下装
 	
 	//风格---简单-复杂
 	public static final String STYLE1_MINUS_3 = "s1:-3";
@@ -83,6 +86,9 @@ public class RedisVariableUtil {
 		categoryMap.put("动物", "animal");
 		categoryMap.put("植物", "plant");
 		categoryMap.put("风景", "landscape");
+		categoryMap.put("内搭", "innerCloth");
+		categoryMap.put("外套", "outterCloth");
+		categoryMap.put("下装", "pants");
 	}
 	
 	public static final HashMap<String,String> m_categoryMap = new HashMap<String,String>();
@@ -92,5 +98,8 @@ public class RedisVariableUtil {
 		m_categoryMap.put("动物", "m_animal");
 		m_categoryMap.put("植物", "m_plant");
 		m_categoryMap.put("风景", "m_landscape");
+		m_categoryMap.put("内搭", "m_innerCloth");
+		m_categoryMap.put("外套", "m_outterCloth");
+		m_categoryMap.put("下装", "m_pants");
 	}
 }
