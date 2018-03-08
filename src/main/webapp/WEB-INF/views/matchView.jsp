@@ -42,10 +42,11 @@
 		var authCode = "${authCode}";
 		var userId = "${userId}";
 	</script>
-	<script src="resources/js/lib/three.js"></script>
-	<script src="resources/js/lib/tween.min.js"></script>
+	<script src="resources/js/lib/three.min.js"></script>
+	<script src="resources/js/lib/three.interaction.js"></script>
+	<!--  <script src="resources/js/lib/tween.min.js"></script>
 	<script src="resources/js/controls/TrackballControls.js"></script>
-	<script src="resources/js/renderers/CSS3DRenderer.js"></script>
+	<script src="resources/js/renderers/CSS3DRenderer.js"></script>-->
 	<script src="resources/js/lib/jquery-2.1.0.js"></script>
 	<script src="resources/js/materialize/materialize.js"></script>
 	<script src="resources/js/controls/OrbitControls.js"></script>
@@ -57,6 +58,6 @@
 	<script src="resources/js/lib/stats.min.js"></script>
 	<script src="resources/js/lib/inflate.min.js"></script>
 	<script src="resources/js/src/3dmodel.js"  async="async"></script>
-	<script src="resources/js/src/spherePanel.js" async="async"></script>
-
+	<!--<script src="resources/js/src/spherePanel.js" async="async"></script>-->
+	<script src="resources/js/src/axis.js" async="async"></script>
 </html>
