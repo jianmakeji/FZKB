@@ -64,14 +64,14 @@ $(document).ready(function() {
 	    var zLine = new THREE.Line(zGeometry,zMaterial);
 	    scene.add(zLine);
 	        
-	    addText('简单',-18,0,0);
-	    addText('复杂',33,0,0);
+	    addText('商务',-18,0,0);
+	    addText('休闲',33,0,0);
 	    
-	    addText('硬朗',0,-18,0);
-	    addText('圆润',5,18,0);
+	    addText('单色',0,-18,0);
+	    addText('杂色',5,18,0);
 	    
-	    addText('冷酷',0,0,-18);
-	    addText('温暖',5,0,18);
+	    addText('冷冬',0,0,-18);
+	    addText('暖夏',5,0,18);
 	    
 		// position and point the camera to the center of the scene
 		camera.position.x = 10;
