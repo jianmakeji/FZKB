@@ -82,18 +82,32 @@ $(document).ready(function() {
 		document.getElementById("container").appendChild(renderer.domElement);
 		// render the scene
 		
-		renderer.render(scene, camera);
-		
-		
-		setTimeout(function(){
-			renderer.render(scene, camera);
-		},50);
-		
-
 		controls = new THREE.OrbitControls(camera, renderer.domElement);
 		controls.addEventListener('change', render); // remove when using animation loop
 		controls.enableZoom = true;
-
+		
+		render();
+		
+		$.ajax({
+			type:'GET',
+			url:'getRandomMaterial',
+			data:{count:118},
+			dataType:'json',
+			success:function(data){
+				
+				for (var i = 0; i < data.object.length; i++){
+					
+					addMaterials(data.object[i].imageUrl,data.object[i].id, 
+							data.object[i].style1*5,data.object[i].style2*5,data.object[i].style3*5);
+				}
+				
+				setTimeout(function(){
+					render();
+				},5000);
+			},
+		});
+		
+		
 	}
 
 	function render() {
@@ -197,21 +211,6 @@ $(document).ready(function() {
 	}
 	window.onload = init;
 	window.addEventListener('resize',onResize, false);
-
-	$.ajax({
-		type:'GET',
-		url:'getRandomMaterial',
-		data:{count:118},
-		dataType:'json',
-		success:function(data){
-			
-			for (var i = 0; i < data.object.length; i++){
-				
-				addMaterials(data.object[i].imageUrl,data.object[i].id, 
-						data.object[i].style1*5,data.object[i].style2*5,data.object[i].style3*5);
-			}
-		},
-	});
 	
 	$("#saveMatchBtn").click(function() {
 		var name = $("#matchName").val();
