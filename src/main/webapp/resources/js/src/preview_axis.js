@@ -87,7 +87,7 @@ $(document).ready(function() {
 		
 		setTimeout(function(){
 			renderer.render(scene, camera);
-		},100);
+		},1000);
 		
 
 		controls = new THREE.OrbitControls(camera, renderer.domElement);
