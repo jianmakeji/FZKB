@@ -4,11 +4,27 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>服装设计师看板</title>
-		<link rel="stylesheet" href="resources/css/materialize/materialize.css" />
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="Access-Control-Allow-Origin" content="*">
 		<link rel="stylesheet" type="text/css" href="resources/css/src/match.css"/>
+		<style type="text/css">
+			.btn{
+				height: 21px;
+	            line-height: 21px;
+	            padding: 0 11px;
+	            background: #FED717;
+	            display: inline-block;
+	            text-decoration: none;
+	            font-size: 12px;
+	            outline: none;
+			}
+			
+			.validate{
+				width:10%;
+				border:0px;
+				border-bottom:#4A494A 1px solid;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -26,9 +42,9 @@
 				<label id="matchNameLabel" for="matchName">搭配名称:</label>
 				<input id="matchName" type="text" class="validate" style="color:gray;">
           		
-				<a class="waves-effect waves-light btn" id="saveMatchBtn">保存搭配</a>
+				<a class="btn" id="saveMatchBtn">保存搭配</a>
 				
-				<a class="waves-effect waves-light btn" id="resetBtn">重&nbsp;&nbsp;&nbsp;置</a>
+				<a class="btn" id="resetBtn">重&nbsp;&nbsp;&nbsp;置</a>
 			</div>
 			
 		</div>
@@ -44,11 +60,7 @@
 	</script>
 	<script src="resources/js/lib/three.min.js"></script>
 	<script src="resources/js/lib/three.interaction.js"></script>
-	<!--  <script src="resources/js/lib/tween.min.js"></script>
-	<script src="resources/js/controls/TrackballControls.js"></script>
-	<script src="resources/js/renderers/CSS3DRenderer.js"></script>-->
 	<script src="resources/js/lib/jquery-2.1.0.js"></script>
-	<script src="resources/js/materialize/materialize.js"></script>
 	<script src="resources/js/controls/OrbitControls.js"></script>
 	<script src="resources/js/curves/NURBSCurve.js"></script>
 	<script src="resources/js/curves/NURBSUtils.js"></script>
@@ -57,7 +69,6 @@
 	<script src="resources/js/Detector.js"></script>
 	<script src="resources/js/lib/stats.min.js"></script>
 	<script src="resources/js/lib/inflate.min.js"></script>
-	<script src="resources/js/src/3dmodel.js"  async="async"></script>
-	<!--<script src="resources/js/src/spherePanel.js" async="async"></script>-->
-	<script src="resources/js/src/axis.js" async="async"></script>
+	<script src="resources/js/src/3dmodel.js"></script>
+	<script src="resources/js/src/axis.js"></script>
 </html>

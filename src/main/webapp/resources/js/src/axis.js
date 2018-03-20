@@ -24,7 +24,7 @@ $(document).ready(function() {
 		// create a scene, that will hold all our elements such as objects, cameras and lights.
 		scene = new THREE.Scene();
 		// create a camera, which defines where we're looking at.
-		camera = new THREE.PerspectiveCamera(fov, window.innerWidth  * 0.4 / window.innerHeight, near, far);
+		camera = new THREE.PerspectiveCamera(fov, window.innerWidth  * 0.5 / window.innerHeight, near, far);
 
 		// create a render and set the size
 		renderer = new THREE.WebGLRenderer();
@@ -32,7 +32,7 @@ $(document).ready(function() {
 		interaction = new THREE.Interaction(renderer, scene, camera);
 		//renderer.setClearColorHex();
 		renderer.setClearColor(new THREE.Color(0xEEEEEE));
-		renderer.setSize(window.innerWidth* 0.4, window.innerHeight);
+		renderer.setSize(window.innerWidth* 0.5, window.innerHeight);
 
 		var xGeometry = new THREE.Geometry();
 	    var xP1 = new THREE.Vector3(-20,0,0);
@@ -204,9 +204,9 @@ $(document).ready(function() {
 	}
 
 	function onResize(){
-		camera.aspect = window.innerWidth * 0.4 / window.innerHeight;
+		camera.aspect = window.innerWidth * 0.5 / window.innerHeight;
 		camera.updateProjectionMatrix();
-		renderer.setSize( window.innerWidth * 0.4, window.innerHeight);
+		renderer.setSize( window.innerWidth * 0.5, window.innerHeight);
 		renderer.render(scene, camera);
 	}
 	window.onload = init;
