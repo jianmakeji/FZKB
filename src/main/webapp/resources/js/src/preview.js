@@ -150,6 +150,7 @@ $(document).ready(function() {
 		animate();
 	}
 
+	
 	function onWindowResize() {
 		camera.aspect = window.innerWidth * 0.5/ window.innerHeight;
 		camera.updateProjectionMatrix();

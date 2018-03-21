@@ -84,19 +84,37 @@ $(document).ready(function() {
 		
 		renderer.render(scene, camera);
 		
+		controls = new THREE.OrbitControls(camera, renderer.domElement);
+		controls.addEventListener('change', render); // remove when using animation loop
+		controls.enableZoom = true;
+
+		addMaterials(trouserImageUrl,trouserID,trouserX*5,trouserY*5,trouserZ*5,0);
+		addMaterials(underwearImageUrl,underwearID,underwearX*5,underwearY*5,underwearZ*5,0);
+		addMaterials(overcoatImageUrl,overcoatID,overcoatX*5,overcoatY*5,overcoatZ*5,0);
 		
 		setTimeout(function(){
 			renderer.render(scene, camera);
 		},1000);
 		
-
-		controls = new THREE.OrbitControls(camera, renderer.domElement);
-		controls.addEventListener('change', render); // remove when using animation loop
-		controls.enableZoom = true;
-
-		addMaterials(trouserImageUrl,trouserID,trouserX*5,trouserY*5,trouserZ*5);
-		addMaterials(underwearImageUrl,underwearID,underwearX*5,underwearY*5,underwearZ*5);
-		addMaterials(overcoatImageUrl,overcoatID,overcoatX*5,overcoatY*5,overcoatZ*5);
+		
+		$.ajax({
+			type:'GET',
+			url:'getRandomMaterial',
+			data:{count:59},
+			dataType:'json',
+			success:function(data){
+				
+				for (var i = 0; i < data.object.length; i++){
+					
+					addMaterials(data.object[i].imageUrl,data.object[i].id, 
+							data.object[i].style1*5,data.object[i].style2*5,data.object[i].style3*5,1);
+				}
+				
+				setTimeout(function(){
+					render();
+				},3000);
+			},
+		});
 	}
 
 	function render() {
@@ -132,15 +150,18 @@ $(document).ready(function() {
 	    scene.add(sprite);	
 	}
 
-	function addMaterials(imageAddress,id,x,y,z){
+	function addMaterials(imageAddress,id,x,y,z,sign){
 		var imageUrl = "image?imgPath="+imageAddress;
 		let textureLoader = new THREE.TextureLoader();
 	    let textureMap = textureLoader.load(imageUrl);
-
+	    let color = 0xffffff;
+	    if (sign == 1){
+	    	color = 0x424242;
+	    }
 	    textureMap.needsUpdate = true;
 	    let material = new THREE.SpriteMaterial({ 
 	        map: textureMap, 
-	        color: 0xffffff,
+	        color: color,
 	        fog: true
 	    });
 	    let sprite = new THREE.Sprite( material )
