@@ -31,7 +31,7 @@ $(document).ready(function() {
 		
 		interaction = new THREE.Interaction(renderer, scene, camera);
 		//renderer.setClearColorHex();
-		renderer.setClearColor(new THREE.Color(0xEEEEEE));
+		renderer.setClearColor(new THREE.Color(0xDCDCDC));
 		renderer.setSize(window.innerWidth* 0.5, window.innerHeight);
 
 		var xGeometry = new THREE.Geometry();
@@ -64,14 +64,14 @@ $(document).ready(function() {
 	    var zLine = new THREE.Line(zGeometry,zMaterial);
 	    scene.add(zLine);
 	        
-	    addText('商务',-18,0,0);
-	    addText('休闲',33,0,0);
+	    addText('商务',-13,0,0,"#4a148c");
+	    addText('休闲',28,0,0,"#ea80fc");
 	    
-	    addText('单色',0,-18,0);
-	    addText('杂色',5,18,0);
+	    addText('单色',8,-18,0,"#1e88e5");
+	    addText('杂色',8,18,0,"#9575cd");
 	    
-	    addText('冷冬',0,0,-18);
-	    addText('暖夏',5,0,18);
+	    addText('冷冬',8,0,-18,"#4fc3f7");
+	    addText('暖夏',8,0,18,"#00796b");
 	    
 		// position and point the camera to the center of the scene
 		camera.position.x = 10;
@@ -103,21 +103,21 @@ $(document).ready(function() {
 		renderer.render(scene, camera);
 	}
 
-	function addText(textValue,x,y,z){
+	function addText(textValue,x,y,z,color){
 		let fontface = "Helvetica";
 	    let fontsize = 18;
 	    let scale = window.devicePixelRatio;
 	    let canvas = document.createElement('canvas');
-	    
 	    let context = canvas.getContext('2d');
 	    context.scale(scale,scale);
 	    context.font = "light " + fontsize + "px " + fontface;
 	    // background color
-	    context.fillStyle = "#4a148c";
-	    context.fillRect(0,0,150,30);
+	    context.fillStyle = color;
+	    context.fillRect(0,0,50,25);
 	    // text align
 	    context.textAlign="center";
-	    context.fillText(textValue, 25, 20);
+	    context.fillStyle = "#FFFFFF";
+	    context.fillText(textValue, 25, 15);
 	    
 	    // canvas contents will be used for a texture
 	    let texture = new THREE.Texture(canvas) 

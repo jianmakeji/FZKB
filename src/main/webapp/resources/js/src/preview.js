@@ -15,7 +15,7 @@ $(document).ready(function() {
 	function init() {
 		container = document.createElement('div');
 		$("#modelContainer").append(container);
-		camera = new THREE.PerspectiveCamera(45, window.innerWidth * 0.6 / window.innerHeight, 1, 2000);
+		camera = new THREE.PerspectiveCamera(45, window.innerWidth * 0.5 / window.innerHeight, 1, 2000);
 		scene = new THREE.Scene();
 		//scene.fog = THREE.FogExp2(0xffffff,0.02);
 		// grid
@@ -116,7 +116,7 @@ $(document).ready(function() {
 
 		renderer = new THREE.WebGLRenderer();
 		renderer.setPixelRatio(window.devicePixelRatio);
-		renderer.setSize(window.innerWidth * 0.6, window.innerHeight - 20);
+		renderer.setSize(window.innerWidth * 0.5, window.innerHeight - 20);
 		container.appendChild(renderer.domElement);
 		// controls, camera
 		controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -125,7 +125,7 @@ $(document).ready(function() {
 		controls.update();
 
 		window.addEventListener('resize', onWindowResize, false);
-
+		/*
 		light = new THREE.HemisphereLight(0xffffff, 0x333333, 1.0);
 		light.position.set(0, 1, 3);
 		scene.add(light);
@@ -134,14 +134,26 @@ $(document).ready(function() {
 		light.position.set(0, 1, -3);
 		scene.add(light);
 		light.castShadow = true
+		*/
+		light = new THREE.HemisphereLight(0xffffff, 0x333333, 1.0);
+		light.position.set(0, 1, 3);
+		scene.add(light);
+		
+		light = new THREE.DirectionalLight(0xffffff, 2.0);
+		light.position.set(0, -1, -5);
+		scene.add(light);
+		
+		light = new THREE.DirectionalLight(0xffffff, 1.0);
+		light.position.set(0, 3, 1);
+		scene.add(light);
 		
 		animate();
 	}
 
 	function onWindowResize() {
-		camera.aspect = window.innerWidth * 0.6/ window.innerHeight;
+		camera.aspect = window.innerWidth * 0.5/ window.innerHeight;
 		camera.updateProjectionMatrix();
-		renderer.setSize(window.innerWidth * 0.6, window.innerHeight);
+		renderer.setSize(window.innerWidth * 0.5, window.innerHeight);
 	}
 	//
 	function animate() {

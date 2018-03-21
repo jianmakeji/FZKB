@@ -5,14 +5,24 @@
 <title>预览</title>
 <meta http-equiv="Access-Control-Allow-Origin" content="*">
 <link rel="stylesheet" type="text/css" href="resources/css/src/preview.css" />
+<style type="text/css">
+.line {
+	position: absolute;
+	top: 0px;
+	left: 50%;
+	height: 100%;
+	width: 1px;
+	background-color: #4A494A;
+}
+</style>
 </head>
 <body>
-	<div id="modelContainer" class="modelContent">
-	</div>
+	<div id="modelContainer" class="modelContent"></div>
+	<div class="line"></div>
 	<div class="operationContent">
 
-			<div id="container"></div>
-		</div>
+		<div id="container"></div>
+	</div>
 </body>
 <script type="text/javascript">
 	var trouserImageUrl = "${tr.imageUrl}";
@@ -30,9 +40,8 @@
 	var overcoatY = "${gc.style2}";
 	var overcoatZ = "${gc.style3}";
 	var overcoatID = "${gc.id}";
-	
 </script>
-<script src="resources/js/lib/three.js"></script>
+<script src="resources/js/lib/three.min.js"></script>
 <script src="resources/js/lib/three.interaction.js"></script>
 <script src="resources/js/lib/jquery-2.1.0.js"></script>
 <script src="resources/js/controls/OrbitControls.js"></script>

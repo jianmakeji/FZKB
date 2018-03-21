@@ -107,14 +107,21 @@ $(document).ready(function() {
 
 		window.addEventListener('resize', onWindowResize, false);
 
+			
 		light = new THREE.HemisphereLight(0xffffff, 0x333333, 1.0);
 		light.position.set(0, 1, 3);
 		scene.add(light);
 		
-		light = new THREE.DirectionalLight(0xffffff, 1.0);
-		light.position.set(0, 1, -3);
+		light = new THREE.DirectionalLight(0xffffff, 2.0);
+		light.position.set(0, -1, -5);
 		scene.add(light);
+		
+		light = new THREE.DirectionalLight(0xffffff, 1.0);
+		light.position.set(0, 3, 1);
+		scene.add(light);
+		
 		light.castShadow = true
+		
 		
 		animate();
 	}

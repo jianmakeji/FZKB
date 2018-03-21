@@ -25,6 +25,15 @@
 				border:0px;
 				border-bottom:#4A494A 1px solid;
 			}
+			
+			.line{
+				position:absolute;
+				top:0px;
+				left:50%;
+				height:100%;
+				width:1px;
+				background-color:#4A494A;
+			}
 		</style>
 	</head>
 
@@ -50,7 +59,9 @@
 			
 		</div>
 
-		<div class="operationContent">
+		<div class="line"></div>
+		
+		<div id="operationContent" class="operationContent">
 
 			<div id="container"></div>
 		</div>
