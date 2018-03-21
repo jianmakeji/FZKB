@@ -6,9 +6,10 @@
 		<title>服装设计师看板</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<link rel="stylesheet" href="resources/css/materialize/materialize.css" />
 		<link rel="stylesheet" type="text/css" href="resources/css/src/match.css"/>
 		<style type="text/css">
-			.btn{
+			.myBtn{
 				height: 21px;
 	            line-height: 21px;
 	            padding: 0 11px;
@@ -19,7 +20,7 @@
 	            outline: none;
 			}
 			
-			.validate{
+			.myValidate{
 				width:10%;
 				border:0px;
 				border-bottom:#4A494A 1px solid;
@@ -40,11 +41,11 @@
 				<label for="trousers">裤装</label>
 				
 				<label id="matchNameLabel" for="matchName">搭配名称:</label>
-				<input id="matchName" type="text" class="validate" style="color:gray;">
+				<input id="matchName" type="text" class="myValidate" style="color:gray;">
           		
-				<a class="btn" id="saveMatchBtn">保存搭配</a>
+				<a class="myBtn" id="saveMatchBtn">保存搭配</a>
 				
-				<a class="btn" id="resetBtn">重&nbsp;&nbsp;&nbsp;置</a>
+				<a class="myBtn" id="resetBtn">重&nbsp;&nbsp;&nbsp;置</a>
 			</div>
 			
 		</div>
@@ -59,9 +60,11 @@
 		var userId = "${userId}";
 	</script>
 	<script src="resources/js/lib/three.min.js"></script>
+	<script src="resources/js/controls/OrbitControls.js"></script>
 	<script src="resources/js/lib/three.interaction.js"></script>
 	<script src="resources/js/lib/jquery-2.1.0.js"></script>
-	<script src="resources/js/controls/OrbitControls.js"></script>
+	<script src="resources/js/materialize/materialize.js"></script>
+	
 	<script src="resources/js/curves/NURBSCurve.js"></script>
 	<script src="resources/js/curves/NURBSUtils.js"></script>
 	<script src="resources/js/loaders/FBXLoader.js"></script>

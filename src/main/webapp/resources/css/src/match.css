@@ -7,14 +7,14 @@ body {
 }
 
 .modelContent {
-	width: 60%;
+	width: 50%;
 	height: 100%;
 	float: left;
 	background-color: gainsboro;
 }
 
 .operationContent {
-	width: 40%;
+	width: 50%;
 	height: 100%;
 	float: right;
 	background-color: #dcdcdc;
@@ -78,9 +78,9 @@ a {
 }
 
 #matchName {
-	width: 200px;
+	width: 160px;
 	position: relative;
-	left: 30px;
+	left: 20px;
 	color: white;
 }
 
